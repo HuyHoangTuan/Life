@@ -2,7 +2,6 @@ package com.example.Life.song.service;
 
 import com.example.Life.account.repo.accountrepo;
 import com.example.Life.song.entity.song;
-import com.example.Life.song.model.searchsongmodel;
 import com.example.Life.song.model.songmodel;
 import com.example.Life.song.repo.songrepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,5 +134,17 @@ public class songserviceimpl implements songservice
         songmodel currentSong = output.get(0);
         songRepo.deleteSongById(currentSong.getTrack_id());
         return true;
+    }
+
+    @Override
+    public List<?> findSongInAlbum(long album_id)
+    {
+        return songRepo.findSongByAlbum(album_id);
+    }
+
+    @Override
+    public song save(song newSong)
+    {
+        return songRepo.save(newSong);
     }
 }

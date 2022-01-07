@@ -8,23 +8,20 @@ import com.example.Life.song.service.songservice;
 import io.jsonwebtoken.Claims;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileFormat;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
+import org.hibernate.result.Output;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.sound.sampled.spi.AudioFileReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -174,5 +171,47 @@ public class songcontroller
         if(deleted == false) return new ResponseEntity<>("FALSE", HttpStatus.OK);
         return new ResponseEntity<>("TRUE",HttpStatus.OK);
     }
+    @PostMapping("/{token}/api/track/add")
+    public ResponseEntity<?> createSong(@PathVariable("token") String token,
+                                        @RequestParam("file") MultipartFile file,
+                                        @RequestParam("album_id") long album_id,
+                                        @RequestParam("track_name") String track_name) throws IOException
 
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long artist_id = Long.parseLong(subject);
+        int numOfSong = songService.findSongInAlbum(album_id).size();
+        InputStream inputStream = file.getInputStream();
+        String path = defaultSongDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
+        OutputStream outputStream = new FileOutputStream(new File(path+"\\"+Integer.toString(numOfSong+1)+".mp3"));
+        byte[] buffer = new byte[1024];
+        int len;
+        while((len = inputStream.read(buffer))>0)
+        {
+            outputStream.write(buffer, 0, len);
+        }
+        outputStream.close();
+        song newSong = new song();
+        newSong.setActive(true);
+        newSong.setTrack_name(track_name);
+        newSong.setTrack_num(numOfSong+1);
+        newSong.setAlbum_id(album_id);
+        newSong = songService.save(newSong);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(newSong);
+    }
 }

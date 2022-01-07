@@ -8,4 +8,5 @@ public interface songmodel
     long getTrack_id();
     String getTrack_name();
     Date getRelease_date();
+    String getArtist_name();
 }

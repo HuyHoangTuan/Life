@@ -59,7 +59,7 @@ public class albumcontroller
         else
             return new ResponseEntity<>(albumService.getAlbum(artist_id, id), HttpStatus.OK);
     }
-    @GetMapping("/{token}/api/{artist_id}/album/create")
+    @PostMapping("/{token}/api/{artist_id}/album/create")
     public ResponseEntity<?> createNewAlbum(@PathVariable("token") String token, @PathVariable("artist_id") long artist_id, @RequestBody newalbummodel albumModel)
     {
         Claims claims = JWT.decodeJWT(token);

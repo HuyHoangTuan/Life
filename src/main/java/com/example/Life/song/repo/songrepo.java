@@ -26,7 +26,7 @@ public interface songrepo extends JpaRepository<song, UUID>
 
     @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
             "al.id as album_id, al.title as title, al.type as type, al.release_date as release_date, " +
-            "a.id as artist_id, a.display_name as artist_name, a.email as email " +
+            "a.id as artist_id, a.display_name as artist_name " +
             "FROM song as s " +
             "INNER JOIN album as al " +
             "ON s.album_id = al.id " +

@@ -32,9 +32,19 @@ public interface albumrepo extends JpaRepository<album, UUID>
             ,nativeQuery = true)
     List<albummodel> findAlbum(@Param("artistId") long artistId);
 
+    @Query( value = "SELECT al.id as album_id, al.title as title, " +
+            "a.id as artist_id, a.display_name as artist_name, " +
+            "al.release_date as release_date, al.type as type " +
+            "FROM album as al " +
+            "INNER JOIN account as a " +
+            "ON al.artist_id = a.id " +
+            "WHERE a.active = true AND al.active = true"
+            ,nativeQuery = true)
+    List<albummodel> findAllAlbum();
+
     @Query( value = "SELECT s.track_num as track_num, s.track_name as track_name, " +
-            "al.release_date as release_date, s.id as track_id," +
-            "a.display_name as artist_name " +
+            "al.id as album_id, al.release_date as release_date, s.id as track_id," +
+            "a.display_name as artist_name, a.id as artist_id " +
             "FROM song as s " +
             "INNER JOIN album as al " +
             "ON al.id = s.album_id " +

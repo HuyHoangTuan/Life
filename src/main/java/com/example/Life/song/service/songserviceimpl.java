@@ -3,15 +3,20 @@ package com.example.Life.song.service;
 import com.example.Life.account.repo.accountrepo;
 import com.example.Life.song.entity.song;
 import com.example.Life.song.model.songmodel;
+import com.example.Life.song.model.songoutputmodel;
 import com.example.Life.song.repo.songrepo;
+import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.AudioFileFormat;
+import java.io.File;
 import java.util.*;
 
 @Service
 public class songserviceimpl implements songservice
 {
+    private final String defaultSongDir = "F:\\Life\\Back-End\\src\\main\\java\\com\\example\\Life\\data\\static" ;
 
     class ContentScore implements Comparable<ContentScore>
     {
@@ -118,12 +123,30 @@ public class songserviceimpl implements songservice
     }
 
     @Override
-    public songmodel getSong(long songId)
+    public songoutputmodel getSong(long song_id)
     {
-        List<songmodel> output = songRepo.findSongById(songId);
+        List<songmodel> output = songRepo.findSongById(song_id);
         if(output.size() == 0) return null;
-
-        return output.get(0);
+        songmodel song = output.get(0);
+        songoutputmodel songOutput = new songoutputmodel();
+        songOutput.setAlbum_id(song.getAlbum_id());
+        songOutput.setArtist_id(song.getArtist_id());
+        songOutput.setArtist_name(song.getArtist_name());
+        songOutput.setTitle(song.getTitle());
+        songOutput.setRelease_date(song.getRelease_date());
+        songOutput.setTrack_name(song.getTrack_name());
+        songOutput.setTrack_num(song.getTrack_num());
+        songOutput.setTrack_id(song.getTrack_id());
+        String path = defaultSongDir + "\\" + Long.toString(songOutput.getArtist_id()) + "\\"
+                + Long.toString(songOutput.getAlbum_id())+"\\"
+                + Long.toString(songOutput.getTrack_num())+".mp3";
+        File file = new File(path);
+        try {
+            AudioFileFormat audioFileFormat = new MpegAudioFileReader().getAudioFileFormat(file);
+            Map properties = audioFileFormat.properties();
+            songOutput.setDuration((Long) (properties.get("duration")) * 0.000001);
+        } catch (Exception e) { }
+        return songOutput;
     }
 
     @Override

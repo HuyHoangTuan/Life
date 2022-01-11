@@ -1,6 +1,7 @@
 package com.example.Life.account.service;
 
 import com.example.Life.account.entity.account;
+import com.example.Life.account.model.artistmodel;
 import com.example.Life.account.repo.accountrepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,22 @@ public class accountserviceimpl implements accountservice
         account newAccount = new account(email, password, name,role);
         accountRepo.save(newAccount);
         return true;
+    }
+
+    @Override
+    public List<?> getAllArtist()
+    {
+        return accountRepo.findAllArtist();
+    }
+
+    @Override
+    public artistmodel findArtist(long artist_id)
+    {
+        List<artistmodel> allArtist = accountRepo.findAllArtist();
+        for(artistmodel current: allArtist)
+        {
+            if(current.getArtist_id() == artist_id) return current;
+        }
+        return null;
     }
 }

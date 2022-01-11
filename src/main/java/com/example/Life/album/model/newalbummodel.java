@@ -9,7 +9,6 @@ import java.sql.Date;
 @Getter
 public class newalbummodel
 {
-    private long artist_id;
     private String title;
     private Date release_date;
     private long type;

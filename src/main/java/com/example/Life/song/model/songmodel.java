@@ -16,5 +16,4 @@ public interface songmodel
     Date getRelease_date();
     long getArtist_id();
     String getArtist_name();
-    String getEmail();
 }

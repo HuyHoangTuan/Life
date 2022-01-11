@@ -1,0 +1,35 @@
+.music-list{
+    width: 100%;
+    font-size: 0;
+    padding: 0 0.5rem;
+    /* text-align: justify; */
+}
+
+.album{
+    display: inline-block;
+    width: calc(250px - 1rem);
+    margin: 0 .5rem;
+}
+
+.album-cover{
+    width: 100%;
+}
+
+.album-info{
+
+}
+.dropbtn{
+    cursor: pointer;
+}
+.dropdown-single{
+    position: relative;
+    display: inline-block;
+  }
+.dropdown-content{
+    display: none;
+    position:absolute;
+    z-index: 1;
+}
+.dropdown-content a{
+    display:block;
+}

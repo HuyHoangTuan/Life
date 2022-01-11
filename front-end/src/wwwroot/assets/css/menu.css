@@ -1,0 +1,103 @@
+ul{
+    list-style: none;
+}
+
+.dropdown-menu{
+    width: auto;
+    display: block;
+    background-color: var(--background-color);
+    box-shadow: var(--shadow);
+    border-radius: var(--radius);
+    height: auto;
+    padding: .5rem 0;
+}
+
+.menu > li, .action-list > li, .dropdown-menu > li, .tab{
+    position: relative;
+    width: max-content;
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 1rem;
+    cursor: pointer;
+    transition: margin .25s, font-size 0.25s;
+}
+
+.action-list > li:hover{
+    margin-bottom: .5rem;
+    font-size: 1.2rem;
+    transition: margin 0.1s, font-size 0.1s;
+}
+
+.menu > li::after, .action-list > li::after, .dropdown-menu > li::after, .tab::after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    background-color: var(--text-color);
+    height: 2px;
+    width: calc(100% - 2rem);
+    transform: scaleX(0) translateY(.75em);
+    transition: transform 0.1s;
+}
+
+.dropdown-menu > li::after{
+    transform-origin: left;
+}
+
+.action-list > li::after{
+    transform-origin: right;
+}
+
+.menu > li:hover::after , .action-list > li:hover::after, .dropdown-menu > li:hover::after, .tab:hover::after{
+    transform: scaleX(1) translateY(.75rem);
+}
+
+.menu{
+    background-color: var(--background-overlay);
+    backdrop-filter: blur(12px);
+}
+
+.menu-button{
+    position: relative;
+}
+
+[class*="menu-button-"]{
+    display: block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.menu-button-show {
+    background: none;
+    line-height: 100%;
+}
+
+.menu-button-hide {
+    background: none;
+}
+
+.menu-button-show > i{
+    display: inline;
+}
+
+.menu-button-show > .menu{
+    position: absolute;
+    top: 100%;
+    height: max-content !important;
+    padding: .5rem 0;
+    transform: scaleY(0);
+    transform-origin: 50% 0;
+    transition: transform .3s cubic-bezier(0,.5,.5,1);
+}
+.menu-button-show:focus{
+    z-index: -10;
+}
+.menu-button-show:focus > .menu{
+    transform: scaleY(1);
+}
+
+
+

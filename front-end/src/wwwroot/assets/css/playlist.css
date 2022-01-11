@@ -1,0 +1,160 @@
+.playlist{
+    width: 100%;
+}
+.playlist *{
+    text-align: left;
+}
+.playlist tr > *{
+    padding: 0 .5rem;
+}
+
+
+
+.playlist th:nth-child(1), .playlist td:nth-child(1), .playlist th:last-child, .playlist td:last-child{
+    text-align: right;
+    width: 2rem;
+}
+.playlist th:nth-child(2), .playlist td:nth-child(2){
+    width: 55%;
+}
+.playlist th:nth-child(4), .playlist td:nth-child(4){
+    text-align: right;
+    width: 6rem;
+}
+
+/*Search-interface----------------------------------------------------------*/
+#search-result{
+}
+
+
+.result{
+    display: inline-block;
+    position: relative;
+    width: calc(50% - 1rem);
+    padding-top: 1rem;
+    margin: 0 0.5rem;
+}
+.result > img{
+    width: 100px;
+    height: 100px;
+}
+.result-info{
+    padding-left: 1rem;
+    line-height: 2rem;
+}
+.result > .material-icons{
+    position: absolute;
+    right:1rem;
+    top: 50%;
+    height: auto !important;
+    transition: translateY(-50%);
+}
+.result > .material-icons:hover{
+    cursor: pointer;
+}
+
+.comment{
+    width: 100%;
+    position: relative;
+    /* background-color: aliceblue; */
+}
+.create-comment{
+    position: relative;
+    top:1.5rem;
+    width:100%;
+    height:100px;
+}
+.create-comment img{
+    position: absolute;
+    left:0;
+    top:0;
+    height: 50px;
+    width:50px;
+    border-radius: 50%;
+}
+.create-comment input{
+    position: absolute;
+    height: fit-content;
+    padding: 0.2rem 5px;
+    border-radius: 10px;
+    width:85%;
+    right:1.2rem;
+    top:8px;
+}
+.comment-list{
+    position: relative;
+    width:100%;
+    /* border:1px solid black; */
+}
+.total-comments{
+    position: relative;
+    padding-top: 2rem;
+    border-bottom: 1px solid grey;
+}
+.comment-list li{
+    position: relative;
+    padding-left: 10px;
+    height: 3rem;
+    /* padding: 1rem 1rem; */
+}
+.comment-list ul li{
+    margin:50px 0;
+}
+.comment-list img{
+    position: absolute;
+    height:50px;
+    width:50px;
+    border-radius:50%;
+}
+.comment-list .comment-name{
+    /* height:fit-content; */
+
+    position: relative;
+    width:fit-content;
+    left:70px;
+    color: grey;
+    cursor: pointer;
+}
+.comment-content{
+    /* height:fit-content; */
+    width: fit-content;
+    position: absolute;
+    left:80px;
+    bottom:0;
+}
+.comment-list .comment-date{
+    position: absolute;
+    font-size: 0.8rem;
+    color: grey;
+    right:10px;
+}
+.comment-list .comment-name::before{
+    /* height:fit-content; */
+    height:1px;
+    content: "";
+    position: absolute;
+    top:100%;
+    right:0;
+    bottom:0;
+    left:0;
+    background-color: grey;
+    transition: background 0.1s, font-size 0.1s;
+    transform: scaleX(0);
+    transform-origin: 0;
+    transition: transform 0.1s; 
+    /* width: fit-content; */
+    /* animation: slide-under 10s ease forwards; */
+}
+.comment-list .comment-name:hover::before{
+    height:1px;
+    transform:scaleX(1) ;
+    /* animation: slide-under 0.1s forwards; */
+}
+/* @keyframes slide-under{
+    from{
+        right:100%;
+    }
+    to{
+        right:calc(100% - $(element).width());
+    }
+} */

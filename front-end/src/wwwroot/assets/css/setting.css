@@ -1,0 +1,116 @@
+#avatar-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+#avatar-container > img {
+  width: 100%;
+  height: 100%;
+}
+#avatar-container > .material-icons {
+  z-index: 10;
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+}
+#username-setting {
+  padding-top: 100px;
+  padding-left: 3rem;
+}
+#username-setting > h2 {
+  font-size: 2.5rem;
+}
+#username-setting > .material-icons {
+  line-height: 2rem;
+  padding-left: 0.5rem;
+}
+#setting-tab {
+  margin-top: 0rem;
+  margin-bottom: 0.5rem;
+}
+#music-setting-content {
+  display: none;
+  z-index: 2;
+}
+#delete-checkbox {
+  position: relative;
+  width: 600px;
+  height: 150px;
+  border: 1px solid black;
+  display: none;
+}
+.dialog-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(128, 128, 128, 0.1);
+  backdrop-filter: blur(15px);
+}
+.dialog {
+  position: absolute;
+  background: var(--background-color);
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 150px;
+  border-radius: var(--radius);
+  padding: 1rem;
+  transform: translate(-50%, -50%);
+}
+.dialog-buttons {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  text-align: center;
+}
+#delete-checkbox h3 {
+  text-align: center;
+}
+.dialog-buttons > button {
+  /* position: absolute; */
+  width: 100px;
+  height: 50px;
+  margin: 0 95px;
+}
+.tab-content {
+  width: 80%;
+  margin: 0 auto;
+  border: 1px solid black;
+}
+#admin-tabs {
+  position: fixed;
+  top:3rem;
+  width: 15%;
+  height: 100%;
+  background-color: blue;
+}
+.database{
+  position: relative;
+  padding-top: 1.5rem;
+  width: 100%;
+  border:1px solid black;
+}
+.database:hover{
+  cursor: pointer;
+}
+#admin-content {
+  margin-left: 15%;
+  padding-top: 3rem;
+  width: 85%;
+  height: 100%;
+}
+
+#admin-content table{
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+#admin-content table th, #admin-content table td{
+  border:1px solid black;
+  padding:8px;
+}
+

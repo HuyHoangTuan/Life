@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Homepage</title>
+    <link rel="stylesheet" href="/assets/mgr/admin.css" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <script src="/assets/mgr/admin.js"></script>
+  </head>
+
+  <body class="general">
+    <header id="admin-header">
+        <div id="admin-logo">
+            <span class="material-icons">
+                headset
+            </span>
+        </div>
+        <div id="admin-account">
+            <div>
+                <span>
+                  Hello,...
+                </span>
+            </div>
+            <button id="admin-account-setting" class="material-icons" onclick="dropdown(this)">
+                more_horiz
+            </button>
+            <ul id="admin-account-setting-content">
+                <li>Log out</li>
+            </ul>
+        </div>
+    </header>
+    <nav id="admin-tabs">
+      <div>
+        <span>
+          Music Management
+        </span>
+      </div>
+      <div>
+        <span>
+          User Management
+        </span>
+      </div>
+      <div>
+        <span>
+          Playlist management
+        </span>
+      </div>
+      <div>
+        <span>
+          Song management
+        </span>
+      </div>
+      <div>
+        <span>
+          Comment management
+        </span>
+      </div>
+  </nav>
+    <main>
+      <%- content %>
+        
+    </main>
+  </body>
+</html>

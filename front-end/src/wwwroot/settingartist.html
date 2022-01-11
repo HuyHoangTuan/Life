@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="assets/css/stylesheet.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
+    <script src="assets/js/script.js"></script>
+</head>
+
+<body class="centered">
+    <div class="vcenter">
+        <div id="avatar-container">
+            <img src="https://upload.wikimedia.org/wikipedia/vi/4/4f/H.E.R._%282017%29_album_cover.jpg">
+            <div class="material-icons">
+                more_horiz
+            </div>
+        </div>
+        <div id="username-container" class="vcenter">
+            <h2>
+                Username
+            </h2>
+            <span class="material-icons">
+                edit
+            </span>
+        </div>
+    </div>
+    <div class="dialog-overlay" id="dialog-container">
+        <div class="dialog">
+            <h3>Do you want to delete this song?</h3>
+            <div class="dialog-buttons">
+                <button>
+                    Yes
+                </button>
+                <button onclick="cancel(this)">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+
+    </div>
+    <div id="setting-tab" class="vcenter">
+        <div class="tab active" id="user-settings" onclick="switchTab(this)">
+            User-setting
+        </div>
+        <div class="tab" id="artist-settings" onclick="switchTab(this)">
+            For Artist
+        </div>
+    </div>
+    <div>
+        <div class="tab-content" id="user-settings-content">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            Day of Birth:
+                        </td>
+                        <td>
+                            <input id="DoB" type="date">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Gender:
+                        </td>
+                        <td>
+                            <input id="gender-male" name="gender" type="radio">
+                            <label for="gender-male">Male</label>
+                            <input id="gender-female" name="gender" type="radio">
+                            <label for="gender-female">Female</label>
+                            <input id="gender-lgbtq" name="gender" type="radio">
+                            <label for="gender-lgbtq">Other</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password:
+                        </td>
+                        <td>
+                            <input id="pass" type="password">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-content" id="artist-settings-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Song's name
+                        </th>
+                        <th>
+                            Album
+                        </th>
+                        <th>
+                            Duration
+                        </th>
+                        <th>
+                            Genre
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Abccba
+                        </td>
+                        <td>
+                            ABACAA
+                        </td>
+                        <td>
+                            --:--
+                        </td>
+                        <td>
+                            hanh dong
+                        </td>
+                        <td>
+                            <button class="material-icons dropbtn" onclick="deleteConfirm(this)">
+                                delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

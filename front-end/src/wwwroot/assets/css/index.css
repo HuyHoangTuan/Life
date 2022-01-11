@@ -1,0 +1,241 @@
+#index-header {
+  /* position: relative;
+  width: 100%;
+  backdrop-filter: blur(50px); */
+  z-index: 10;
+}
+#index-header > span{
+  position: absolute;
+  left:10px;
+  font-size: 3rem;
+  color:var(--main-color);
+}
+#index-header > button{
+  position: absolute;
+  right:10px;
+  top:2px;
+  padding: 10px;
+  height: fit-content !important;
+}
+#index-general {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100px;
+}
+#index-general-introduce {
+  position: relative;
+  z-index: 5;
+  width: 1000px;
+  padding-top:3rem;
+  padding-left:8%;
+}
+#index-general-introduce > br{
+  line-height: 4rem; 
+  width: 1rem;
+}
+#index-general-introduce > span {
+  font-size: 3rem;
+  font-weight: 1000;
+}
+#index-general-introduce > button {
+  margin-top: 50px;
+  width: 170px;
+  padding: 1rem 0;
+  margin-left: 25px;
+}
+#index-general > img {
+  position: absolute;
+  display: block;
+  right: 10%;
+  top: 7vh;
+  max-height: 35rem;
+}
+#index > * {
+  display: block;
+}
+#index-content {
+  display: block;
+  position: relative;
+  padding: 5px;
+}
+#index-function { 
+  display: grid;
+  position: relative;
+  margin-right: 20px;
+  /* --image-height: 35vh; */
+  grid-column-gap: 1rem;
+  scroll-snap-type: mandatory;
+  padding-left: 3rem;
+  grid-template-columns: repeat(auto-fill, 24%);
+  grid-auto-flow: column;
+  grid-auto-columns: 24%;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+#index-function > * {
+  border-radius: 10px;
+  position: relative;
+  height: 600px;
+  width: 100%;
+}
+#index-function > *::after{
+  content:'';
+  display: block;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0) 60%, rgba(252,176,69,1) 80%);
+  height:100%;
+  width: 100%;
+}
+#index-function span{
+  position: absolute;
+  color:var(--text-color);
+  bottom:10px;
+  z-index: 10;
+  left:50%;
+  transform: translateX(-50%);
+}
+#index-function img{
+  position: absolute;
+  height: 90%;
+  width: 60%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#btn-left {
+  position: absolute;
+  z-index: 5;
+  left: 0%;
+  top: 50%;
+  transform: translate(0, -50%);
+  align-items: flex-start;
+  width: 70px;
+  height: 100%;
+  line-height: 100%;
+  text-align: center;
+  background: linear-gradient(-90deg, rgba(255,255,255,0) 0%, var(--background-color) 40%);
+}
+#btn-right {
+  position: absolute;
+  right: 0px;
+  z-index: 5;
+  top: 50%;
+  transform: translate(0, -50%);
+  align-items: flex-end;
+  width: 70px;
+  height: 100%;
+  line-height: 100%;
+  text-align: center;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, var(--background-color) 40%);
+}
+#faq{
+  display: block;
+  margin: 0 auto;
+  width:50%;
+  margin-top: 50px;
+  /* text-align: center; */
+}
+#faq-title{
+  margin-bottom: 50px;
+}
+#faq-title > span{
+  font-size: 3rem;
+  text-transform: uppercase;
+}
+#faq-box{
+  z-index: 10;
+  display: block;
+  width: 100%;
+  margin-bottom: 50px;
+}
+#faq-box > *{
+  display: block;
+}
+.faq-content{
+  display: block;
+  height: 0;
+  opacity: 0;
+  z-index: -10;
+  transition: height .5s .1s, opacity .1s;
+}
+.faq-content > span{
+  text-align: left;
+}
+.faq-show{
+  height:160px;
+  opacity: 1;
+  transition: height .5s, opacity .1s .3s;
+}
+.faq-question{
+  display: inline-block;
+  position:relative;
+  width: 100%;
+  margin-bottom: 30px;
+}
+.faq-question > button{
+  padding: 0 20px 20px 20px;
+  background: none;
+  position: absolute;
+  right: 0px;
+}
+.faq-question > span{
+  font-size: 1.5rem;
+}
+.index-content-btn{
+  color: black;
+}
+.index-content-btn:hover{
+  cursor: pointer;
+  font-size: 2.5rem;
+  transition: font-size .5s;
+}
+#index-function-1{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-2{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-3{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-4{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-5{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-6{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-7{
+  background-color: rgb(117, 92, 207);
+}
+#index-function-8{
+  background-color: rgb(117, 92, 207);
+} 
+.slide-left{
+  animation: moveLeft 1s;
+}
+@keyframes moveLeft{
+  from{
+    opacity: 0;
+    transform: translateX(100px);}
+  to{
+    opacity: 1;
+    transform: translateX(0px);}
+}
+.slide-top{
+  animation: moveTop 1s;
+}
+@keyframes moveTop{
+  from{
+    opacity: 0;
+    padding-top: 100px;
+  }
+  to{
+    opacity: 1;
+    padding-top: 0;
+  }
+}

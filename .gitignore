@@ -18,8 +18,9 @@ target/
 *.iws
 *.iml
 *.ipr
-
+pom.xml
 ### NetBeans ###
+/src/main/resources/
 /nbproject/private/
 /nbbuild/
 /dist/

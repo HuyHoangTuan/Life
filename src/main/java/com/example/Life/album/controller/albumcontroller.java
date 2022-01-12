@@ -89,7 +89,7 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong token\"}");
 
         long artist_id = Long.parseLong(subject);
-        return new ResponseEntity<>(albumService.getAlbum(artist_id, album_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getAlbum(album_id).get(0), HttpStatus.OK);
     }
 
     @PostMapping("/api/albums")
@@ -117,7 +117,7 @@ public class albumcontroller
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body(albumService.getAlbum(artist_id, newAlbum.getId()));
+                .body(albumService.getAlbum(newAlbum.getId()));
     }
 
     @DeleteMapping("/api/albums/{id}")
@@ -160,6 +160,6 @@ public class albumcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(albumService.getAlbum(artist_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getArtistAlbum(artist_id), HttpStatus.OK);
     }
 }

@@ -3,6 +3,7 @@ package com.example.Life.album.service;
 import com.example.Life.album.entity.album;
 import com.example.Life.album.model.albummodel;
 import com.example.Life.album.model.newalbummodel;
+import com.example.Life.album.model.songalbummodel;
 import com.example.Life.album.model.songmodel;
 import com.example.Life.album.repo.albumrepo;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
@@ -30,52 +31,41 @@ public class albumserviceimpl implements albumservice
     private albumrepo albumRepo;
 
     @Override
-    public List<albummodel> getAlbum(long artistId, long albumId)
+    public List<albummodel> getAlbum(long albumId)
     {
-        List<albummodel> listAlbum = albumRepo.findAlbumById(artistId, albumId);
+        List<albummodel> listAlbum = albumRepo.findAlbumById(albumId);
         return listAlbum;
     }
 
     @Override
-    public List<albummodel> getAlbum(long artistId)
+    public List<albummodel> getArtistAlbum(long artistId)
     {
-        List<albummodel> listAlbum = albumRepo.findAlbum(artistId);
+        List<albummodel> listAlbum = albumRepo.findAlbumByArtistId(artistId);
         return listAlbum;
     }
 
-    @Getter
-    @Setter
-    class songoutput
-    {
-        String artist_name;
-        Date release_date;
-        String track_name;
-        long track_id;
-        long artist_id;
-        long track_num;
-        double duration;
-    }
+
     @Override
     public List<?> getSongIn(long album_id){
         List<songmodel> allSong = albumRepo.findSongIn(album_id);
-        List<songoutput> convertedAllSong = new ArrayList<>();
+        List<songalbummodel> convertedAllSong = new ArrayList<>();
         for(songmodel song: allSong)
         {
-            songoutput convertedSong = new songoutput();
-            convertedSong.artist_name = song.getArtist_name();
-            convertedSong.track_name = song.getTrack_name();
-            convertedSong.release_date = song.getRelease_date();
-            convertedSong.track_id = song.getTrack_id();
-            convertedSong.track_num = song.getTrack_num();
-            convertedSong.artist_id = song.getArtist_id();
-            String path = defaultDir+ "\\" + Long.toString(convertedSong.artist_id)
+            songalbummodel convertedSong = new songalbummodel();
+            convertedSong.setArtist_id(song.getArtist_id());
+            convertedSong.setArtist_name( song.getArtist_name() );
+            convertedSong.setTrack_id(song.getTrack_id());
+            convertedSong.setTrack_name(song.getTrack_name());
+            convertedSong.setTrack_num(song.getTrack_num());
+            convertedSong.setRelease_date(song.getRelease_date());
+            String path = defaultDir+ "\\" + Long.toString(convertedSong.getArtist_id())
                     +"\\" + Long.toString(song.getAlbum_id()) +"\\"
-                    +Long.toString(convertedSong.track_num)+".mp3";
+                    +Long.toString(convertedSong.getTrack_num())+".mp3";
             File file = new File(path);
             try {
                 AudioFileFormat audioFileFormat = new MpegAudioFileReader().getAudioFileFormat(file);
                 Map properties = audioFileFormat.properties();
-                convertedSong.duration = (Long) (properties.get("duration")) * 0.000001;
+                convertedSong.setDuration((Long) (properties.get("duration")) * 0.000001);
             } catch (Exception e) { }
             convertedAllSong.add(convertedSong);
         }

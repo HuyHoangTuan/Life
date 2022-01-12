@@ -14,8 +14,8 @@ import java.util.List;
 public interface albumservice
 {
     List<?> getAllAlbum();
-    List<albummodel> getAlbum(long artistId);
-    List<albummodel> getAlbum(long artistId, long albumId);
+    List<albummodel> getArtistAlbum(long artistId);
+    List<albummodel> getAlbum(long albumId);
     List<?> getSongIn(long albumId) throws IOException, UnsupportedAudioFileException;
     album save(long artist_id, String title, Date release_date, long type);
     album delete(long albumId);

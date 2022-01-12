@@ -3,17 +3,16 @@
   "description": "app",
   "main": "app.js",
   "scripts": {
-    "test" : "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon app",
-    "stop" : "taskkill /F /IM node.exe"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app",
+    "stop": "taskkill /F /IM node.exe"
   },
   "author": "fankychop",
   "license": "ISC",
-  "dependencies": 
-  {
+  "dependencies": {
+    "cookie": "^0.4.1",
     "ejs": "^3.1.6",
     "nodemon": "^2.0.15",
-    "ws": "^8.4.0",
-    "cookie": "^0.4.1"
+    "ws": "^8.4.0"
   }
 }

@@ -1,0 +1,40 @@
+<div>
+	<div class="info-album">
+		<!-- <img
+			src="clear"
+		/> -->
+		<h1><%= album.name%></h1>
+		<h3>by <%= album.artist_name%></h3>
+		<span><%= album.release_date.substr(0, 4) %></span>
+		<!-- <h3>The Beatles</h3>
+        <h3>The Beatles</h3>
+        <p>The Beatles</p> -->
+	</div>
+	<ul class="list-nav">
+		<li>Track list</li>
+		<li>Comments</li>
+	</ul>
+</div>
+<div class="content-view">
+	<section>
+		<h2>Track list</h2>
+		<div class="grid-table" id="track-list">
+			<div>
+				<h3>#</h3>
+				<h3>Title</h3>
+				<h3>Duration</h3>
+				<h3>=</h3>
+			</div>
+			<% album.tracks.forEach(track => { %>
+				<div>
+					<span><%= track.track_num %> </span>
+					<span><%- track.title %> </span>
+					<span><%= track.duration %> </span>
+				</div>
+			<% }) %> 
+		</div>
+	</section>
+	<section>
+		<h2>Comments</h2>
+	</section>
+</div>

@@ -1,156 +1,68 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="/assets/css/stylesheet.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap" rel="stylesheet">
-    <script src="/assets/js/script.js"></script>
-    <script src="/assets/js/navigation.js"></script>
-    <script src="/assets/js/misc.js"></script>
-    <script src="/assets/js/player.js"></script>
-    <script src="/assets/js/websocket.js"></script>
-</head>
-
-<body onload="initPage(); initWebSocket();">
-    <header class="bar" id="bar-top">
-        <div id="nav-desktop" class="vcenter">
-            <div id="page-info" class="vcenter">
-                <div id="page-icon" class="clickable" clickable" onclick="changePage('/')">
-                    <span class="material-icons">
-                        headset
-                    </span>
-                </div>
-                <div class="bar-button clickable" onclick="changePage('/library')">
-                    Library
-                </div>
-                <div class="bar-button clickable" onclick="changePage('/artist')">
-                    Favorite Artist
-                </div>
-            </div>
-            <div id="search-bar-container" class="vcenter">
-                <input type="text" id="search-box" placeholder="Search">
-                <button id="search-button" class="material-icons">
-                    search
-                </button>
-            </div>
-            <div id="misc" class="vcenter">
-                <div>
-                    Hello,...
-                </div>
-                <input id="setting-toggle" class="dropdown-toggle" type="checkbox">
-                <label id="setting-button" class="dropdown-button material-icons clickable" for="setting-toggle">
-                    more_horiz
-                </label>
-                <ul class="dropdown-menu">
-                    <li>Settings</li>
-                    <li>Log out</li>
-                </ul>
-            </div>
-        </div>
-        <div id="nav-mobile">
-            <div class="page-logo vcenter">
-                <i class="material-icons-round">headset</i>
-                <span>metaMusic</span>
-            </div>
-            <div class="align-right vcenter">
-                <div class="menu-button">
-                    <button class="menu-button-hide">
-                    </button>
-                    <button class="menu-button-show">
-                        <i class="material-icons-round">search</i>
-                        <ul class="menu">
-                        </ul>
-                    </button>
-                </div>
-                <div class="menu-button">
-                    <button class="menu-button-hide">
-                    </button>
-                    <button class="menu-button-show">
-                        <i class="material-icons-round">menu</i>
-                        <ul class="menu">
-                            <li>Library</li>
-                            <li>Settings</li>
-                            <li>Log Out</li>
-                        </ul>
-                    </button>
-                </div>
-            </div>
-            
-        </div>
-    </header>
-    <main>
-        <div id="view-container">
-            <%- content %>
-        </div>
-    </main>
-    <div id="player-bar" class="vcenter bar">
-        <div id="control-area" class="vcenter">
-            <button id="prev-button" class="material-icons">
-                skip_previous
-            </button>
-            <button id="playpause-button" class="material-icons" onclick="toggleMusic(); this.classList.toggle('play')">
-            </button>
-            <button id="next-button" class="material-icons">
-                skip_next
-            </button>
-            <button id="shuffle-button" class="material-icons">
-                shuffle
-            </button>
-            <button id="replay-button" class="material-icons">
-                replay
-            </button>
-            <div id="vol-control">
-                <button id="vol-button" class="material-icons" onclick="volumnPopup(this)">
-                    volume_up
-                </button>
-                <div id="volumn-content">
-                    <div class="slider vertical-slider" onclick="updateSliderValue(this)" onmousemove="updateSliderValue(this)">
-                        <div class="slider-left-padding"></div>
-                        <div class="slider-right-padding"></div>
-                        <div class="slider-filled"></div>
-                        <div class="slider-thumb"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="progress-bar" class="vcenter">
-            <div class="timestamp">
-                00:00
-            </div>
-            <div id="progress-container">
-                <div id="slider-song" class="slider horizontal-slider" onclick="updateSliderValue(this,seek)" onmousemove="updateSliderValue(this)">
-                    <div class="slider-left-padding"></div>
-                    <div class="slider-right-padding"></div>
-                    <div class="slider-filled"></div>
-                    <div class="slider-thumb"></div>
-                </div>
-            </div>
-            <div class="timestamp">
-                --:--
-            </div>
-        </div>
-        <div id="current-song" class="vcenter">
-            <div id="song-info" class="vcenter">
-                <span>
-                    abccccccc - ABCcccccccc
-                </span>
-                <br>
-                <span>
-                    Album
-                </span>
-            </div>
-            <div id="song-cover">
-                <img src="https://upload.wikimedia.org/wikipedia/vi/4/4f/H.E.R._%282017%29_album_cover.jpg">
-            </div>
-        </div>
-    </div>  
-    <footer>
-
-    </footer>
-</body>
-
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="/assets/css/style.css" />
+		<link rel="stylesheet" href="/assets/css/frame.css" />
+		<script src="/assets/js/component.js"></script>
+		<title></title>
+	</head>
+	<body>
+		<nav class="bar-horizontal">
+			<div>
+				<div class="button-onbar">LIFE</div>
+				<div class="button-onbar">Library</div>
+			</div>
+			<div style="position: relative">
+				<div style="position: absolute; line-height: 1.75rem;" class="icon-font">search</div>
+				<input
+					type="text"
+					id="input-search"
+					placeholder="Search here"
+				/>
+			</div>
+			<div>Drop</div>
+		</nav>
+		<main>
+			<div id="page-view"><%- content %></div>
+			<div></div>
+		</main>
+		<div class="bar-horizontal">
+			<div class="control-area">
+				<button class="icon-font">skip_previous</button>
+				<button class="icon-font">play_arrow</button>
+				<button class="icon-font">skip_next</button>
+				<div></div>
+				<button class="icon-font">volume_up</button>
+				<range-slider></range-slider>
+			</div>
+			<div
+				style="
+					display: grid;
+					grid-template-columns: 5ch 1fr 5ch;
+					column-gap: 1rem;
+					align-items: center;
+				"
+			>
+				<h4 class="number">00:00</h4>
+				<range-slider></range-slider>
+				<h4 class="number">99:99</h4>
+			</div>
+			<div class="control-area" style="flex-direction: row-reverse">
+				<button class="icon-font">queue_music</button>
+				<button class="icon-font">shuffle</button>
+				<button class="icon-font">repeat</button>
+				<div
+					style="
+						width: 100%;
+						padding-bottom: 0.2rem;
+						overflow: hidden;
+					"
+				>
+					<b>Here Comes the Sun</b>
+					<h4>by The Beatles</h4>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

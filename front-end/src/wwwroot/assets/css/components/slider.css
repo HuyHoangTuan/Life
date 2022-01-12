@@ -1,0 +1,59 @@
+.wrapper {
+	position: relative;
+	height: 0.5rem;
+	margin: 0.5rem;
+}
+.wrapper > * {
+	position: absolute;
+	display: block;
+	height: 0.5rem;
+}
+.track,
+input {
+	margin: 0 -0.25rem;
+
+	width: calc(100% + 0.5rem);
+
+	border-radius: 1000rem;
+}
+.track {
+	background: var(--background-light);
+	box-shadow: var(--inset-shadow);
+}
+.filled {
+	margin: 0 -0.25rem;
+
+	padding: 0 0.25rem;
+
+	background: var(--accent);
+	border-radius: 1000rem;
+}
+.thumb {
+	top: 50%;
+
+	height: 0.8rem;
+	aspect-ratio: 1;
+
+	background: var(--main);
+	border-radius: 50%;
+	box-shadow: var(--shadow-small);
+
+	transform: translate(-50%, -50%);
+}
+
+input,
+input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+}
+input {
+	opacity: 0;
+}
+input::-webkit-slider-thumb {
+	height: 0.8rem;
+	width: 0.5rem;
+}
+
+.touch{
+    
+}

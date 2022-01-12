@@ -1,0 +1,147 @@
+section:first-child > h2{
+    padding-top: .3rem;
+}
+
+[class|="info"] > img {
+	width: 40%;
+	aspect-ratio: 1;
+    margin-bottom: .5rem;
+    border-radius: 5px;
+}
+
+.info-artist > img {
+	border-radius: 50%;
+}
+
+.list-nav{
+
+}
+
+[class|=content-list]{
+    display: grid;
+    column-gap: 1rem;
+    row-gap: .75rem;
+    padding: .75rem 0.5rem 1.5rem;
+}
+
+.content-list-large{
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.content-list-large > .content > img{
+    width: 100%;
+    
+}
+
+
+.content-list-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.content-list-duo > .content{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 2ch;
+    height: 4.5rem;
+}
+
+.content-list-duo > .content > img{
+    height: 100%;
+}
+
+.content-list-duo > .content > div{
+    display: inline-block;
+}
+
+/**/
+
+.content-list-small {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.content-list-small > .content{
+    display: flex;
+    padding-bottom: 1rem;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content-list-small > .content > img{
+    width: 100%;
+    padding: 10%;
+}
+
+.content-list-small  > .content > div{
+    display: inline-block;
+}
+
+.content{
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.content:hover{
+    /* background-color: hsl(0, 0%, 16%); */
+    background: linear-gradient(
+			140deg,
+			hsl(0, 0%, 24%, 0.5) 0%,
+			hsl(0, 0%, 16%, 0.9) 100%
+		),
+		linear-gradient(180deg, hsl(0, 0%, 24%, 0.8) 85%, hsl(0, 0%, 12%) 100%);
+    box-shadow: var(--shadow);
+}
+
+.content > img{
+    aspect-ratio: 1;
+    border-radius: 5px;
+}
+
+
+.artist > img{
+    border-radius: 50%;
+}
+
+.artist h3{
+
+    text-align: center;
+}
+
+@media only screen and (max-width: 1280px){
+    .content-list-large{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .content-list-small {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+}
+
+@media only screen and (max-width: 720px){
+    .content-list-large{
+        grid-template-columns: 1fr 1fr;
+    }
+    .content-list-small {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+
+#track-list > div{
+    grid-template-columns: 3ch auto 8ch 3ch;
+}
+
+#track-list > div > *:nth-child(3){
+    text-align: right;
+}
+
+#track-list > div > span:nth-child(3){
+    text-align: right;
+    font-family: "Azeret Mono", "Barlow", "Arial", sans-serif;
+    font-size: 0.96rem;
+    letter-spacing: 0;
+    line-height: 2.25rem
+}
+
+

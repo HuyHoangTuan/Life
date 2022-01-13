@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface songrepo extends JpaRepository<song, UUID>
 {
-    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
+    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, s.active as active, " +
             "al.id as album_id, al.title as title, al.type as type, al.release_date as release_date, " +
             "a.id as artist_id, a.display_name as artist_name, a.email as email " +
             "FROM song as s " +
@@ -25,7 +25,7 @@ public interface songrepo extends JpaRepository<song, UUID>
             "ORDER BY s.id", nativeQuery = true)
     List<songmodel> findAllSongs();
 
-    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
+    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, s.active as active, " +
             "al.id as album_id, al.title as title, al.type as type, al.release_date as release_date, " +
             "a.id as artist_id, a.display_name as artist_name " +
             "FROM song as s " +
@@ -36,7 +36,7 @@ public interface songrepo extends JpaRepository<song, UUID>
             "WHERE s.id = :Id", nativeQuery = true)
     List<songmodel> findSongById(@Param("Id") long Id);
 
-    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
+    @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, s.active as active, " +
             "al.id as album_id, al.title as title, al.type as type, al.release_date as release_date, " +
             "a.id as artist_id, a.display_name as artist_name, a.email as email " +
             "FROM song as s " +

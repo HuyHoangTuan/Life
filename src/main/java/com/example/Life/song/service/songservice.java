@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface songservice
 {
-    ///List<?> findSong(String content);
-
     List<songoutputmodel> getAllSongs();
     songoutputmodel getSong(long song_id);
 
@@ -20,4 +18,5 @@ public interface songservice
 
     List<?> findSongInAlbum(long album_id);
     song save(song newSong);
+    song findSong(long song_id);
 }

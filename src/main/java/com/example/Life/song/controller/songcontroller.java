@@ -38,25 +38,7 @@ public class songcontroller
     /// artistId -> albumId -> trackNum
     @Autowired
     private songservice songService;
-    /*
-    @GetMapping("/{token}/api/track/search")
-    public ResponseEntity<?> searchSong(@PathVariable("token") String token, @RequestParam(name = "c") String content)
-    {
-        Claims claims = JWT.decodeJWT(token);
-        if(claims == null)
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .header("Content-Type","application/json")
-                    .body("{\"status\":\"Wrong token\"}");
-        String subject = claims.getSubject();
-        if(subject == null)
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .header("Content-Type","application/json")
-                    .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(songService.findSong(content), HttpStatus.OK);
-    }
-*/
+
     @GetMapping("/api/tracks/{id}")
     public ResponseEntity<?> getSong(@RequestParam(name = "token") String token, @PathVariable("id") long song_id)
     {
@@ -170,6 +152,7 @@ public class songcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
+
         long artist_id = Long.parseLong(subject);
         int numOfSong = songService.findSongInAlbum(album_id).size();
         InputStream inputStream = file.getInputStream();
@@ -221,5 +204,30 @@ public class songcontroller
                 .header("Content-Type", "application/json")
                 .body(allSongs.subList(fromIndex, toIndex));
 
+    }
+
+    @PutMapping("/api/tracks/{id}")
+    public ResponseEntity<?> editSong(@RequestParam(name = "token") String token, @PathVariable("id") long song_id, @RequestBody Map<String, String> body)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        song currentSong = songService.findSong(song_id);
+        if(body.get("track_name")!=null)
+            currentSong.setTrack_name(body.get("track_name"));
+        songService.save(currentSong);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
     }
 }

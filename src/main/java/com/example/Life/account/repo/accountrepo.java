@@ -18,7 +18,7 @@ public interface accountrepo extends JpaRepository<account, UUID>
             "FROM account as a " +
             "WHERE a.role = 1" , nativeQuery = true)
     List<artistmodel> findAllArtists();
-    @Query(value = "SELECT a.display_name as display_name, a.id as artist_id, a.email as email, a.active as active " +
+    @Query(value = "SELECT a.display_name as display_name, a.id as user_id, a.email as email, a.active as active " +
             "FROM account as a " +
             "WHERE a.role = 2" , nativeQuery = true)
     List<usermodel> findAllUsers();

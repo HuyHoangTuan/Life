@@ -3,11 +3,12 @@ package com.example.Life.account.model;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
-public class accountmodel
+
+public interface accountmodel
 {
-    private String display_name;
-    private String password;
-    private boolean active;
+    long getId();
+    String getDisplay_name();
+    String getEmail();
+    long getRole();
+    boolean getActive();
 }

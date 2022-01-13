@@ -21,8 +21,9 @@ public interface songrepo extends JpaRepository<song, UUID>
             "ON s.album_id = al.id " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE a.role = 1 AND a.active = true AND s.active = true AND al.active = true", nativeQuery = true)
-    List<songmodel> findAllSong();
+            "WHERE true = true " +
+            "ORDER BY s.id", nativeQuery = true)
+    List<songmodel> findAllSongs();
 
     @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
             "al.id as album_id, al.title as title, al.type as type, al.release_date as release_date, " +
@@ -32,7 +33,7 @@ public interface songrepo extends JpaRepository<song, UUID>
             "ON s.album_id = al.id " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE a.role = 1 AND a.active = true AND s.active = true AND al.active = true AND s.id = :Id", nativeQuery = true)
+            "WHERE s.id = :Id", nativeQuery = true)
     List<songmodel> findSongById(@Param("Id") long Id);
 
     @Query(value = "SELECT s.id as track_id , s.track_num as track_num, s.track_name as track_name, " +
@@ -43,14 +44,9 @@ public interface songrepo extends JpaRepository<song, UUID>
             "ON s.album_id = al.id " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE a.role = 1 AND a.active = true AND s.active = true AND al.active = true AND s.album_id = :album_id", nativeQuery = true)
+            "WHERE s.album_id = :album_id " +
+            "ORDER BY s.track_num ", nativeQuery = true)
     List<songmodel> findSongByAlbum(@Param("album_id") long album_id);
     song save(song newSong);
-    @Transactional
-    @Modifying(clearAutomatically = true)
-    @Query(value = "UPDATE song as s " +
-            "SET active = false " +
-            "WHERE s.id = :Id "
-            ,nativeQuery = true)
-    void deleteSongById(@Param("Id") long Id);
+    song findById(long song_id);
 }

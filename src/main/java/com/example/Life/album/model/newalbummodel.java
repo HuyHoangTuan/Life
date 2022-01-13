@@ -12,4 +12,5 @@ public class newalbummodel
     private String title;
     private Date release_date;
     private long type;
+    private boolean active;
 }

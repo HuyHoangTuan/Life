@@ -3,24 +3,21 @@ package com.example.Life.album.service;
 import com.example.Life.LifeApplication;
 import com.example.Life.album.entity.album;
 import com.example.Life.album.model.albummodel;
-import com.example.Life.album.model.newalbummodel;
+
 import com.example.Life.album.model.songalbummodel;
 import com.example.Life.album.model.songmodel;
 import com.example.Life.album.repo.albumrepo;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.UnsupportedAudioFileException;
+
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Paths;
+
 import java.sql.Date;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,20 +30,26 @@ public class albumserviceimpl implements albumservice
     private albumrepo albumRepo;
 
     @Override
-    public List<albummodel> getAlbum(long albumId)
+    public List<albummodel> getAllAlbums()
     {
-        List<albummodel> listAlbum = albumRepo.findAlbumById(albumId);
-        return listAlbum;
+        return albumRepo.findAllAlbum();
     }
-
     @Override
-    public List<albummodel> getArtistAlbum(long artistId)
+    public albummodel getAlbum(long album_id)
     {
-        List<albummodel> listAlbum = albumRepo.findAlbumByArtistId(artistId);
-        return listAlbum;
+        List<albummodel> listAlbums = getAllAlbums();
+        for(albummodel current: listAlbums)
+        {
+            if(current.getAlbum_id() == album_id) return current;
+        }
+        return null;
     }
-
-
+    @Override
+    public List<albummodel> getArtistAlbum(long artist_id)
+    {
+        List<albummodel> listAlbums = albumRepo.findAlbumByArtistId(artist_id);
+        return listAlbums;
+    }
     @Override
     public List<?> getSongIn(long album_id){
         List<songmodel> allSong = albumRepo.findSongIn(album_id);
@@ -73,33 +76,25 @@ public class albumserviceimpl implements albumservice
         }
         return convertedAllSong;
     }
-
     @Override
-    public album save(long artist_id, String title, Date release_date, long type)
+    public album delete(long album_id)
     {
-        album Album = new album();
-        Album.setArtist_id(artist_id);
-        Album.setTitle(title);
-        Album.setRelease_date(release_date);
-        Album.setType(type);
-        Album.setActive(true);
-        return albumRepo.save( Album);
-    }
-
-    @Override
-    public album delete(long albumId)
-    {
-        List<album> listAlbum = albumRepo.findById(albumId);
-        if(listAlbum.size() ==0) return null;
-        album currentAlbum = listAlbum.get(0);
+        album currentAlbum = albumRepo.findById(album_id);
+        if(currentAlbum == null) return null;
         currentAlbum.setActive(false);
         albumRepo.save(currentAlbum);
         return currentAlbum;
     }
-
     @Override
-    public List<?> getAllAlbum()
+    public album findAlbum(long album_id)
     {
-        return albumRepo.findAllAlbum();
+        return albumRepo.findById(album_id);
     }
+    @Override
+    public album save(album currentAlbum)
+    {
+        return albumRepo.save(currentAlbum);
+    }
+
+
 }

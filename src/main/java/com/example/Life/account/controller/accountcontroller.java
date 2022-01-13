@@ -7,13 +7,21 @@ import com.example.Life.account.model.*;
 import com.example.Life.account.service.accountservice;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class accountcontroller
@@ -25,22 +33,73 @@ public class accountcontroller
     public ResponseEntity<?> authenticate(@RequestBody loginmodel loginModel)
     {
         account authentication = accountService.Authenticate(loginModel.getEmail(), loginModel.getPassword());
-        responseloginmodel responseLoginModel;
-        if(authentication == null) return new ResponseEntity<>( responseLoginModel = new responseloginmodel("",""), HttpStatus.OK);
-        responseLoginModel = new responseloginmodel(JWT.createJWT(Long.toString(authentication.getId())), authentication.getDisplay_name());
-        return new ResponseEntity<>(responseLoginModel, HttpStatus.OK);
+        if(authentication == null)
+        {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("\"status\":\"Wrong email or password\"");
+        }
+        Map<String, String> response = new HashMap<>();
+        response.put("token", JWT.createJWT(Long.toString(authentication.getId())));
+        response.put("display_name",authentication.getDisplay_name());
+        return  ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(response);
     }
 
     @PostMapping(path = "/api/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> register(@RequestBody registermodel registerModel)
     {
-        responseregistermodel responseRegisterModel;
         if(!accountService.Register(registerModel.getEmail(),registerModel.getPassword(),registerModel.getDisplay_name(),registerModel.getRole()))
-            return new ResponseEntity<>(responseRegisterModel = new responseregistermodel("Email has been used"), HttpStatus.OK);
-        responseRegisterModel =  new responseregistermodel("Successfully registered for account name: "+registerModel.getDisplay_name()+"!");
-        return new ResponseEntity<>(responseRegisterModel, HttpStatus.OK);
+        {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("\"status\":\"Email has been used\"");
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("\"status\":\"succes\"");
     }
 
+    @PostMapping("/api/users/{id}/avatar")
+    public ResponseEntity uploadCover(@RequestParam(name = "token") String token, @RequestParam("file") MultipartFile file,
+                                      @PathVariable("id") long user_id)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        try
+        {
+            InputStream inputStream = file.getInputStream();
+            BufferedImage bufferedImage = ImageIO.read(inputStream);
+            String path = LifeApplication.defaultDataDir+"\\"+"avatars"+"\\"+Long.toString(user_id)+".jpeg";
+            System.out.println(path);
+            File outputFile = new File(path);
+            ImageIO.write(bufferedImage, "jpeg",outputFile);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"success\"}");
+        } catch (IOException e)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Something gone wrong\"}");
+        }
+
+
+    }
     @GetMapping("/api/artists")
     public ResponseEntity<?> getAllArtists(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
     {
@@ -85,7 +144,7 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        return new ResponseEntity<>(accountService.findArtist(artist_id), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getArtist(artist_id), HttpStatus.OK);
     }
 
     @GetMapping("/api/users")
@@ -133,12 +192,48 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        return new ResponseEntity<>(accountService.findUser(user_id), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getUser(user_id), HttpStatus.OK);
     }
 
-    @PostMapping("/api/me/users/{id}")
+    @GetMapping("/api/users/{id}/avatar")
+    public ResponseEntity<?> getUserCover(@RequestParam(name = "token") String token, @PathVariable("id") long user_id)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String path = LifeApplication.defaultDataDir + "\\" +"avatars"+"\\"+Long.toString(user_id)+".jpeg";
+        File file = new File(path);
+        BufferedImage image = null;
+        try
+        {
+            image = ImageIO.read(file);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "jpeg", byteArrayOutputStream);
+            byte[] bytes = byteArrayOutputStream.toByteArray();
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Content-Type","image/jpeg")
+                    .body(bytes);
+
+        } catch (IOException e)
+        {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"No image found\"}");
+        }
+
+    }
+    @PutMapping("/api/users/{id}")
     public ResponseEntity<?> editUser(
-            @RequestParam(name = "token") String token, @PathVariable("id") long user_id, @RequestBody accountmodel accountModel)
+            @RequestParam(name = "token") String token, @PathVariable("id") long user_id, @RequestBody Map<String, String> body)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -154,15 +249,18 @@ public class accountcontroller
                     .body("{\"status\":\"Wrong token\"}");
 
         account currentAccount = accountService.findAccount(user_id);
-        if(currentAccount == null || currentAccount.getRole()!=LifeApplication.USER)
+        if(currentAccount == null)
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong user_id\"}");
 
-        currentAccount.setActive(accountModel.isActive());
-        currentAccount.setDisplay_name(accountModel.getDisplay_name());
-        currentAccount.setPassword(accountModel.getPassword());
+        if(body.get("active")!=null)
+            currentAccount.setActive(Boolean.parseBoolean(body.get("active")));
+        if(body.get("display_name")!=null)
+            currentAccount.setDisplay_name(body.get("display_name"));
+        if(body.get("password")!=null)
+            currentAccount.setPassword(body.get("password"));
         accountService.save(currentAccount);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
@@ -170,9 +268,9 @@ public class accountcontroller
     }
 
 
-    @PostMapping("/api/me/artists/{id}")
+    @PutMapping("/api/artists/{id}")
     public ResponseEntity<?> editArtist(
-            @RequestParam(name = "token") String token, @PathVariable("id") long artist_id, @RequestBody accountmodel accountModel)
+            @RequestParam(name = "token") String token, @PathVariable("id") long artist_id, @RequestBody Map<String, String> body)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -193,16 +291,17 @@ public class accountcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong artist_id\"}");
-
-        currentAccount.setActive(accountModel.isActive());
-        currentAccount.setDisplay_name(accountModel.getDisplay_name());
-        currentAccount.setPassword(accountModel.getPassword());
+        if(body.get("active")!=null)
+            currentAccount.setActive(Boolean.parseBoolean(body.get("active")));
+        if(body.get("display_name")!=null)
+            currentAccount.setDisplay_name(body.get("display_name"));
+        if(body.get("password")!=null)
+            currentAccount.setPassword(body.get("password"));
         accountService.save(currentAccount);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
     }
-
 
 }
 

@@ -39,7 +39,7 @@ public class songserviceimpl implements songservice
 
     @Autowired
     private accountrepo accountRepo;
-
+    /*
     public ArrayList<ContentScore> search(List<String[]> Data, String[] listWord, Map<String[], Long> map)
     {
         ArrayList<Double> IDF = new ArrayList<>();
@@ -121,7 +121,18 @@ public class songserviceimpl implements songservice
         }
         return output;
     }
-
+*/
+    @Override
+    public List<songoutputmodel> getAllSongs()
+    {
+        List<songmodel> listSongs = songRepo.findAllSongs();
+        List<songoutputmodel> listOutputSongs = new ArrayList<>();
+        for(songmodel current: listSongs)
+        {
+            listOutputSongs.add(getSong(current.getTrack_id()));
+        }
+        return listOutputSongs;
+    }
     @Override
     public songoutputmodel getSong(long song_id)
     {
@@ -150,15 +161,13 @@ public class songserviceimpl implements songservice
     }
 
     @Override
-    public boolean deleteSong(long songId)
+    public song deleteSong(long song_id)
     {
-        List<songmodel> output = songRepo.findSongById(songId);
-        if (output.size() == 0) return false;
-        songmodel currentSong = output.get(0);
-        songRepo.deleteSongById(currentSong.getTrack_id());
-        return true;
-    }
+        song currentSong = songRepo.findById(song_id);
+        currentSong.setActive(false);
+        return songRepo.save(currentSong);
 
+    }
     @Override
     public List<?> findSongInAlbum(long album_id)
     {

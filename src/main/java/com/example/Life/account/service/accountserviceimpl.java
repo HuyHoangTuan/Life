@@ -1,13 +1,13 @@
 package com.example.Life.account.service;
 
+import com.example.Life.LifeApplication;
 import com.example.Life.account.entity.account;
-import com.example.Life.account.model.artistmodel;
-import com.example.Life.account.model.usermodel;
+import com.example.Life.account.model.accountmodel;
 import com.example.Life.account.repo.accountrepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,34 +36,45 @@ public class accountserviceimpl implements accountservice
     }
 
     @Override
-    public List<?> getAllArtists()
+    public List<accountmodel> getAllArtists()
     {
-        return accountRepo.findAllArtists();
-    }
-
-    @Override
-    public List<?> getAllUsers() {
-        return accountRepo.findAllUsers();
-    }
-
-    @Override
-    public artistmodel findArtist(long artist_id)
-    {
-        List<artistmodel> allArtists = accountRepo.findAllArtists();
-        for(artistmodel current: allArtists)
+        List<accountmodel> listAccounts = accountRepo.findAllAccounts();
+        List<accountmodel> listArtists = new ArrayList<>();
+        for(accountmodel current: listAccounts)
         {
-            if(current.getArtist_id() == artist_id) return current;
+            if(current.getRole() == LifeApplication.ARTIST) listArtists.add(current);
+        }
+        return listArtists;
+    }
+    @Override
+    public accountmodel getArtist(long artist_id)
+    {
+        List<accountmodel> allArtists = getAllArtists();
+        for(accountmodel current: allArtists)
+        {
+            if(current.getId() == artist_id) return current;
         }
         return null;
     }
 
     @Override
-    public usermodel findUser(long user_id)
+    public List<accountmodel> getAllUsers()
     {
-        List<usermodel> allUsers = accountRepo.findAllUsers();
-        for( usermodel current: allUsers)
+        List<accountmodel> listAccounts = accountRepo.findAllAccounts();
+        List<accountmodel> listUsers = new ArrayList<>();
+        for(accountmodel current: listAccounts)
         {
-            if(current.getUser_id() == user_id) return current;
+            if( true == true) listUsers.add(current);
+        }
+        return listUsers;
+    }
+    @Override
+    public accountmodel getUser(long user_id)
+    {
+        List<accountmodel> allUsers = getAllUsers();
+        for( accountmodel current: allUsers)
+        {
+            if(current.getId() == user_id) return current;
         }
         return null;
     }

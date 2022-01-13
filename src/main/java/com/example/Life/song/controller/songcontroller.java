@@ -38,7 +38,7 @@ public class songcontroller
     /// artistId -> albumId -> trackNum
     @Autowired
     private songservice songService;
-
+    /*
     @GetMapping("/{token}/api/track/search")
     public ResponseEntity<?> searchSong(@PathVariable("token") String token, @RequestParam(name = "c") String content)
     {
@@ -56,9 +56,9 @@ public class songcontroller
                     .body("{\"status\":\"Wrong token\"}");
         return new ResponseEntity<>(songService.findSong(content), HttpStatus.OK);
     }
-
+*/
     @GetMapping("/api/tracks/{id}")
-    public ResponseEntity<?> getSongDuration(@RequestParam(name = "token") String token, @PathVariable("id") long song_id)
+    public ResponseEntity<?> getSong(@RequestParam(name = "token") String token, @PathVariable("id") long song_id)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -75,8 +75,6 @@ public class songcontroller
         return new ResponseEntity<>(songService.getSong(song_id), HttpStatus.OK);
 
     }
-
-
     @GetMapping("/api/tracks/{id}/audio")
     public ResponseEntity<?> streamingAudio(@RequestParam(name = "token") String token
             ,@PathVariable("id") long song_id) throws IOException
@@ -145,8 +143,8 @@ public class songcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        boolean deleted = songService.deleteSong(song_id);
-        if(deleted == false) return ResponseEntity.status(HttpStatus.OK)
+        song currentSong = songService.deleteSong(song_id);
+        if(currentSong == null) return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"fail\"}");
         return ResponseEntity.status(HttpStatus.OK)
@@ -196,5 +194,32 @@ public class songcontroller
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body(songService.getSong(newSong.getId()));
+    }
+
+    @GetMapping("/api/tracks")
+    public  ResponseEntity<?> getAllSongs(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        List<?> allSongs = songService.getAllSongs();
+        int perPage = 20;
+        int fromIndex = (index-1)*perPage;
+        int toIndex = Math.min(allSongs.size()-1,index*perPage-1);
+        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type", "application/json")
+                .body(allSongs.subList(fromIndex, toIndex));
+
     }
 }

@@ -10,4 +10,5 @@ public interface albummodel
     String getArtist_name();
     Date getRelease_date();
     long getType();
+    boolean getActive();
 }

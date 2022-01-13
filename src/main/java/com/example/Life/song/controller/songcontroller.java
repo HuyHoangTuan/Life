@@ -129,8 +129,8 @@ public class songcontroller
                 .body(data);
     }
 
-    @GetMapping("/{token}/api/track/delete")
-    public ResponseEntity<?> deleteSong(@PathVariable("token") String token, @RequestParam(name = "id") long songId)
+    @DeleteMapping("/api/tracks/{id}")
+    public ResponseEntity<?> deleteSong(@PathVariable("id") long song_id, @RequestParam(name = "token") String token)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -145,12 +145,16 @@ public class songcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        boolean deleted = songService.deleteSong(songId);
-        if(deleted == false) return new ResponseEntity<>("FALSE", HttpStatus.OK);
-        return new ResponseEntity<>("TRUE",HttpStatus.OK);
+        boolean deleted = songService.deleteSong(song_id);
+        if(deleted == false) return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"fail\"}");
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
     }
-    @PostMapping("/{token}/api/track/add")
-    public ResponseEntity<?> createSong(@PathVariable("token") String token,
+    @PostMapping("/api/tracks")
+    public ResponseEntity<?> createSong(@RequestParam(name = "token") String token,
                                         @RequestParam("file") MultipartFile file,
                                         @RequestParam("album_id") long album_id,
                                         @RequestParam("track_name") String track_name) throws IOException
@@ -187,9 +191,10 @@ public class songcontroller
         newSong.setAlbum_id(album_id);
         newSong = songService.save(newSong);
 
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body(newSong);
+                .body(songService.getSong(newSong.getId()));
     }
 }

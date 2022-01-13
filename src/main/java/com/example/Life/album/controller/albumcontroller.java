@@ -24,7 +24,7 @@ public class albumcontroller
     private albumservice albumService;
 
     @GetMapping("/api/albums")
-    public ResponseEntity<?> getALlAlbum(@RequestParam(name ="token") String token, @RequestParam(name ="index") int index)
+    public ResponseEntity<?> getALlAlbums(@RequestParam(name ="token") String token, @RequestParam(name ="index", defaultValue = "1") int index)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -49,7 +49,7 @@ public class albumcontroller
                 .body(allAlbum.subList(fromIndex, toIndex));
     }
     @GetMapping("/api/albums/{id}/tracks")
-    public ResponseEntity<?> getAllTrack(@RequestParam(name ="token") String token, @PathVariable("id") long albumId)
+    public ResponseEntity<?> getAllTracks(@RequestParam(name ="token") String token, @PathVariable("id") long albumId)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -89,7 +89,7 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong token\"}");
 
         long artist_id = Long.parseLong(subject);
-        return new ResponseEntity<>(albumService.getAlbum(artist_id, album_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getAlbum(album_id).get(0), HttpStatus.OK);
     }
 
     @PostMapping("/api/albums")
@@ -117,7 +117,7 @@ public class albumcontroller
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body(albumService.getAlbum(artist_id, newAlbum.getId()));
+                .body(albumService.getAlbum(newAlbum.getId()));
     }
 
     @DeleteMapping("/api/albums/{id}")
@@ -146,7 +146,7 @@ public class albumcontroller
     }
 
     @GetMapping("/api/artists/{id}/albums")
-    public ResponseEntity<?> getAllArtistAlbum(@RequestParam(name = "token") String token, @PathVariable("id") long artist_id)
+    public ResponseEntity<?> getAllArtistAlbums(@RequestParam(name = "token") String token, @PathVariable("id") long artist_id)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -160,6 +160,6 @@ public class albumcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(albumService.getAlbum(artist_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getArtistAlbum(artist_id), HttpStatus.OK);
     }
 }

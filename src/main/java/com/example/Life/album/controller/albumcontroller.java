@@ -1,6 +1,7 @@
 package com.example.Life.album.controller;
 
 import com.example.Life.JWT;
+import com.example.Life.LifeApplication;
 import com.example.Life.album.entity.album;
 import com.example.Life.album.model.albummodel;
 import com.example.Life.album.model.newalbummodel;
@@ -18,8 +19,6 @@ import java.util.List;
 @RestController
 public class albumcontroller
 {
-    private final String defaultDir = "F:\\Life\\Back-End\\src\\main\\java\\com\\example\\Life\\data\\static" ;
-
     @Autowired
     private albumservice albumService;
 
@@ -110,7 +109,7 @@ public class albumcontroller
 
         long artist_id = Long.parseLong(subject);
         album newAlbum = albumService.save(artist_id, albumModel.getTitle(), albumModel.getRelease_date(), albumModel.getType());
-        String path = defaultDir+"\\"+Long.toString(artist_id)+"\\"+Long.toString(newAlbum.getId());
+        String path = LifeApplication.defaultDataDir +"\\"+Long.toString(artist_id)+"\\"+Long.toString(newAlbum.getId());
         File file = new File(path);
         if(!file.exists()) file.mkdirs();
 

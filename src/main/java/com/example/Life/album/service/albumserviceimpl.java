@@ -1,5 +1,6 @@
 package com.example.Life.album.service;
 
+import com.example.Life.LifeApplication;
 import com.example.Life.album.entity.album;
 import com.example.Life.album.model.albummodel;
 import com.example.Life.album.model.newalbummodel;
@@ -16,6 +17,8 @@ import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +28,6 @@ import java.util.Map;
 @Service
 public class albumserviceimpl implements albumservice
 {
-    private final String defaultDir = "F:\\Life\\Back-End\\src\\main\\java\\com\\example\\Life\\data\\static" ;
 
     @Autowired
     private albumrepo albumRepo;
@@ -58,7 +60,7 @@ public class albumserviceimpl implements albumservice
             convertedSong.setTrack_name(song.getTrack_name());
             convertedSong.setTrack_num(song.getTrack_num());
             convertedSong.setRelease_date(song.getRelease_date());
-            String path = defaultDir+ "\\" + Long.toString(convertedSong.getArtist_id())
+            String path = LifeApplication.defaultDataDir+ "\\" + Long.toString(convertedSong.getArtist_id())
                     +"\\" + Long.toString(song.getAlbum_id()) +"\\"
                     +Long.toString(convertedSong.getTrack_num())+".mp3";
             File file = new File(path);

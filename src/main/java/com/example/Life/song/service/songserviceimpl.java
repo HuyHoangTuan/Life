@@ -1,5 +1,6 @@
 package com.example.Life.song.service;
 
+import com.example.Life.LifeApplication;
 import com.example.Life.account.repo.accountrepo;
 import com.example.Life.song.entity.song;
 import com.example.Life.song.model.songmodel;
@@ -16,7 +17,6 @@ import java.util.*;
 @Service
 public class songserviceimpl implements songservice
 {
-    private final String defaultSongDir = "F:\\Life\\Back-End\\src\\main\\java\\com\\example\\Life\\data\\static" ;
 
     class ContentScore implements Comparable<ContentScore>
     {
@@ -137,7 +137,7 @@ public class songserviceimpl implements songservice
         songOutput.setTrack_name(song.getTrack_name());
         songOutput.setTrack_num(song.getTrack_num());
         songOutput.setTrack_id(song.getTrack_id());
-        String path = defaultSongDir + "\\" + Long.toString(songOutput.getArtist_id()) + "\\"
+        String path = LifeApplication.defaultDataDir + "\\" + Long.toString(songOutput.getArtist_id()) + "\\"
                 + Long.toString(songOutput.getAlbum_id())+"\\"
                 + Long.toString(songOutput.getTrack_num())+".mp3";
         File file = new File(path);

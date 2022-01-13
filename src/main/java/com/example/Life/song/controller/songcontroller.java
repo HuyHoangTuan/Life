@@ -1,6 +1,7 @@
 package com.example.Life.song.controller;
 
 import com.example.Life.JWT;
+import com.example.Life.LifeApplication;
 import com.example.Life.song.entity.song;
 import com.example.Life.song.model.songmodel;
 import com.example.Life.song.model.songoutputmodel;
@@ -34,7 +35,6 @@ import java.util.Map;
 public class songcontroller
 {
     private final int BYTE_RANGE = 128;
-    private final String defaultSongDir = "F:\\Life\\Back-End\\src\\main\\java\\com\\example\\Life\\data\\static" ;
     /// artistId -> albumId -> trackNum
     @Autowired
     private songservice songService;
@@ -107,7 +107,7 @@ public class songcontroller
                 +Long.toString(currentSong.getTrack_num())+".mp3";
         long fileSize = 0;
         byte[] data;
-        Path path = Paths.get(defaultSongDir+songPath);
+        Path path = Paths.get(LifeApplication.defaultDataDir+songPath);
         try (InputStream inputStream = (Files.newInputStream(path));
              ByteArrayOutputStream bufferOutputStream = new ByteArrayOutputStream())
         {
@@ -175,7 +175,7 @@ public class songcontroller
         long artist_id = Long.parseLong(subject);
         int numOfSong = songService.findSongInAlbum(album_id).size();
         InputStream inputStream = file.getInputStream();
-        String path = defaultSongDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
+        String path = LifeApplication.defaultDataDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
         OutputStream outputStream = new FileOutputStream(new File(path+"\\"+Integer.toString(numOfSong+1)+".mp3"));
         byte[] buffer = new byte[1024];
         int len;

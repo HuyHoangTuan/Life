@@ -4,11 +4,13 @@ import com.example.Life.test.entity.test;
 import com.example.Life.test.repo.testRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
 
 @SpringBootApplication
+
 public class LifeApplication
 {
 	public static final int ADMIN = 0;

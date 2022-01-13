@@ -9,6 +9,7 @@ import com.example.Life.account.model.responseregistermodel;
 import com.example.Life.account.service.accountservice;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

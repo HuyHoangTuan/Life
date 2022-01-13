@@ -3,12 +3,14 @@ package com.example.Life.account.service;
 
 import com.example.Life.account.entity.account;
 import com.example.Life.account.model.artistmodel;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
 
 @Service
+
 public interface accountservice
 {
     public account Authenticate(String email, String password);

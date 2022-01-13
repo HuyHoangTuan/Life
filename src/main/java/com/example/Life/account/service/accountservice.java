@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Service
+
 public interface accountservice
 {
     account Authenticate(String email, String password);

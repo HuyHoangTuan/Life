@@ -16,11 +16,11 @@ public interface accountrepo extends JpaRepository<account, UUID>
     @Query(value = "SELECT a.display_name as display_name, " +
             "a.id as id, " +
             "a.email as email, " +
-            "a.active as active " +
+            "a.active as active, " +
             "a.role as role " +
             "FROM account as a " +
             "WHERE true = true " +
-            "ODER BY a.id" , nativeQuery = true)
+            "ORDER BY a.id" , nativeQuery = true)
     List<accountmodel> findAllAccounts();
     /*
     @Query(value = "SELECT a.display_name as display_name, a.id as user_id, a.email as email, a.active as active, a.role as role " +

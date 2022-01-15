@@ -269,7 +269,7 @@ public class albumcontroller
 
     @PutMapping("/api/albums/{id}")
     public ResponseEntity<?> editAlbum(@RequestParam(name = "token") String token, @PathVariable("id") long album_id,
-                                       @RequestBody Map<String, String> body)
+                                       @RequestBody(required = false) Map<String, String> body)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -292,7 +292,13 @@ public class albumcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong album_id\"}");
         }
-
+        if(body == null)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"No body found\"}");
+        }
         if(body.get("active")!=null)
             currentAlbum.setActive(Boolean.parseBoolean(body.get("active")));
         if(body.get("title")!=null)

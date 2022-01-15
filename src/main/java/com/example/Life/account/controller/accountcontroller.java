@@ -42,6 +42,7 @@ public class accountcontroller
         Map<String, String> response = new HashMap<>();
         response.put("token", JWT.createJWT(Long.toString(authentication.getId())));
         response.put("display_name",authentication.getDisplay_name());
+        response.put("role",Long.toString(authentication.getRole()));
         return  ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body(response);

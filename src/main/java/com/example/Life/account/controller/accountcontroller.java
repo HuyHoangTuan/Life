@@ -58,11 +58,11 @@ public class accountcontroller
         }
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body("\"status\":\"succes\"");
+                .body("\"status\":\"success\"");
     }
 
     @PostMapping("/api/users/{id}/avatar")
-    public ResponseEntity uploadCover(@RequestParam(name = "token") String token, @RequestParam("file") MultipartFile file,
+    public ResponseEntity<?> uploadCover(@RequestParam(name = "token") String token, @RequestParam("file") MultipartFile file,
                                       @PathVariable("id") long user_id)
     {
         Claims claims = JWT.decodeJWT(token);
@@ -82,7 +82,7 @@ public class accountcontroller
         {
             InputStream inputStream = file.getInputStream();
             BufferedImage bufferedImage = ImageIO.read(inputStream);
-            String path = LifeApplication.defaultDataDir+"\\"+"avatars"+"\\"+Long.toString(user_id)+".jpeg";
+            String path = LifeApplication.defaultDataDir+"\\"+"avatars"+"\\"+user_id+".jpeg";
             System.out.println(path);
             File outputFile = new File(path);
             ImageIO.write(bufferedImage, "jpeg",outputFile);
@@ -210,9 +210,9 @@ public class accountcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        String path = LifeApplication.defaultDataDir + "\\" +"avatars"+"\\"+Long.toString(user_id)+".jpeg";
+        String path = LifeApplication.defaultDataDir + "\\" +"avatars"+"\\"+user_id+".jpeg";
         File file = new File(path);
-        BufferedImage image = null;
+        BufferedImage image ;
         try
         {
             image = ImageIO.read(file);

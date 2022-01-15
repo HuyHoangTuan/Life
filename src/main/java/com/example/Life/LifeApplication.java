@@ -14,7 +14,7 @@ import java.util.List;
 
 public class LifeApplication
 {
-	public static final String defaultDataDir = FileSystems.getDefault().getPath("").toAbsolutePath()+
+public static final String defaultDataDir = FileSystems.getDefault().getPath("").toAbsolutePath()+
 			"\\src\\main\\java\\com\\example\\Life\\data\\static";
 	public static final int ADMIN = 0;
 	public static final int ARTIST = 1;

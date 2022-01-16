@@ -108,7 +108,7 @@ public class songcontroller
                 .header("Content-Type","audio/mpeg")
                 .header("Accept-Ranges","bytes")
                 .header("Content-Length", String.valueOf(fileSize))
-                .body(data);
+                .body("{\"status\":\"success\"}");
     }
 
     @DeleteMapping("/api/tracks/{id}")

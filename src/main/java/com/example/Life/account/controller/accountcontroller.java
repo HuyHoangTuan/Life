@@ -6,6 +6,7 @@ import com.example.Life.account.entity.account;
 import com.example.Life.account.model.*;
 import com.example.Life.account.service.accountservice;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -304,6 +305,50 @@ public class accountcontroller
                 .body("{\"status\":\"success\"}");
     }
 
+    @PostMapping("/api/users/{id}")
+    public ResponseEntity<?> createAccount(@RequestParam(name = "token") String token,
+                                           @PathVariable("id") long account_id,
+                                           @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+" "+"/api/users/"+account_id);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long id = Long.parseLong(subject);
+        if(id!=LifeApplication.ADMIN)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        }
+
+        account newAccount = new account();
+        newAccount.setActive(true);
+        if(body.get("active") !=null)
+            newAccount.setActive(Boolean.parseBoolean(body.get("active")));
+        if(body.get("display_name")!=null)
+            newAccount.setDisplay_name(body.get("display_name"));
+        if(body.get("email")!=null)
+            newAccount.setEmail(body.get("email"));
+        if(body.get("password")!=null)
+            newAccount.setPassword(body.get("password"));
+        if(body.get("role")!=null)
+            newAccount.setRole(Integer.parseInt(body.get("role")));
+        accountService.save(newAccount);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
 }
 
 

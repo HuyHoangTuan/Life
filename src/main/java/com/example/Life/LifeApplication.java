@@ -20,7 +20,10 @@ public static final String defaultDataDir = FileSystems.getDefault().getPath("")
 	public static final int ADMIN = 0;
 	public static final int ARTIST = 1;
 	public static final int USER = 2;
-
+	public static final String POST = "[POST]";
+	public static final String GET = "[GET]";
+	public static final String PUT = "[PUT]";
+	public static final String DELETE = "[DELETE]";
 	public static void main(String[] args)
 	{
 		SpringApplication.run(LifeApplication.class, args);

@@ -71,7 +71,6 @@ public class searchserviceimpl implements searchservice
                     S = S + (0.5 + 0.5 * FTD.get(row*listContents.size()+col)/(double) MAX)*IDF.get(row);
             }
 
-            ///System.out.println(map.get(sen)+", "+sen);
             col++;
             score.add(new ContentScore(map.get(sen), S));
         }
@@ -168,7 +167,7 @@ public class searchserviceimpl implements searchservice
         for(accountmodel currentAccount : listAlbums)
         {
             if(currentAccount.getActive() == false || currentAccount.getRole()!=LifeApplication.ARTIST) continue;
-            String s = currentAccount.getDisplay_name();
+            String s = currentAccount.getDisplay_name().toLowerCase();
             listContents.add(s.split(" "));
             map.put(listContents.get(listContents.size()-1), currentAccount.getId());
         }

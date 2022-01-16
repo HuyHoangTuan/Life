@@ -33,6 +33,7 @@ public class accountcontroller
     @PostMapping(path = "/api/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> authenticate(@RequestBody loginmodel loginModel)
     {
+        System.out.println(LifeApplication.POST+" /api/authenticate " + loginModel.toString());
         account authentication = accountService.Authenticate(loginModel.getEmail(), loginModel.getPassword());
         if(authentication == null)
         {
@@ -52,6 +53,7 @@ public class accountcontroller
     @PostMapping(path = "/api/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> register(@RequestBody registermodel registerModel)
     {
+        System.out.println(LifeApplication.POST+" /api/register "+ registerModel.toString());
         if(!accountService.Register(registerModel.getEmail(),registerModel.getPassword(),registerModel.getDisplay_name(),registerModel.getRole()))
         {
             return ResponseEntity.status(HttpStatus.OK)
@@ -67,6 +69,7 @@ public class accountcontroller
     public ResponseEntity<?> uploadCover(@RequestParam(name = "token") String token, @RequestParam("file") MultipartFile file,
                                       @PathVariable("id") long user_id)
     {
+        System.out.println(LifeApplication.POST+" /api/users/"+user_id+"/avatar " +token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -105,6 +108,7 @@ public class accountcontroller
     @GetMapping("/api/artists")
     public ResponseEntity<?> getAllArtists(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET + " /api/artist " + token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -133,6 +137,7 @@ public class accountcontroller
     @GetMapping("/api/artists/{id}")
     public ResponseEntity<?> getArtist(@RequestParam(name = "token") String token, @PathVariable("id") long artist_id)
     {
+        System.out.println(LifeApplication.GET+" /api/artists/"+artist_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -152,6 +157,7 @@ public class accountcontroller
     @GetMapping("/api/users")
     public ResponseEntity<?> getAllUsers(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+" /api/users "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -181,6 +187,7 @@ public class accountcontroller
     @GetMapping("/api/users/{id}")
     public ResponseEntity<?> getUser(@RequestParam(name = "token") String token, @PathVariable("id") long user_id)
     {
+        System.out.println(LifeApplication.GET+" /api/users/"+user_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -200,6 +207,7 @@ public class accountcontroller
     @GetMapping("/api/users/{id}/avatar")
     public ResponseEntity<?> getUserCover(@RequestParam(name = "token") String token, @PathVariable("id") long user_id)
     {
+        System.out.println(LifeApplication.GET + "/api/users/"+user_id+"/avatar "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -237,6 +245,7 @@ public class accountcontroller
     public ResponseEntity<?> editUser(
             @RequestParam(name = "token") String token, @PathVariable("id") long user_id, @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.PUT+"/api/users/"+user_id+" "+body.toString());
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -274,6 +283,7 @@ public class accountcontroller
     public ResponseEntity<?> editArtist(
             @RequestParam(name = "token") String token, @PathVariable("id") long artist_id, @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.PUT+" /api/artists/"+artist_id+" "+body.toString());
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -310,7 +320,7 @@ public class accountcontroller
                                            @PathVariable("id") long account_id,
                                            @RequestBody Map<String, String> body)
     {
-        System.out.println(LifeApplication.POST+" "+"/api/users/"+account_id);
+        System.out.println(LifeApplication.POST+" "+"/api/users/"+account_id + " "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

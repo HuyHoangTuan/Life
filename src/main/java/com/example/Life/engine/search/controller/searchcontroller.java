@@ -1,6 +1,7 @@
 package com.example.Life.engine.search.controller;
 
 import com.example.Life.JWT;
+import com.example.Life.LifeApplication;
 import com.example.Life.engine.search.service.searchservice;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class searchcontroller
     @GetMapping("/api/search/tracks")
     public ResponseEntity<?> searchTrack(@RequestParam(name = "token") String token, @RequestParam(name = "content") String content, @RequestParam(name = "index",defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+" /api/search/tracks "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -37,6 +39,7 @@ public class searchcontroller
     @GetMapping("/api/search/albums")
     public ResponseEntity<?> searchAlbum(@RequestParam(name = "token") String token, @RequestParam(name = "content") String content, @RequestParam(name = "index",defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+" /api/search/albums "+ token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -55,6 +58,7 @@ public class searchcontroller
     @GetMapping("/api/search/artists")
     public ResponseEntity<?> searchArtist(@RequestParam(name = "token") String token, @RequestParam(name = "content") String content, @RequestParam(name = "index",defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+" /api/search/artists "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

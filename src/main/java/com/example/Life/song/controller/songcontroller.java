@@ -42,6 +42,7 @@ public class songcontroller
     @GetMapping("/api/tracks/{id}")
     public ResponseEntity<?> getSong(@RequestParam(name = "token") String token, @PathVariable("id") long song_id)
     {
+        System.out.println(LifeApplication.GET + " /api/tracks/"+song_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -61,6 +62,7 @@ public class songcontroller
     public ResponseEntity<?> streamingAudio(@RequestParam(name = "token") String token
             ,@PathVariable("id") long song_id) throws IOException
     {
+        System.out.println(LifeApplication.GET+ " /api/tracks/"+song_id+"/audio "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -112,6 +114,7 @@ public class songcontroller
     @DeleteMapping("/api/tracks/{id}")
     public ResponseEntity<?> deleteSong(@PathVariable("id") long song_id, @RequestParam(name = "token") String token)
     {
+        System.out.println(LifeApplication.DELETE+" /api/tracks/"+song_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -140,6 +143,7 @@ public class songcontroller
                                         @RequestParam("track_name") String track_name) throws IOException
 
     {
+        System.out.println(LifeApplication.POST+" /api/tracks "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -182,6 +186,7 @@ public class songcontroller
     @GetMapping("/api/tracks")
     public  ResponseEntity<?> getAllSongs(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+" /api/tracks "+ token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -209,6 +214,7 @@ public class songcontroller
     @PutMapping("/api/tracks/{id}")
     public ResponseEntity<?> editSong(@RequestParam(name = "token") String token, @PathVariable("id") long song_id, @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.PUT + " /api/tracks/"+song_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

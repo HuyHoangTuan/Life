@@ -1,6 +1,7 @@
 package com.example.Life.playlist.controller;
 
 import com.example.Life.JWT;
+import com.example.Life.LifeApplication;
 import com.example.Life.playlist.entity.playlist;
 import com.example.Life.playlist.entity.playlist_song;
 import com.example.Life.playlist.model.playlistmodel;
@@ -27,6 +28,7 @@ public class playlistcontroller
     public ResponseEntity<?> getAllPlaylists(@RequestParam(name = "token") String token,
                                              @RequestParam(name = "index", defaultValue = "1", required = false) int index)
     {
+        System.out.println(LifeApplication.GET+ " /api/playlists "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -53,6 +55,7 @@ public class playlistcontroller
                                                     @RequestParam(name = "index", defaultValue = "1",required = false) int index,
                                                     @PathVariable("id") long user_id)
     {
+        System.out.println(LifeApplication.GET + " /api/users/"+user_id+"/playlists " + token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -81,6 +84,7 @@ public class playlistcontroller
                                                  @PathVariable("id") long user_id,
                                                  @PathVariable("playlist_id") long playlist_id)
     {
+        System.out.println(LifeApplication.GET + " /api/users/"+user_id+"/playlists/"+playlist_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -102,6 +106,7 @@ public class playlistcontroller
                                                 @PathVariable("id") long user_id,
                                                 @PathVariable("playlist_id") long playlist_id)
     {
+        System.out.println(LifeApplication.GET + " /api/users/"+user_id+"/playlists/"+playlist_id+"/tracks "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -127,6 +132,7 @@ public class playlistcontroller
                                             @PathVariable("id") long user_id,
                                             @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.POST+" /api/users/"+user_id+"/playlists "+ body.toString());
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -154,6 +160,7 @@ public class playlistcontroller
                                          @PathVariable("playlist_id") long playlist_id,
                                          @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.PUT+ "/api/users/"+user_id+"/playlists/"+playlist_id+" "+body.toString());
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -178,6 +185,7 @@ public class playlistcontroller
                                             @PathVariable("id") long user_id,
                                             @PathVariable("play_list") long playlist_id)
     {
+        System.out.println(LifeApplication.DELETE+"/api/users/"+user_id+"/playlists/"+playlist_id + token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -236,6 +244,7 @@ public class playlistcontroller
                                               @PathVariable("playlist_id") long playlist_id,
                                               @PathVariable("track_id") long track_id)
     {
+        System.out.println(LifeApplication.DELETE+"/api/users/"+user_id+"/playlists/"+playlist_id+"/tracks/"+track_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

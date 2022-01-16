@@ -38,6 +38,7 @@ public class albumcontroller
     @GetMapping("/api/albums")
     public ResponseEntity<?> getALlAlbums(@RequestParam(name ="token") String token, @RequestParam(name ="index", defaultValue = "1") int index)
     {
+        System.out.println(LifeApplication.GET+ " /api/albums "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -64,6 +65,7 @@ public class albumcontroller
     @GetMapping("/api/albums/{id}/tracks")
     public ResponseEntity<?> getAllTracks(@RequestParam(name ="token") String token, @PathVariable("id") long albumId)
     {
+        System.out.println(LifeApplication.GET+" /api/albums/"+albumId+"/tracks "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -89,6 +91,7 @@ public class albumcontroller
     @GetMapping("/api/albums/{id}")
     public ResponseEntity<?> getAlbum(@RequestParam(name = "token") String token,@PathVariable("id") long album_id)
     {
+        System.out.println(LifeApplication.GET+" /api/albums/"+album_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -109,6 +112,7 @@ public class albumcontroller
     @PostMapping("/api/albums")
     public ResponseEntity<?> createNewAlbum(@RequestParam(name = "token") String token, @RequestBody Map<String, String> body)
     {
+        System.out.println(LifeApplication.POST+ " /api/albums " +body.toString() );
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -129,6 +133,7 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong token\"}");
         }
         album newAlbum = new album();
+        newAlbum.setActive(true);
         if(body.get("type")!=null)
             newAlbum.setType(Long.parseLong(body.get("type")));
         if(body.get("active")!=null)
@@ -154,6 +159,7 @@ public class albumcontroller
     @DeleteMapping("/api/albums/{id}")
     public ResponseEntity<?> deleteCurrentAlbum(@RequestParam(name = "token") String token, @PathVariable("id") long album_id)
     {
+        System.out.println(LifeApplication.DELETE+" /api/albums/"+album_id+ " "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -179,6 +185,7 @@ public class albumcontroller
     @GetMapping("/api/artists/{id}/albums")
     public ResponseEntity<?> getAllArtistAlbums(@RequestParam(name = "token") String token, @PathVariable("id") long artist_id)
     {
+        System.out.println(LifeApplication.GET+ " /api/artists/"+artist_id+"/albums "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -197,6 +204,7 @@ public class albumcontroller
     @GetMapping("/api/albums/{id}/cover")
     public ResponseEntity<?> getAlbumCover(@RequestParam(name = "token") String token, @PathVariable("id") long album_id)
     {
+        System.out.println(LifeApplication.GET+" /api/albums/"+album_id+"/cover "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -243,6 +251,7 @@ public class albumcontroller
     public ResponseEntity<?> uploadCover(@RequestParam(name = "token") String token, @PathVariable("id") long album_id,
                                          @RequestParam("file") MultipartFile file)
     {
+        System.out.println(LifeApplication.POST+ " /api/albums/"+album_id+"/cover ");
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -286,6 +295,7 @@ public class albumcontroller
     public ResponseEntity<?> editAlbum(@RequestParam(name = "token") String token, @PathVariable("id") long album_id,
                                        @RequestBody(required = false) Map<String, String> body)
     {
+        System.out.println(LifeApplication.PUT+" /api/albums/"+album_id+" "+body.toString());
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -320,6 +330,8 @@ public class albumcontroller
             currentAlbum.setTitle(body.get("title"));
         if(body.get("type")!=null)
             currentAlbum.setType(Long.parseLong(body.get("type")));
+        if(body.get("arist_id")!=null)
+            currentAlbum.setArtist_id(Long.parseLong(body.get("artist_id")));
         albumService.save(currentAlbum);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")

@@ -20,7 +20,7 @@ public class playlist
     private long creator_id;
 
     @Column(name = "active")
-    private long active;
+    private boolean active;
 
     @Column(name = "title")
     private String title;

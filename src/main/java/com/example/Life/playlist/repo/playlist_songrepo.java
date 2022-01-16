@@ -1,6 +1,7 @@
 package com.example.Life.playlist.repo;
 
 import com.example.Life.playlist.entity.playlist_song;
+import com.example.Life.playlist.model.playlist_songmodel;
 import com.example.Life.playlist.model.songmodel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,6 +13,13 @@ import java.util.UUID;
 public interface playlist_songrepo extends JpaRepository<playlist_song, UUID>
 {
     playlist_song save(playlist_song ps);
+    playlist_song findById(long ps);
+    @Query(value = "SELECT pls.id as id " +
+            "FROM playlist_song as pls " +
+            "WHERE pls.playlist_id = :playlist_id AND pls.song_id = :song_id " +
+            "ORDER BY pls.id ",
+            nativeQuery = true)
+    List<playlist_songmodel> findPlaylistSong(@Param("playlist_id") long playlist_id,@Param("song_id") long song_id);
 
     @Query(value = "SELECT pls.active as active, pls.playlist_id as playlist_id, " +
             "pls.added_date as added_date, " +

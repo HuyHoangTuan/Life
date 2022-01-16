@@ -308,6 +308,6 @@ public class albumcontroller
         albumService.save(currentAlbum);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body("{\"status\":\"succes\"}");
+                .body("{\"status\":\"success\"}");
     }
 }

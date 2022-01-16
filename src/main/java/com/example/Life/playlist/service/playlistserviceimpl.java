@@ -1,6 +1,8 @@
 package com.example.Life.playlist.service;
 
 import com.example.Life.LifeApplication;
+import com.example.Life.playlist.entity.playlist;
+import com.example.Life.playlist.entity.playlist_song;
 import com.example.Life.playlist.model.playlistmodel;
 import com.example.Life.playlist.model.songmodel;
 import com.example.Life.playlist.model.songoutputmodel;
@@ -72,5 +74,37 @@ public class playlistserviceimpl implements playlistservice
             output.add(out);
         }
         return output;
+    }
+
+    @Override
+    public List<playlistmodel> getAllPlayLists()
+    {
+        return playlistRepo.findAllPlaylists();
+    }
+
+    @Override
+    public playlist save(playlist newPlaylist)
+    {
+        return playlistRepo.save(newPlaylist);
+    }
+
+    @Override
+    public playlist_song save(playlist_song pls)
+    {
+        return playlist_songRepo.save(pls);
+    }
+
+    @Override
+    public playlist getPlaylist(long playlist_id)
+    {
+        return playlistRepo.findById(playlist_id);
+    }
+
+    @Override
+    public playlist_song getPlaylistSong(long playlist_song_id,long song_id)
+    {
+        if (playlist_songRepo.findPlaylistSong(playlist_song_id,song_id).size()==0) return null;
+        long id = playlist_songRepo.findPlaylistSong(playlist_song_id,song_id).get(0).getId();
+        return playlist_songRepo.findById(id);
     }
 }

@@ -23,4 +23,14 @@ public interface playlistrepo extends JpaRepository<playlist, UUID>
             "ORDER BY pl.id ",
             nativeQuery = true)
     List<playlistmodel> findAllPlaylistsOfUser(@Param("user_id") long user_id);
+
+    @Query(value = "SELECT pl.active as active, pl.creator_id as creator_id, a.display_name as creator_name, pl.title as title," +
+            "pl.id as id " +
+            "FROM playlist as pl " +
+            "INNER JOIN account as a " +
+            "ON a.id = pl.creator_id " +
+            "WHERE true = true " +
+            "ORDER BY pl.id ",
+            nativeQuery = true)
+    List<playlistmodel> findAllPlaylists();
 }

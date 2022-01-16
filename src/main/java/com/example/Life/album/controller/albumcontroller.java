@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -106,7 +107,7 @@ public class albumcontroller
     }
 
     @PostMapping("/api/albums")
-    public ResponseEntity<?> createNewAlbum(@RequestParam(name = "token") String token, @RequestBody newalbummodel albumModel)
+    public ResponseEntity<?> createNewAlbum(@RequestParam(name = "token") String token, @RequestBody Map<String, String> body)
     {
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
@@ -120,17 +121,27 @@ public class albumcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-
-        long artist_id = Long.parseLong(subject);
+        if(body.get("artist_id")==null)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        }
         album newAlbum = new album();
-        newAlbum.setType(albumModel.getType());
-        newAlbum.setActive(true);
-        newAlbum.setTitle(albumModel.getTitle());
-        newAlbum.setArtist_id(artist_id);
-        newAlbum.setRelease_date(albumModel.getRelease_date());
+        if(body.get("type")!=null)
+            newAlbum.setType(Long.parseLong(body.get("type")));
+        if(body.get("active")!=null)
+            newAlbum.setActive(Boolean.parseBoolean(body.get("active")));
+        if(body.get("title")!=null)
+            newAlbum.setTitle(body.get("title"));
+
+        newAlbum.setArtist_id(Long.parseLong(body.get("artist_id")));
+        if(body.get("release_date")!=null)
+            newAlbum.setRelease_date(Date.valueOf(body.get("release_date")));
         albumService.save(newAlbum);
 
-        String path = LifeApplication.defaultDataDir +"\\"+Long.toString(artist_id)+"\\"+Long.toString(newAlbum.getId());
+        String path = LifeApplication.defaultDataDir +"\\"+body.get("artist_id")+"\\"+Long.toString(newAlbum.getId());
         File file = new File(path);
         if(!file.exists()) file.mkdirs();
 

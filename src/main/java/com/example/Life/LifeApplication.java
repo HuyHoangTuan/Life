@@ -16,6 +16,7 @@ public class LifeApplication
 {
 public static final String defaultDataDir = FileSystems.getDefault().getPath("").toAbsolutePath()+
 			"\\src\\main\\java\\com\\example\\Life\\data\\static";
+
 	public static final int ADMIN = 0;
 	public static final int ARTIST = 1;
 	public static final int USER = 2;

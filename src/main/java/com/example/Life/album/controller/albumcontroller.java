@@ -208,7 +208,7 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong album_id\"}");
         }
 
-        String path = LifeApplication.defaultDataDir+"\\"+currentAlbum.getArtist_id() +"\\"+currentAlbum.getAlbum_id()+"\\"+"cover.jpeg";
+        String path = LifeApplication.defaultDataDir+"\\"+"cover"+"\\"+currentAlbum.getAlbum_id()+"\\"+"cover.jpeg";
         File file = new File(path);
         BufferedImage image = null;
         try
@@ -251,8 +251,12 @@ public class albumcontroller
 
             InputStream inputStream = file.getInputStream();
             BufferedImage bufferedImage = ImageIO.read(inputStream);
-            String path = LifeApplication.defaultDataDir+"\\"+Long.toString(currentAlbum.getArtist_id())+"\\"+Long.toString(currentAlbum.getAlbum_id())+"\\"+"cover.jpeg";
+            String path = LifeApplication.defaultDataDir+"\\"+"cover" +"\\"+currentAlbum.getAlbum_id();
             File outputFile = new File(path);
+            if(!outputFile.exists()) outputFile.mkdirs();
+
+            path = LifeApplication.defaultDataDir+"\\"+"cover"+"\\"+currentAlbum.getAlbum_id()+"\\"+"cover.jpeg";
+            outputFile = new File(path);
             ImageIO.write(bufferedImage, "jpeg",outputFile);
             return ResponseEntity
                     .status(HttpStatus.OK)

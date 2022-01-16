@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -230,7 +231,7 @@ public class playlistcontroller
         try
         {
             if(body.get("added_date")!=null)
-                newPlaylist_song.setAdded_date(Date.valueOf(body.get("added_date")));
+                newPlaylist_song.setAdded_date(Date.valueOf(LocalDate.parse(body.get("added_date"))));
         } catch (Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

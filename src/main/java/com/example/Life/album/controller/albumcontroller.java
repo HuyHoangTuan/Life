@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -142,8 +143,10 @@ public class albumcontroller
             newAlbum.setTitle(body.get("title"));
 
         newAlbum.setArtist_id(Long.parseLong(body.get("artist_id")));
+
         if(body.get("release_date")!=null)
-            newAlbum.setRelease_date(Date.valueOf(body.get("release_date")));
+            newAlbum.setRelease_date(Date.valueOf(LocalDate.parse(body.get("release_date"))));
+
         albumService.save(newAlbum);
 
         String path = LifeApplication.defaultDataDir +"\\"+body.get("artist_id")+"\\"+Long.toString(newAlbum.getId());

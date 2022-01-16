@@ -39,7 +39,7 @@ public class accountcontroller
         {
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type","application/json")
-                    .body("\"status\":\"Wrong email or password\"");
+                    .body("{\"status\":\"Wrong email or password\"}");
         }
         Map<String, String> response = new HashMap<>();
         response.put("token", JWT.createJWT(Long.toString(authentication.getId())));

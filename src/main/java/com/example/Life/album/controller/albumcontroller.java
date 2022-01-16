@@ -53,8 +53,8 @@ public class albumcontroller
         List<?> allAlbum = albumService.getAllAlbums();
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
-        int toIndex = Math.min(allAlbum.size()-1,index*perPage-1);
-        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        int toIndex = Math.min(allAlbum.size()-1,index*perPage-1)+1;
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
                 .body(allAlbum.subList(fromIndex, toIndex));

@@ -125,8 +125,8 @@ public class accountcontroller
         List<?> listArtists = accountService.getAllArtists();
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
-        int toIndex = Math.min(listArtists.size()-1,index*perPage-1);
-        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        int toIndex = Math.min(listArtists.size()-1,index*perPage-1)+1;
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
         return new ResponseEntity<>(listArtists.subList(fromIndex, toIndex), HttpStatus.OK);
     }
     @GetMapping("/api/artists/{id}")
@@ -172,8 +172,8 @@ public class accountcontroller
         List<?> listUsers = accountService.getAllUsers();
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
-        int toIndex = Math.min(listUsers.size()-1,index*perPage-1);
-        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        int toIndex = Math.min(listUsers.size()-1,index*perPage-1)+1;
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
         return new ResponseEntity<>(listUsers.subList(fromIndex, toIndex), HttpStatus.OK);
     }
 

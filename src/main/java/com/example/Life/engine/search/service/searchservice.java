@@ -8,4 +8,6 @@ import java.util.List;
 public interface searchservice
 {
     List<?> searchSongWith(String content, int index);
+    List<?> searchAlbumWith(String content, int index);
+    List<?> searchArtistWith(String content, int index);
 }

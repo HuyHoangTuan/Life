@@ -33,6 +33,41 @@ public class searchcontroller
                     .body("{\"status\":\"Wrong token\"}");
         return new ResponseEntity<>(searchService.searchSongWith(content, index), HttpStatus.OK);
 
+    }
+    @GetMapping("/api/search/albums")
+    public ResponseEntity<?> searchAlbum(@RequestParam(name = "token") String token, @RequestParam(name = "content") String content, @RequestParam(name = "index",defaultValue = "1") int index)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        return new ResponseEntity<>(searchService.searchAlbumWith(content, index), HttpStatus.OK);
+
+    }
+    @GetMapping("/api/search/artists")
+    public ResponseEntity<?> searchArtist(@RequestParam(name = "token") String token, @RequestParam(name = "content") String content, @RequestParam(name = "index",defaultValue = "1") int index)
+    {
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        return new ResponseEntity<>(searchService.searchArtistWith(content, index), HttpStatus.OK);
 
     }
 }

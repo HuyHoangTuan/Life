@@ -1,7 +1,9 @@
 package com.example.Life.engine.search.service;
 
 import com.example.Life.LifeApplication;
+import com.example.Life.account.model.accountmodel;
 import com.example.Life.account.repo.accountrepo;
+import com.example.Life.album.model.albummodel;
 import com.example.Life.album.repo.albumrepo;
 import com.example.Life.engine.search.model.ContentScore;
 import com.example.Life.song.model.songmodel;
@@ -21,6 +23,12 @@ public class searchserviceimpl implements searchservice
 {
     @Autowired
     private songrepo songRepo;
+
+    @Autowired
+    private albumrepo albumRepo;
+
+    @Autowired
+    private accountrepo accountRepo;
 
     private List<ContentScore> search(String[] listWords, List<String[]> listContents, Map<String[], Long> map)
     {
@@ -117,6 +125,62 @@ public class searchserviceimpl implements searchservice
 
             } catch (Exception e) { }
             output.add(songOutput);
+        }
+        return output;
+    }
+
+    @Override
+    public List<?> searchAlbumWith(String content, int index)
+    {
+        String[] listWords = content.toLowerCase().split(" ");
+        List<String[]> listContents = new ArrayList<>();
+        Map<String[], Long> map =  new HashMap<>();
+        List<albummodel> listAlbums = albumRepo.findAllAlbum();
+
+        for(albummodel currentAlbum : listAlbums)
+        {
+            if(currentAlbum.getActive() == false) continue;
+            String s = currentAlbum.getTitle().concat(currentAlbum.getArtist_name()).toLowerCase();
+            listContents.add(s.split(" "));
+            map.put(listContents.get(listContents.size()-1), currentAlbum.getAlbum_id());
+        }
+        List<ContentScore> result = search(listWords, listContents, map);
+        int perPage = 20;
+        int fromIndex = perPage*(index-1);
+        int toIndex = Math.min(perPage*index-1, result.size()-1);
+        if(fromIndex>toIndex) return null;
+        List<albummodel> output = new ArrayList<>();
+        for(int i=fromIndex; i<=toIndex;i++)
+        {
+            output.add(albumRepo.findAlbum(result.get(i).getContentId()).get(0));
+        }
+        return output;
+    }
+
+    @Override
+    public List<?> searchArtistWith(String content, int index)
+    {
+        String[] listWords = content.toLowerCase().split(" ");
+        List<String[]> listContents = new ArrayList<>();
+        Map<String[], Long> map =  new HashMap<>();
+        List<accountmodel> listAlbums = accountRepo.findAllAccounts();
+
+        for(accountmodel currentAccount : listAlbums)
+        {
+            if(currentAccount.getActive() == false || currentAccount.getRole()!=LifeApplication.ARTIST) continue;
+            String s = currentAccount.getDisplay_name();
+            listContents.add(s.split(" "));
+            map.put(listContents.get(listContents.size()-1), currentAccount.getId());
+        }
+        List<ContentScore> result = search(listWords, listContents, map);
+        int perPage = 20;
+        int fromIndex = perPage*(index-1);
+        int toIndex = Math.min(perPage*index-1, result.size()-1);
+        if(fromIndex>toIndex) return null;
+        List<accountmodel> output = new ArrayList<>();
+        for(int i=fromIndex; i<=toIndex;i++)
+        {
+            output.add(accountRepo.findAccount(result.get(i).getContentId()).get(0));
         }
         return output;
     }

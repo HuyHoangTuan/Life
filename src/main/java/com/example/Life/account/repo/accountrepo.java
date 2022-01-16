@@ -30,7 +30,7 @@ public interface accountrepo extends JpaRepository<account, UUID>
             "a.active as active, " +
             "a.role as role " +
             "FROM account as a " +
-            "WHERE a.id=:account_id " +
+            "WHERE a.id = :id " +
             "ORDER BY a.id" , nativeQuery = true)
     List<accountmodel> findAccount(@Param("id") long account_id);
 

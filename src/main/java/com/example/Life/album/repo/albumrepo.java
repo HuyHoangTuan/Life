@@ -49,7 +49,7 @@ public interface albumrepo extends JpaRepository<album, UUID>
             "FROM album as al " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE al.id = album_id " +
+            "WHERE al.id = :album_id " +
             "ORDER BY al.id"
             ,nativeQuery = true)
     List<albummodel> findAlbum(@Param("album_id") long album_id);

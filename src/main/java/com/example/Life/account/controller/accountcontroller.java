@@ -31,23 +31,49 @@ public class accountcontroller
     private accountservice accountService;
 
     @PostMapping(path = "/api/authenticate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> authenticate(@RequestBody loginmodel loginModel)
+    public ResponseEntity<?> authenticate(@RequestBody Map<String, String> body)
     {
-        System.out.println(LifeApplication.POST+" /api/authenticate " + loginModel.toString());
-        account authentication = accountService.Authenticate(loginModel.getEmail(), loginModel.getPassword());
-        if(authentication == null)
+        System.out.println(LifeApplication.POST+" /api/authenticate " + body.toString());
+        if(body.get("token")!=null)
         {
+            Claims claims =  JWT.decodeJWT(body.get("token"));
+            if(claims == null)
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body("{\"status\":\"Wrong token\"}");
+            String subject = claims.getSubject();
+            if(subject == null)
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body("{\"status\":\"Wrong token\"}");
+            long account_id  = Long.parseLong(subject);
+            account current = accountService.findAccount(account_id);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", body.get("token"));
+            response.put("display_name", current.getDisplay_name());
+            response.put("role", Long.toString(current.getRole()));
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type","application/json")
-                    .body("{\"status\":\"Wrong email or password\"}");
+                    .body(response);
         }
-        Map<String, String> response = new HashMap<>();
-        response.put("token", JWT.createJWT(Long.toString(authentication.getId())));
-        response.put("display_name",authentication.getDisplay_name());
-        response.put("role",Long.toString(authentication.getRole()));
-        return  ResponseEntity.status(HttpStatus.OK)
-                .header("Content-Type","application/json")
-                .body(response);
+        else
+        {
+            account authentication = accountService.Authenticate(body.get("email"), body.get("password"));
+            if (authentication == null) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Content-Type", "application/json")
+                        .body("{\"status\":\"Wrong email or password\"}");
+            }
+            Map<String, String> response = new HashMap<>();
+            response.put("token", JWT.createJWT(Long.toString(authentication.getId())));
+            response.put("display_name", authentication.getDisplay_name());
+            response.put("role", Long.toString(authentication.getRole()));
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header("Content-Type", "application/json")
+                    .body(response);
+        }
     }
 
     @PostMapping(path = "/api/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

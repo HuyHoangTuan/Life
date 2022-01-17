@@ -12,30 +12,77 @@ var buttonPlay;
 var playingTrackId;
 var queue = [];
 
-function initPlayer(type = 0) {
-	p = document.createElement("AUDIO");
-	p.volume = 0.5;
-	p.onended = () => {
-		if ((type = 1)) {
-			preload(sPlayer);
-		} else {
-			preload(player);
-		}
-	}
-	p.onpause = () => {
+// function initPlayer(type = 0) {
+// 	p = document.createElement("AUDIO");
+// 	p.volume = 0.5;
+// 	p.onended = () => {
+// 		if ((type = 1)) {
+// 			preload(sPlayer);
+// 		} else {
+// 			preload(player);
+// 		}
+// 	}
+// 	p.onpause = () => {
+// 		// stopSlider(songSlider);
+// 		buttonPlay.classList.toggle("paused");
+// 		console.log("Player paused");
+// 	};
+// 	p.onplay = () => {
+// 		buttonPlay.classList.toggle("paused");
+// 		console.log("Player is trying to play");
+// 	};
+// 	p.ontimeupdate = () => {
+// 		sliderTime.value = (p.currentTime * 100) / p.duration;
+// 		timeElapsed.innerHTML = toTime(p.currentTime);
+
+// 		if (p.currentTime - p.duration < 30) {
+// 			if ((type = 1)) {
+// 				preload(sPlayer);
+// 			} else {
+// 				preload(player);
+// 			}
+// 		}
+// 		// console.log(player.currentTime)
+// 	};
+// 	p.onplaying = () => {
+// 		// sliderTime.setAutoSlideTime(player.duration - player.currentTime);
+// 		// sliderTime.startAutoSlide();
+// 		console.log("Player is playing");
+// 	};
+// 	p.onseeked = () => {
+// 		// if (player.paused) {
+// 		// 	stopSlider(songSlider);
+// 		// } else {
+// 		// 	updateSongSlider();
+// 		// }
+// 		// console.log("Seek");
+// 		console.log("Player is seekd");
+// 	};
+// 	return p;
+// }
+
+function preload(p) {
+	p.src = `/tracks/${queue.pop()}/audio`;
+	p.load();
+}
+
+function init() {
+	player = document.createElement("AUDIO");
+	player.volume = 0.5;
+	player.onpause = () => {
 		// stopSlider(songSlider);
 		buttonPlay.classList.toggle("paused");
 		console.log("Player paused");
 	};
-	p.onplay = () => {
+	player.onplay = () => {
 		buttonPlay.classList.toggle("paused");
 		console.log("Player is trying to play");
 	};
-	p.ontimeupdate = () => {
-		sliderTime.value = (p.currentTime * 100) / p.duration;
-		timeElapsed.innerHTML = toTime(p.currentTime);
+	player.ontimeupdate = () => {
+		sliderTime.value = (player.currentTime * 100) / player.duration;
+		timeElapsed.innerHTML = toTime(player.currentTime);
 
-		if (p.currentTime - p.duration < 30) {
+		if (player.currentTime - player.duration < 30) {
 			if ((type = 1)) {
 				preload(sPlayer);
 			} else {
@@ -44,12 +91,12 @@ function initPlayer(type = 0) {
 		}
 		// console.log(player.currentTime)
 	};
-	p.onplaying = () => {
+	player.onplaying = () => {
 		// sliderTime.setAutoSlideTime(player.duration - player.currentTime);
 		// sliderTime.startAutoSlide();
 		console.log("Player is playing");
 	};
-	p.onseeked = () => {
+	player.onseeked = () => {
 		// if (player.paused) {
 		// 	stopSlider(songSlider);
 		// } else {
@@ -58,24 +105,14 @@ function initPlayer(type = 0) {
 		// console.log("Seek");
 		console.log("Player is seekd");
 	};
-	return p;
-}
-
-function preload(p) {
-	p.src = `/tracks/${queue.pop()}/audio`;
-	p.load();
-}
-
-function init() {
-	player = initPlayer(1);
-	sPlayer = initPlayer(0);
-
 	sliderTime = document.getElementById("slider-time");
 	currentSong = document.getElementById("current-song");
 	currentArtist = document.getElementById("current-artist");
 	timeElapsed = document.getElementById("time-elapsed");
 	timeLength = document.getElementById("time-length");
 	buttonPlay = document.getElementById("button-play");
+	// player = initPlayer(1);
+	// sPlayer = initPlayer(0);
 }
 
 function buildPlaylist() {

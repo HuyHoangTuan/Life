@@ -15,18 +15,18 @@
 @import url('personal-page.css');
 
 :root{
-    --main-color: hsl(160, 92%, 35%);
+    --main-color: hsl(0, 0%, 31%);
     --main-color-light: rgb(255, 248, 146);
     --main-color-dark: rgb(202, 191, 39);
 
-    --background-overlay: #e1dce6bb;
+    --background-overlay: hsl(0, 0%, 12%);
 
-    --background-color:#e1dce6;
-    --background-color-lighter:#11111128;
+    --background-color:hsl(0, 0%, 12%);
+    --background-color-lighter:hsl(0, 0%, 12%);
 
     --hover-transparent: #5e5e5e34;
 
-    --text-color: rgb(16, 11, 56);
+    --text-color: hsl(0, 0%, 75%);
 
     --radius: 10px;
     --shadow: 2px 2px 10px 0 rgba(0, 0, 0, 0.5);

@@ -5,6 +5,9 @@
 		<link rel="stylesheet" href="/assets/css/style.css" />
 		<link rel="stylesheet" href="/assets/css/frame.css" />
 		<script src="/assets/js/component.js"></script>
+		<script src="/assets/js/player.js"></script>
+		<script src="/assets/js/script.js"></script>
+		<script src="/assets/js/navigation.js"></script>
 		<title></title>
 	</head>
 	<body>
@@ -14,14 +17,20 @@
 				<div class="button-onbar">Library</div>
 			</div>
 			<div style="position: relative">
-				<div style="position: absolute; line-height: 1.75rem;" class="icon-font">search</div>
+				<div
+					style="position: absolute; line-height: 1.75rem"
+					class="icon-font"
+				>
+					search
+				</div>
 				<input
 					type="text"
 					id="input-search"
 					placeholder="Search here"
+					oninput="search(this.value)"
 				/>
 			</div>
-			<div>Drop</div>
+			<div><a href="/logout">Logout</a></div>
 		</nav>
 		<main>
 			<div id="page-view"><%- content %></div>
@@ -30,11 +39,16 @@
 		<div class="bar-horizontal">
 			<div class="control-area">
 				<button class="icon-font">skip_previous</button>
-				<button class="icon-font">play_arrow</button>
+				<button id="button-play" class="icon-font" onclick="toggleMusic()">
+				</button>
 				<button class="icon-font">skip_next</button>
 				<div></div>
 				<button class="icon-font">volume_up</button>
-				<range-slider></range-slider>
+				<range-slider
+					id="slider-vol"
+					value = 100
+					oninput="player.volume = (0.5 * this.value)/100"
+				></range-slider>
 			</div>
 			<div
 				style="
@@ -44,9 +58,12 @@
 					align-items: center;
 				"
 			>
-				<h4 class="number">00:00</h4>
-				<range-slider></range-slider>
-				<h4 class="number">99:99</h4>
+				<h4 class="number" id="time-elapsed">--:--</h4>
+				<range-slider
+					id="slider-time"
+					onchange="seek(this.value)"
+				></range-slider>
+				<h4 class="number" id="time-length">--:--</h4>
 			</div>
 			<div class="control-area" style="flex-direction: row-reverse">
 				<button class="icon-font">queue_music</button>
@@ -59,8 +76,8 @@
 						overflow: hidden;
 					"
 				>
-					<b>Here Comes the Sun</b>
-					<h4>by The Beatles</h4>
+					<b id="current-song"></b>
+					<h4 id="current-artist"></h4>
 				</div>
 			</div>
 		</div>

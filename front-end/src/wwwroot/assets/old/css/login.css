@@ -1,0 +1,76 @@
+@keyframes opacityChange {
+  from {
+    opacity: 0%;
+    transform: scale(0);
+  }
+
+  to {
+    opacity: 80%;
+    transform: scale(1);
+  }
+}
+
+.rect {
+  animation-name: opacityChange;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  opacity: 0%;
+}
+
+main {
+  display: block !important;
+  backdrop-filter: blur(150px) !important;
+}
+#login-content {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-color: var(--background-color);
+  border-radius: var(--radius);
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#login-content > h1 {
+  text-transform: uppercase;
+}
+.login-info {
+  width: 100%;
+  margin-bottom: 1.2rem;
+}
+.login-info > input {
+  width: 80%;
+  padding-left: 10%;
+  padding: 0.4rem;
+}
+#login-content > button {
+  height: 45px;
+  width: 80px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+/*---------------------Signup--------------------*/
+#signup-content {
+  position: absolute;
+  display: block !important;
+  width: 400px;
+  height: 530px;
+  border: 2px solid black;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#signup-content > h1 {
+  text-transform: uppercase;
+}
+#signup-content > button {
+  height: 45px;
+  width: 200px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}

@@ -1,0 +1,80 @@
+body{
+    position: relative;
+    width:100vw;
+    height:100vh;
+    font-size: 0;
+}
+body > *{
+    display: block;
+}
+#profile-header{
+    position: relative;
+    height: 30vh;
+    background-color: turquoise;
+}
+#profile-header > * {
+    position: absolute;
+}
+#profile-header > img{
+    width: 200px;
+    height:200px;
+    top:15%;
+    left:3%;
+    border-radius: 100%;
+}
+#profile-username{
+    top:40%;
+    left: 20%;
+}
+#profile-username > span{
+    font-size: 2.5rem;
+}
+#profile-stats{
+    bottom:5%;
+    right:5%;
+}
+#profile-stats > *{
+    display: inline-block;
+    padding: 0 1rem;
+    border-left: 1px solid grey;;
+}
+#profile-edit{
+    top:10%;
+    right:5%;
+    background: none !important;
+    cursor: pointer;
+    transition: border 1s;
+}
+#profile-edit:hover{
+    border:2px solid var(--text-color);
+    
+}
+#profile-edit > span{
+    font-size: 1.3rem;
+}
+#profile-edit{
+    font-size: 1.3rem;
+}
+#profile-content{
+    position: relative;
+    height: 70vh;
+    background-color: tomato;
+}
+#profile-content > *{
+    position: absolute;
+}
+#profile-content-tabs{
+    width: 80%;
+    padding-top:1rem;
+    padding-left: 100px;
+}
+#profile-content-tabs > *{
+    display: inline-block;
+    font-size: 1.5rem;
+    padding-right: 3rem;
+}
+#profile-content-general{
+    width:95%;
+    padding-top: 5rem;
+    padding-left: 5%;
+}

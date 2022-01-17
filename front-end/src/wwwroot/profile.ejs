@@ -1,0 +1,43 @@
+<div>
+    <div class="info-artist">
+        <img
+            src="https://img.discogs.com/T3McbvJdMo10tReKFTdglFNm9us=/600x600/smart/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/A-82730-1419714988-9675.jpeg.jpg">
+        <h1><%= artist.name %>
+        </h1>
+        <!-- <h2>The Beatles</h2>
+        <h3>The Beatles</h3>
+        <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li>Albums</li>
+        <li>Singles & EP</li>
+        <li>Compilations</li>
+    </ul>
+</div>
+<div class="content-view">
+    <section>
+        <h2>Albums</h2>
+        <div class="content-list-large">
+            <% artist.albums.forEach(album=> {%>
+                <div album-id=<%= album.id %> class="content" onclick="changePage('/albums/<%= album.id %>')">
+                    <img src="/albums/<%= album.id %>/cover">
+                    <div>
+                        <h3>
+                            <%= album.name %>
+                        </h3>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </section>
+    <section>
+        <h2>Singles & EPs</h2>
+        <div class="content-list-large">
+        </div>
+    </section>
+    <section>
+        <h2>Compilations</h2>
+        <div class="content-list-large">
+        </div>
+    </section>
+</div>

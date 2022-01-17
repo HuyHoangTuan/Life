@@ -1,0 +1,61 @@
+td,
+th {
+  line-height: 2.25rem;
+}
+
+td > button {
+  background: none !important;
+}
+
+tr {
+  position: relative;
+  cursor: pointer;
+}
+
+tr::after{
+    position: absolute;
+    content: "";
+  left: 0;
+  right: 0;
+  height: 100%;
+  display: block;
+  /*background: var(--hover-transparent);*/
+  /* background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    var(--hover-transparent) 5%,
+    var(--hover-transparent) 95%,
+    rgba(255, 255, 255, 0) 100%
+  ); */
+  /* transform: scale(0); */
+  opacity: 0;
+  transition: opacity .8s;
+}
+
+tr:not(thead > tr):hover::after {
+    /* transform: scale(1); */
+    opacity: 1;
+    transition: opacity .1s;
+}
+
+tr:nth-child(7n + 1)::before{
+    background-color: rgba(255, 0, 0, 0.7);
+}
+tr:nth-child(7n + 2)::before{
+    background-color: rgba(255, 166, 0, 0.7);
+}
+tr:nth-child(7n + 3)::before{
+    background-color: rgba(255, 255, 0, 0.7);
+}
+tr:nth-child(7n + 4)::before{
+    background-color: rgba(47, 255, 64, 0.7);
+}
+tr:nth-child(7n + 5)::before{
+    background-color: rgba(0, 190, 149, 0.7);
+}
+tr:nth-child(7n + 6)::before{
+    background-color: rgba(50, 81, 255, 0.7);
+}
+tr:nth-child(7n + 7)::before{
+    background-color: rgba(165, 0, 241, 0.7);
+}

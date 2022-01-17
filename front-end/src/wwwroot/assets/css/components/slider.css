@@ -52,6 +52,7 @@ input {
 input::-webkit-slider-thumb {
 	height: 0.8rem;
 	width: 0.5rem;
+	/* background: red; */
 }
 
 .touch{

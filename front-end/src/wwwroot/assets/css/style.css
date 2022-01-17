@@ -13,6 +13,13 @@
 
 	--shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
 	--shadow-small: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
+	--gradient: linear-gradient(
+			140deg,
+			hsl(0, 0%, 24%, 0.5) 0%,
+			hsl(0, 0%, 16%, 0.9) 100%
+		),
+		linear-gradient(180deg, hsl(0, 0%, 24%, 0.8) 85%, hsl(0, 0%, 12%) 100%);
+
 	--inset-shadow: inset 2px 2px 4px -2px rgba(0, 0, 0, 0.5);
 	--inset-gradient: linear-gradient(
 		140deg,
@@ -53,6 +60,10 @@ body {
 	color: var(--main);
 }
 
+main {
+	position: relative;
+}
+
 p {
 	line-height: 1.5rem;
 }
@@ -87,15 +98,18 @@ b {
 	font-weight: 600;
 }
 
-input {
+input,
+select {
 	font-size: 1rem;
 	line-height: 1.75rem;
+	height: 1.75rem;
 	border: none;
 	outline: none;
 }
 
 button,
-input[type="button"] {
+input[type="button"],
+input[type="reset"] {
 	padding: 0rem 0.75rem;
 
 	font-size: 1rem;
@@ -115,7 +129,8 @@ input[type="button"] {
 }
 
 button:hover,
-input[type="button"]:hover {
+input[type="button"]:hover,
+input[type="reset"]:hover {
 	background: hsl(223, 68%, 35%);
 	background: linear-gradient(
 			180deg,
@@ -127,7 +142,9 @@ input[type="button"]:hover {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="date"],
+select {
 	padding: 0rem 0.75rem;
 
 	color: hsl(0, 0%, 72%);
@@ -140,7 +157,6 @@ input[type="password"] {
 		hsl(0, 0%, 18%, 0.8) 100%
 	);
 	border-radius: 5px;
-
 	box-shadow: var(--inset-shadow);
 }
 
@@ -182,7 +198,7 @@ input[type="range"]::-moz-range-thumb {
 } */
 
 .grid-table {
-	padding: 0.75rem 0.5rem 1.5rem;
+	/* padding: 0.75rem 0.5rem 1.5rem; */
 }
 .grid-table > div {
 	display: grid;
@@ -211,6 +227,8 @@ input[type="range"]::-moz-range-thumb {
 	display: flex;
 	flex-direction: column;
 	align-content: center;
+	margin: 10px 10px;
+	width: 100%;
 }
 
 .flex-form > label,
@@ -232,6 +250,10 @@ li {
 	margin-right: 0;
 }
 
+.error {
+	color: hsl(0, 90%, 44%);
+}
+
 .icon-font {
 	font-family: "Material Icons Round";
 	font-size: 24px;
@@ -241,6 +263,29 @@ li {
 	font-family: "Azeret Mono", "Barlow", "Arial", sans-serif;
 	font-size: 0.96rem;
 	letter-spacing: 0;
+}
+
+.upper-text {
+	font-size: 0.8rem;
+	vertical-align: 0.23rem;
+}
+
+.none {
+	display: none;
+}
+
+[class|="grid"] {
+	display: grid;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-row-reversed {
+	display: flex;
+	flex-direction: row-reverse;
 }
 
 .slider {
@@ -287,7 +332,91 @@ li {
 	background-color: hsl(0, 0%, 72%);
 }
 
-range-slider{
+range-slider {
 	display: inline-block;
 	width: 100%;
+}
+
+/*----dialog styling----*/
+
+.dialog {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+
+	transform: translate(-50%, -50%);
+	transform-style: preserve-3d;
+	perspective: 1000px;
+
+	min-width: 480px;
+
+	background: var(--background);
+	border-radius: 10px;
+
+	transition: opacity 0.1s linear, z-index 0s 0.1s;
+	opacity: 1;
+	z-index: initial;
+}
+
+.dialog > * {
+	margin: 1.25rem;
+}
+
+.dialog::before {
+	content: "";
+
+	position: absolute;
+	top: calc(-500vh + 50%);
+	left: calc(-500vw + 50%);
+
+	transform: translateZ(-200px);
+
+	display: block;
+	width: 1000vw;
+	height: 1000vh;
+
+	background-color: hsl(0, 0%, 18%, 0.4);
+	backdrop-filter: blur(10px);
+}
+
+.dialog.hidden {
+	z-index: -10;
+	opacity: 0;
+	transition: opacity 0.1s linear, z-index 0s;
+}
+
+/* .dialog > h1 {
+} */
+
+.dialog-content {
+	display: flex;
+	flex-direction: row;
+}
+
+.dialog-controls {
+	/* position: absolute;
+	bottom: 0; */
+	margin-top: 2rem;
+	width: calc(100% - 40px);
+
+	text-align: right;
+}
+.dialog-controls > * {
+	vertical-align: top;
+}
+
+[class^="dialog-button-"],
+.dialog-button {
+	min-width: 10ch;
+	height: 2rem;
+}
+
+
+#button-play::before{
+	content: "play_arrow";
+	display: block;
+}
+
+#button-play.paused::before{
+	content: "pause";
 }

@@ -1,0 +1,36 @@
+<section>
+    <h2>User Information</h2>
+    <form id="dialog-detail" action="/users/<%= user.id %>" method="PUT">
+        <div class="dialog-content">
+            <div class="dialog-image">
+                <img class="avatar" field="avatar" src="/users/<%= user.id %>/avatar"
+                    origin-src="/users/<%= user.id %>/avatar">
+                <input type="file" accept="image/*" name="avatar" value=""
+                    target-action="/users/<%= user.id %>/avatar" target-field="avatar"
+                    onchange="previewImg(this)">
+            </div>
+            <div class="grid-dialog">
+                <span class="none">ID</span>
+                <input class="none" type="text" name="id" readonly value="<%= user.id %>">
+                <span>Name</span>
+                <input type="text" name="display_name" value="<%= user.name %>">
+                <span>E-mail</span>
+                <input type="text" name="email" value="<%= user.email %>">
+                <span>Password</span>
+                <div></div>
+                <span>Role</span>
+                <select name="role" value="<%= user.role %>">
+                    <option value="0" <% if (user.role==0) { %>selected<% } %>>Admin</option>
+                    <option value="1" <% if (user.role==1) { %>selected<% } %>>Artist</option>
+                    <option value="2" <% if (user.role==2) { %>selected<% } %>>User</option>
+                </select>
+                <span>Status</span>
+                <div></div>
+            </div>
+        </div>
+        <div class="dialog-controls">
+            <input type="reset" value="Reset">
+            <button onclick="submitForm('dialog-detail')">Update</button>
+        </div>
+    </form>
+</section>

@@ -13,34 +13,44 @@
 	width: 100vw;
 	padding: 0 2rem;
 
-    backdrop-filter: blur(25px);
+	backdrop-filter: blur(25px);
 
-	grid-template-columns: min(calc(400px - 2rem), 25%) auto min(calc(400px - 2rem), 25%);
-    column-gap: 2rem;
+	grid-template-columns: min(calc(400px - 2rem), 25%) auto min(
+			calc(400px - 2rem),
+			25%
+		);
+	column-gap: 2rem;
 	align-items: center;
 }
 
 .bar-horizontal:first-child {
 	top: 0;
 	box-shadow: 0px 12px 20px -10px rgba(0, 0, 0, 0.3);
-	background: linear-gradient(0deg, hsla(0, 0%, 12%, 0.8) 0%, hsla(0, 0%, 12%) 100%);
+	background: linear-gradient(
+		0deg,
+		hsla(0, 0%, 12%, 0.8) 0%,
+		hsla(0, 0%, 12%) 100%
+	);
 }
 
 .bar-horizontal:not(.bar-horizontal:first-child) {
 	bottom: 0;
 	box-shadow: 0px -12px 20px -10px rgba(0, 0, 0, 0.3);
-	background: linear-gradient(180deg, hsla(0, 0%, 12%, 0.8) 0%, hsla(0, 0%, 12%) 100%);
+	background: linear-gradient(
+		180deg,
+		hsla(0, 0%, 12%, 0.8) 0%,
+		hsla(0, 0%, 12%) 100%
+	);
 }
 
-.bar-horizontal .number{
+.bar-horizontal .number {
 	text-align: center;
 }
 
-#input-search{
+#input-search {
 	width: 100%;
 	padding-left: 2rem;
 }
-
 
 .button-onbar {
 	display: inline-block;
@@ -49,32 +59,32 @@
 
 main {
 	display: grid;
-    padding-top: 4rem;
+	padding: 4rem 0;
 
 	grid-template-columns: auto min(400px, 25vw);
-    column-gap: 2rem;
+	column-gap: 2rem;
 }
 
-#page-view {
+main > div:first-child {
 	display: grid;
 	grid-template-columns: min(400px, 25vw) auto;
-    column-gap: 2rem;
+	column-gap: 2rem;
 }
 
-#page-view > div:first-child {
+main > div:first-child > div:first-child {
 	text-align: right;
 }
 
-@media only screen and (max-width: 720px){
-    main {
+@media only screen and (max-width: 720px) {
+	main {
 		grid-template-columns: auto;
 	}
-	#page-view{
+	main > div:first-child {
 		grid-template-columns: auto;
-		padding: 0 .5rem;
+		padding: 0 0.5rem;
 	}
 }
-.control-area{
+.control-area {
 	display: flex;
 	/* padding-left: 2rem; */
 	flex-direction: row;
@@ -82,7 +92,7 @@ main {
 	column-gap: 1rem;
 }
 
-.control-area button{
+.control-area button {
 	background: none;
 	box-shadow: none;
 	cursor: pointer;

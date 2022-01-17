@@ -1,14 +1,14 @@
 <div>
 	<div class="info-album">
-		<!-- <img
-			src="clear"
-		/> -->
-		<h1><%= album.name%></h1>
-		<h3>by <%= album.artist_name%></h3>
-		<span><%= album.release_date.substr(0, 4) %></span>
-		<!-- <h3>The Beatles</h3>
-        <h3>The Beatles</h3>
-        <p>The Beatles</p> -->
+		<img src="/albums/<%= album.id%>/cover" />
+		<h1>
+			<%= album.name%>
+		</h1>
+		<h3>by <%= album.artist_name%>
+		</h3>
+		<span>
+			<%= album.release_date.substr(0, 4) %>
+		</span>
 	</div>
 	<ul class="list-nav">
 		<li>Track list</li>
@@ -25,13 +25,20 @@
 				<h3>Duration</h3>
 				<h3>=</h3>
 			</div>
-			<% album.tracks.forEach(track => { %>
-				<div>
-					<span><%= track.track_num %> </span>
-					<span><%- track.title %> </span>
-					<span><%= track.duration %> </span>
+			<% album.tracks.forEach(track=> { %>
+				<div track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
+					track-artist-name="<%= track.artist_name %>" length="<%= track.duration %>" onclick="playTrack(this)">
+					<span>
+						<%= track.track_num %>
+					</span>
+					<span>
+						<%- track.title %>
+					</span>
+					<span>
+						<%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
+					</span>
 				</div>
-			<% }) %> 
+			<% }) %>
 		</div>
 	</section>
 	<section>

@@ -1,0 +1,140 @@
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Open Sans Condensed';
+}
+h1{
+    font-size: 2rem;
+    line-height: 3rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+h2{
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.vcenter{
+    position: relative;
+    font-size: 0;
+}
+
+.vcenter > *{
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.align-right{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#view-container{
+    position: relative;
+    width: calc(100vw - 400px);
+    height: 100%;
+    font-size: 0;
+}
+.left-col{
+    position: absolute;
+    top: 0;
+    display: inline-block;
+    text-align: right;
+    width: 400px;
+    padding: var(--bar-height) 0;
+}
+
+.left-col li{
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.center-col{
+    width: calc(100% - 400px);
+    height: 100%;
+    margin-left: 400px;
+    padding: var(--bar-height) 1rem;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--bar-height) + .5rem);
+}
+
+.dropdown-menu > li, .clickable{
+    cursor: pointer;
+    transition: background 0.1s, font-size 0.1s;
+}
+
+.clickable:hover{
+    /* background-color: var(--background-color-lighter); */
+}
+
+.dropdown-toggle{
+    display: none !important; 
+}
+
+.dropdown-toggle ~ .dropdown-menu{
+    display: none;
+}
+
+.dropdown-toggle:checked ~ .dropdown-menu{
+    display: block;
+}
+
+
+.slider{
+    position: relative;
+    background: rgba(0, 0, 0, 0.15);
+}
+.slider > *{
+    position: absolute;
+    top: 0;
+}
+.slider-left-padding, .slider-right-padding{
+    height: 100%;
+    aspect-ratio: 1 / 2;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.slider-left-padding{
+    right: 100%;
+    border-top-left-radius: 10rem;
+    border-bottom-left-radius: 10rem;
+    background: var(--main-color);
+}
+.slider-right-padding{
+    left: 100%;
+    border-top-right-radius: 10rem;
+    border-bottom-right-radius: 10rem;
+    /* background: var(--main-color); */
+}
+.slider-main{
+    width: 100%;
+}
+.slider-filled{
+    width: 0;
+    background: var(--main-color);
+    transition: width 0.075s;
+}
+.slider-thumb{
+    height: 100%;
+    left: 0;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: var(--main-color);
+    transform: translateX(-50%);
+    transition: left 0.075s;
+}
+
+.vertical-slider{
+    transform: rotate(-90deg);
+    transform-origin: left;
+}
+
+.active{
+    color: red;
+}

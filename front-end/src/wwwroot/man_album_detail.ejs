@@ -1,0 +1,80 @@
+<section>
+    <h2>Album Metadata</h2>
+    <form id="dialog-detail" action="/albums/<%= album.id %>" method="PUT">
+        <div class="dialog-content">
+            <div class="dialog-image">
+                <img class="cover" field="album-cover" src="/albums/<%= album.id %>/cover"
+                    origin-src="/albums/<%= album.id %>/cover">
+                <input type="file" accept="image/*" name="album-cover" value=""
+                    target-action="/albums/<%= album.id %>/cover" target-field="album-cover"
+                    onchange="previewImg(this)">
+            </div>
+            <div class="grid-dialog">
+                <span class="none">ID</span>
+                <input class="none" type="text" name="id" readonly value="<%= album.id %>">
+                <span>Name</span>
+                <input type="text" name="title" value="<%= album.name %>">
+                <span>Artist</span>
+                <select name="artist_id" value="<%= album.artist_id %>">
+                    <%artistList.forEach((artist)=> {%>
+                        <option value="<%= artist.id %>" <% if (artist.id==album.artist_id) { %>selected<% } %>>
+                                <%= artist.name %>
+                        </option>
+                        <%})%>
+                </select>
+                <span>Release</span>
+                <input type="date" value="<%= album.release_date %>" name="release_date">
+                <span>Type</span>
+                <select name="type" value="<%= album.type %>">
+                    <option value="1" <% if (album.type==1) { %>selected<% } %>>Album</option>
+                    <option value="2" <% if (album.type==2) { %>selected<% } %>>Single/EP</option>
+                    <option value="3" <% if (album.type==3) { %>selected<% } %>>Compilation</option>
+                </select>
+                <!-- <div field="type" name="type">
+                    <button>Album</button>
+                    <button>Single/EP</button>
+                    <button>Compilation</button>
+                </div> -->
+                <!-- <span>Status</span>
+                <div></div> -->
+            </div>
+        </div>
+        <div class="dialog-controls">
+            <input type="reset" value="Reset">
+            <button onclick="submitForm('dialog-detail')">Update</button>
+            <!-- <button onclick="toggleDialog('dialog-detail')">Cancel</button> -->
+        </div>
+    </form>
+</section>
+
+<section>
+    <h2>Track list</h2>
+    <div class="grid-table" id="track-list">
+        <div>
+            <h3>#</h3>
+            <h3>Title</h3>
+            <h3>Duration</h3>
+            <h3>=</h3>
+        </div>
+        <% album.tracks.forEach(track=> { %>
+            <div track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
+                track-artist-name="<%= track.artist_name %>" onclick="" draggable="true">
+                <span>
+                    <%= track.track_num %>
+                </span>
+                <span>
+                    <%- track.title %>
+                </span>
+                <span>
+                    <%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
+                </span>
+                <!-- <span><%= `${Math.floor(track.duration/60)}:${track.duration%60}` %> </span> -->
+            </div>
+        <% }) %>
+    </div>
+    <div class="flex-row-reverse">
+        <button>
+            Save
+        </button>
+    </div>
+</section>

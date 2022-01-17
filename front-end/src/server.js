@@ -15,7 +15,7 @@ const handlerMap = new Map();
 //URL : /[handler]/[ID]?[param]=[value]&[param]=[value]
 
 function handleRequest(req, res) {
-	const handler = utils.parseHandler(req.url);
+	const handler = utils.getPath(req.url);
 	if (handlerMap.has(handler)) {
 		//console.log("Handling " + handler);
 		var handlerObj = handlerMap.get(handler);
@@ -25,16 +25,7 @@ function handleRequest(req, res) {
 				handlerObj.getHandler(req, res);
 				break;
 			case "POST":
-				var body = "";
-				req.on("data", (data) => {
-					body += data;
-					// Too much POST data, kill the connection!
-					if (body.length > 1e6) request.connection.destroy();
-				});
-				req.on("end", () => {
-					handlerObj.postHandler(req, res, body);
-				});
-
+				handlerObj.postHandler(req, res);
 				break;
 			case "PUT":
 				handlerObj.putHandler(req, res);
@@ -51,12 +42,19 @@ exports.init = () => {
 	handlerMap.set("", handlers.IndexHandler);
 	handlerMap.set("assets", handlers.AssetsHandler);
 	handlerMap.set("login", handlers.LoginHandler);
-	handlerMap.set("albums", handlers.AlbumHandler);
+	handlerMap.set("logout", handlers.LogoutHandler);
+	handlerMap.set("signup", handlers.RegisterHandler);
+	handlerMap.set("users", handlers.UserHandler);
+
 	handlerMap.set("artists", handlers.ArtistHandler);
+	handlerMap.set("albums", handlers.AlbumHandler);
+	handlerMap.set("tracks", handlers.TrackHandler);
+	
 	handlerMap.set("library", handlers.LibraryHandler);
+	handlerMap.set("search", handlers.SearchHandler);
 	// handlerMap.set('/playlist', playlistHandler);
 
-	// handlerMap.set("management", manager.Handler);
+	handlerMap.set("management", handlers.ManagementHandler);
 
     router = new mux.Router()
     // router.map("/some", a)

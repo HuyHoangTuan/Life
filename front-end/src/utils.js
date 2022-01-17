@@ -1,26 +1,36 @@
 const ejs = require("ejs");
 const url = require("url");
 const qs = require("querystring");
-const frame = require("./frame")
+const frame = require("./frame");
 
-exports.parseHandler = (httpUrl) => {
-	return url.parse(httpUrl).pathname.split("/")[1];
+exports.getPath = (path, pos = 1) => {
+	return path.split("?")[0].split("/")[pos];
 };
 
-exports.parseId = (httpUrl) => {
-	return url.parse(httpUrl).pathname.split("/")[2];
-};
+// exports.parseHandler = (httpUrl) => {
+// 	return url.parse(httpUrl).pathname.split("/")[1];
+// };
 
-exports.parseMgr = (httpUrl) => {
-	return url.parse(httpUrl).pathname.split("/")[2];
-};
+// exports.parseId = (httpUrl) => {
+// 	console.log("URL" + httpUrl)
+// 	return url.parse(httpUrl).pathname.split("/")[2];
+// };
 
-exports.parseMrgId = (httpUrl) => {
-	return url.parse(httpUrl).pathname.split("/")[3];
-};
+// exports.parseMgr = (httpUrl) => {
+// 	return url.parse(httpUrl).pathname.split("/")[2];
+// };
 
-exports.getURLQuery = (req) => {
-	return qs.parse(url.parse(req.url).query);
+// exports.parseMrgId = (httpUrl) => {
+// 	return url.parse(httpUrl).pathname.split("/")[3];
+// };
+
+exports.getURLQuery = (path, name) => {
+	let query = path.split("?")[1];
+	if (query != undefined) {
+		query = new URLSearchParams(query);
+		return query.get(name);
+	}
+	return null;
 };
 
 exports.redirect = (res, location) => {
@@ -35,10 +45,13 @@ exports.renderPage = (res, filePath, data, frameType = 0, options = null) => {
 			case 0:
 				break;
 			case 1:
-				html = frame.compiled({content: html})
+				html = frame.compiled({ content: html });
 				break;
 			case 2:
-				html = frameMgr.compiled({content: html})
+				html = frame.compiledMan({ content: html });
+				break;
+			case 3:
+				html = JSON.stringify({title: data.title, content: html})
 				break;
 		}
 		res.statusCode = 200;

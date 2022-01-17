@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="/assets/css/style.css" />
+	<link rel="stylesheet" href="/assets/css/frame.css" />
+	<title>LIFE - Login</title>
+</head>
+
+<body>
+
+	<form class="dialog" method="POST" action="/login">
+		<h1>Login</h1>
+		<div class="dialog-content">
+			<div class="flex-form">
+				<label>E-mail:</label>
+				<input type="text" name="email">
+				<label>Password:</label>
+				<input type="password" name="password">
+				<br>
+				<% if(status==1){%>
+					<span class="error">E-mail or Password is incorrect!</span>
+					<br>
+				<%} %>
+				<button>Login</button>
+			</div>
+		</div>
+	</form>
+</body>
+
+</html>

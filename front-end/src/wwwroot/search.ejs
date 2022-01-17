@@ -1,0 +1,70 @@
+<div>
+    <div class="info">
+        <h1>Library</h1>
+        <!-- <h2>The Beatles</h2>
+        <h3>The Beatles</h3>
+        <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li>Tracks</li>
+        <li>Artists</li>
+        <li>Albums</li>
+    </ul>
+</div>
+<div class="content-view">
+    <section>
+        <h2>Tracks</h2>
+        <div class="content-list-duo">
+            <% result.tracks.forEach((track)=> { %>
+                <div class="content playlist" track-id="<%= track.id %>" track-title="<%= track.title%>"
+                    track-artist-id="<%= track.artist_id %>" track-artist-name="<%= track.artist_name %>"
+                    length="<%= track.duration %>" onclick="playTrack(this)">
+                    <img src="/albums/<%= track.album_id %>/cover" />
+                    <div>
+                        <h3>
+                            <%= track.title%>
+                        </h3>
+                        <span>
+                            <%= track.artist_name %>
+                        </span>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </section>
+    <section>
+        <h2>Artists</h2>
+        <div class="content-list-small">
+            <% result.artists.forEach((artist)=> { %>
+                <div class="content playlist" artist-id="<%= artist.id %>"
+                    onclick="changePage('/artists/<%= artist.id %>')">
+                    <img class="avatar" src="/users/<%= artist.id %>/avatar" />
+                    <div>
+                        <h3>
+                            <%= artist.name%>
+                        </h3>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </section>
+    <section>
+        <h2>Albums</h2>
+        <div class="content-list-large">
+            <% result.albums.forEach((album)=> { %>
+                <div class="content playlist" album-id="<%= album.id %>"
+                    onclick="changePage('/albums/<%= album.id %>')">
+                    <img src="/albums/<%= album.id %>/cover" />
+                    <div>
+                        <h3>
+                            <%= album.name%>
+                        </h3>
+                        <span>
+                            <%= album.artist_name %>
+                        </span>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </section>
+</div>

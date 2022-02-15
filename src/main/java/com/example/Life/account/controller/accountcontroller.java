@@ -84,11 +84,11 @@ public class accountcontroller
         {
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type","application/json")
-                    .body("\"status\":\"Email has been used\"");
+                    .body("{\"status\":\"Email has been used\"}");
         }
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body("\"status\":\"success\"");
+                .body("{\"status\":\"success\"}");
     }
 
     @PostMapping("/api/users/{id}/avatar")
@@ -233,7 +233,7 @@ public class accountcontroller
     @GetMapping("/api/users/{id}/avatar")
     public ResponseEntity<?> getUserCover(@RequestParam(name = "token") String token, @PathVariable("id") long user_id)
     {
-        System.out.println(LifeApplication.GET + "/api/users/"+user_id+"/avatar "+token);
+        System.out.println(LifeApplication.GET + " /api/users/"+user_id+"/avatar "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

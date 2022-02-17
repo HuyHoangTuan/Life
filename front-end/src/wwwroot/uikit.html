@@ -3,6 +3,7 @@
 	<head>
 		<link rel="stylesheet" href="assets/css/style.css" />
 		<script src="assets/js/component.js"></script>
+		<script src="assets/js/script.js"></script>
 	</head>
 	<body>
 		<section>
@@ -26,6 +27,7 @@
 			<button>Button</button>
 			<label>Button</label>
 			<range-slider></range-slider>
+			<input-switch></input-switch>
 		</section>
 		<section>
 			<div>Paragraph</div>
@@ -39,5 +41,28 @@
 				sunt in culpa qui officia deserunt mollit anim id est laborum.
 			</p>
 		</section>
+		<div class="audio-preview">
+			<audio field="preview-audio"></audio>
+			<button>
+				<label class="icon-font">
+					<input
+						type="file"
+						accept="audio/mp3"
+						style="display: none"
+						target-field="preview-audio"
+						onchange="previewAudio(this)"
+					/>
+					file_upload
+				</label>
+			</button>
+			<button class="icon-font">
+				play_arrow
+			</button>
+			<range-slider></range-slider>
+			<button class="icon-font">
+				volume_up
+			</button>
+			<range-slider></range-slider>
+		</div>
 	</body>
 </html>

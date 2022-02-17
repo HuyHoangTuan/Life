@@ -1,22 +1,21 @@
 const utils = require("./utils");
-const url = require("url");
 const cookie = require("cookie");
-const fs = require("fs");
 const qs = require("querystring");
-const path = require("path");
 const entities = require("./entities");
 const api = require("./api");
 
-const testToken =
-	"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQyMzYwODU3fQ.MEfen90dvOGM4zuzNm-BLJTdQgC-ZCo_1dMqcTzboYw";
-
 function getMode(req) {
-	return utils.getURLQuery(req.url, "raw") == "true" ? true : false;
+	// return utils.getURLQuery(req.url, "raw") == "true" ? true : false;
+	return req.query.raw != undefined;
 }
 
 function getCookie(key) {
 	var cookies = cookie.parse(req.headers.cookie || "");
 	return cookies[key];
+}
+
+function getToken() {
+	return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQyMzYwODU3fQ.MEfen90dvOGM4zuzNm-BLJTdQgC-ZCo_1dMqcTzboYw";
 }
 
 async function getBody(req) {
@@ -33,7 +32,11 @@ async function getBody(req) {
 	});
 }
 
-function writeError() {}
+class APIForwarderHandler {
+	static allHandler(req, res) {
+		api.forward(req, res, req.path, { token: getToken() });
+	}
+}
 
 class UserHandler {
 	static async getHandler(req, res, man = 0) {
@@ -41,7 +44,7 @@ class UserHandler {
 		if (man == 1) {
 			let id = utils.getPath(req.url, 3);
 			if (id) {
-				let user = await entities.User.getUserById(id, testToken);
+				let user = await entities.User.getUserById(id, getToken());
 
 				utils.renderPage(
 					res,
@@ -50,7 +53,7 @@ class UserHandler {
 					mode ? 3 : 2
 				);
 			} else {
-				let userList = await entities.User.getUserList(testToken);
+				let userList = await entities.User.getUserList(getToken());
 				utils.renderPage(
 					res,
 					"man_user.ejs",
@@ -62,7 +65,7 @@ class UserHandler {
 			let id = utils.getPath(req.url, 2);
 			if (utils.getPath(req.url, 3) == "avatar") {
 				api.forward(req, res, `/users/${id}/avatar`, {
-					token: testToken,
+					token: getToken(),
 				});
 			}
 		}
@@ -71,13 +74,13 @@ class UserHandler {
 		let id = utils.getPath(req.url, 2);
 		//upload avatar
 		if (id && utils.getPath(req.url, 3) == "avatar") {
-			api.forward(req, res, `/users/${id}/avatar`, { token: testToken });
+			api.forward(req, res, `/users/${id}/avatar`, { token: getToken() });
 		} else if (!id) {
 			let newUser = JSON.parse(await getBody(req));
 			let result = JSON.parse(
 				await api.doPost(
 					"/users",
-					{ token: testToken },
+					{ token: getToken() },
 					JSON.stringify(newUser)
 				)
 			);
@@ -99,7 +102,7 @@ class UserHandler {
 		let id = utils.getPath(req.url, 2);
 		console.log("[Log][PUT_User][BODY]" + body);
 		let result = JSON.parse(
-			await api.doPut(`/users/${id}`, { token: testToken }, body)
+			await api.doPut(`/users/${id}`, { token: getToken() }, body)
 		);
 		console.log("[Log][PUT_User][RES]" + result);
 		if (result.status == "success") {
@@ -115,9 +118,9 @@ class UserHandler {
 class ArtistHandler {
 	static async getHandler(req, res) {
 		let mode = getMode(req, 1);
-		let id = utils.getPath(req.url, 2);
-		let artist = await entities.Artist.getArtistById(id, testToken);
-		await artist.getAlbumList(testToken);
+		let id = req.params["id"];
+		let artist = await entities.Artist.getArtistById(id, getToken());
+		await artist.getAlbumList(getToken());
 
 		utils.renderPage(res, "artist.ejs", { artist: artist }, mode ? 3 : 1);
 	}
@@ -132,9 +135,11 @@ class AlbumHandler {
 		if (man == 1) {
 			let id = utils.getPath(req.url, 3);
 			if (id) {
-				let album = await entities.Album.getAlbumById(id, testToken);
-				let artistList = await entities.Artist.getArtistList(testToken);
-				await album.getTrackList(testToken);
+				let album = await entities.Album.getAlbumById(id, getToken());
+				let artistList = await entities.Artist.getArtistList(
+					getToken()
+				);
+				await album.getTrackList(getToken());
 
 				utils.renderPage(
 					res,
@@ -143,8 +148,10 @@ class AlbumHandler {
 					mode ? 3 : 2
 				);
 			} else {
-				let albumList = await entities.Album.getAlbumList(testToken);
-				let artistList = await entities.Artist.getArtistList(testToken);
+				let albumList = await entities.Album.getAlbumList(getToken());
+				let artistList = await entities.Artist.getArtistList(
+					getToken()
+				);
 				utils.renderPage(
 					res,
 					"man_album.ejs",
@@ -156,11 +163,11 @@ class AlbumHandler {
 			let id = utils.getPath(req.url, 2);
 			if (utils.getPath(req.url, 3) == "cover") {
 				api.forward(req, res, `/albums/${id}/cover`, {
-					token: testToken,
+					token: getToken(),
 				});
 			} else if (utils.getPath(req.url, 3) == undefined) {
-				let album = await entities.Album.getAlbumById(id, testToken);
-				await album.getTrackList(testToken);
+				let album = await entities.Album.getAlbumById(id, getToken());
+				await album.getTrackList(getToken());
 
 				utils.renderPage(
 					res,
@@ -175,13 +182,13 @@ class AlbumHandler {
 		let id = utils.getPath(req.url, 2);
 		//upload cover
 		if (id && utils.getPath(req.url, 3) == "cover") {
-			api.forward(req, res, `/albums/${id}/cover`, { token: testToken });
+			api.forward(req, res, `/albums/${id}/cover`, { token: getToken() });
 		} else if (id == undefined) {
 			let body = JSON.parse(await getBody(req));
 			let result = JSON.parse(
 				await api.doPost(
 					"/albums",
-					{ token: testToken },
+					{ token: getToken() },
 					JSON.stringify(body)
 				)
 			);
@@ -202,7 +209,7 @@ class AlbumHandler {
 		let id = utils.getPath(req.url, 2);
 		console.log("[Log][PUT_Album][BODY]" + body);
 		let result = JSON.parse(
-			await api.doPut(`/albums/${id}`, { token: testToken }, body)
+			await api.doPut(`/albums/${id}`, { token: getToken() }, body)
 		);
 		console.log("[Log][PUT_Album][RES]" + result);
 		if (result.status == "success") {
@@ -219,8 +226,8 @@ class TrackHandler {
 	static async getHandler(req, res, man = 0) {
 		let mode = getMode(req);
 		if (man == 1) {
-			let trackList = await entities.Track.getTrackList(testToken);
-			// let artistList = await entities.Artist.getArtistList(testToken);
+			let trackList = await entities.Track.getTrackList(getToken());
+			// let artistList = await entities.Artist.getArtistList(getToken());
 			utils.renderPage(
 				res,
 				"man_track.ejs",
@@ -231,7 +238,7 @@ class TrackHandler {
 			let id = utils.getPath(req.url, 2);
 			if (utils.getPath(req.url, 3) == "audio") {
 				api.forward(req, res, `/tracks/${id}/audio`, {
-					token: testToken,
+					token: getToken(),
 				});
 			} else {
 			}
@@ -246,9 +253,6 @@ class IndexHandler {
 	static async getHandler(req, res) {
 		utils.renderPage(res, "index.html", null);
 	}
-	static async postHandler(req, res) {}
-	static async putHandler(req, res) {}
-	static async deleteHandler(req, res) {}
 }
 
 class LibraryHandler {
@@ -264,11 +268,12 @@ class LibraryHandler {
 exports.LoginHandler = class {
 	static async getHandler(req, res, status = 0) {
 		var data = { status: status };
-		utils.renderPage(res, "login.ejs", data);
+		// utils.renderPage(res, "login.ejs", data);
+		res.render("login", data);
 	}
 	static async postHandler(req, res) {
 		var post = qs.parse(await getBody(req));
-		
+
 		let result = JSON.parse(
 			await api.doPost(
 				"/authenticate",
@@ -283,7 +288,7 @@ exports.LoginHandler = class {
 			`[Log][Login]Login attempt with email=${post.username}, password=${post.password}`
 		);
 		if (result.status != undefined) {
-			this.getHandler(req, res, 1)
+			this.getHandler(req, res, 1);
 		} else {
 			res.setHeader(
 				"Set-Cookie",
@@ -293,19 +298,16 @@ exports.LoginHandler = class {
 				})
 			);
 			if (result.role == 0) {
-				utils.redirect(res, "/management/users");
+				res.redirect(301, "/management/users");
 			} else if (result.role == 2) {
-				utils.redirect(res, "/library");
+				res.redirect(301, "/library");
 			}
 		}
 	}
-	static async putHandler(req, res) {}
-	static async deleteHandler(req, res) {}
 };
 
 exports.LogoutHandler = class {
 	static async getHandler(req, res) {
-		console.log("???????")
 		res.setHeader(
 			"Set-Cookie",
 			cookie.serialize("token", "", {
@@ -313,7 +315,7 @@ exports.LogoutHandler = class {
 				maxAge: 60 * 60 * 24 * 30,
 			})
 		);
-		utils.redirect(res, "/login");
+		res.redirect(301, "/login");
 	}
 };
 
@@ -325,52 +327,35 @@ exports.RegisterHandler = class {
 	static async postHandler(req, res) {
 		var post = qs.parse(await getBody(req));
 		console.log(post);
-		let result = JSON.parse (await api.doPost(
-			"/register",
-			null,
-			JSON.stringify({
-				email: post.email,
-				"display_name": post.name,
-				password: post.password,
-				role: 3
-			})
-		));
-		if(result.status == "success"){
-			utils.redirect(res, "/login");
-		}else{
-			this.getHandler(req, res, 1)
+		let result = JSON.parse(
+			await api.doPost(
+				"/register",
+				null,
+				JSON.stringify({
+					email: post.email,
+					display_name: post.name,
+					password: post.password,
+					role: 3,
+				})
+			)
+		);
+		if (result.status == "success") {
+			res.redirect(301, "/login");
+		} else {
+			this.getHandler(req, res, 1);
 		}
 		//login(post.username, post.password);
 	}
-	static async putHandler(req, res) {}
-	static async deleteHandler(req, res) {}
 };
-
-class AssetsHandler {
-	static async getHandler(req, res) {
-		var filePath = url.parse(req.url).pathname;
-		var file = fs.readFileSync("src/wwwroot" + filePath, "UTF-8");
-		res.statusCode = 200;
-		switch (path.extname(filePath)) {
-			case ".js":
-				res.setHeader("Content-Type", "	application/javascript");
-				break;
-			case ".css":
-				res.setHeader("Content-Type", "	text/css");
-				break;
-			default:
-				res.setHeader("Content-Type", "text");
-				break;
-		}
-		res.write(file);
-		res.end();
-	}
-	static async postHandler(req, res) {}
-}
 
 class ManagementHandler {
 	static async getHandler(req, res) {
-		switch (utils.getPath(req.url, 2)) {
+		// if (!res.params) {
+		// 	res.redirect(301, "/management/users");
+		// 	return;
+		// }
+		console.log(req.params)
+		switch (req.params["entity"]) {
 			case "albums":
 				AlbumHandler.getHandler(req, res, 1);
 				break;
@@ -380,7 +365,6 @@ class ManagementHandler {
 			/*case "tracks":
 				TrackHandler.getHandler(req, res, 1);*/
 			case undefined:
-				utils.redirect(res, "/management/users");
 				break;
 			default:
 				console.log(utils.getPath(req.url, 2));
@@ -394,9 +378,9 @@ exports.SearchHandler = class {
 	static async getHandler(req, res) {
 		let mode = getMode(req);
 		let keyword = utils.getURLQuery(req.url, "keyword");
-		switch (utils.getPath(req.url, 2)) {
+		switch (req.params["entity"]) {
 			case "albums": {
-				let albumList = entities.Album.searchAlbum(keyword, testToken);
+				let albumList = entities.Album.searchAlbum(keyword, getToken());
 				utils.renderPage(
 					res,
 					"search.ejs",
@@ -408,7 +392,7 @@ exports.SearchHandler = class {
 			case "artists": {
 				let artistList = entities.Artist.searchArtist(
 					keyword,
-					testToken
+					getToken()
 				);
 				utils.renderPage(
 					res,
@@ -419,7 +403,7 @@ exports.SearchHandler = class {
 				break;
 			}
 			case "tracks": {
-				let trackList = entities.Track.searchTrack(keyword, testToken);
+				let trackList = entities.Track.searchTrack(keyword, getToken());
 				utils.renderPage(
 					res,
 					"search.ejs",
@@ -431,15 +415,15 @@ exports.SearchHandler = class {
 			case undefined:
 				let albumList = await entities.Album.searchAlbum(
 					keyword,
-					testToken
+					getToken()
 				);
 				let artistList = await entities.Artist.searchArtist(
 					keyword,
-					testToken
+					getToken()
 				);
 				let trackList = await entities.Track.searchTrack(
 					keyword,
-					testToken
+					getToken()
 				);
 				utils.renderPage(
 					res,
@@ -463,8 +447,8 @@ exports.SearchHandler = class {
 exports.AlbumHandler = AlbumHandler;
 exports.ArtistHandler = ArtistHandler;
 exports.TrackHandler = TrackHandler;
-exports.AssetsHandler = AssetsHandler;
 exports.IndexHandler = IndexHandler;
 exports.LibraryHandler = LibraryHandler;
 exports.ManagementHandler = ManagementHandler;
 exports.UserHandler = UserHandler;
+exports.APIForwarderHandler = APIForwarderHandler;

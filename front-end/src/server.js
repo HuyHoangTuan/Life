@@ -4,63 +4,78 @@ const path = require("path");
 
 const ws = require("./websocket");
 const utils = require("./utils");
-const handlers = require("./handlers");
-const mux = require("./mux")
+const express = require("express");
 
-const httpServer = http.createServer(handleRequest);
-const wsServer = ws.initWebSocket(httpServer);
+const handlers = require("./handlers");
+const LoginHandler = require("./handlers/loginHandler")
+
+const server = express();
+const port = 6969;
+
+// const httpServer = http.createServer(handleRequest);
+// const wsServer = ws.initWebSocket(httpServer);
 
 const handlerMap = new Map();
 
-//URL : /[handler]/[ID]?[param]=[value]&[param]=[value]
+exports.init = () => {
+	handlerMap.set("/", handlers.IndexHandler);
+	// handlerMap.set("/assets", handlers.AssetsHandler);
+	handlerMap.set("/login", LoginHandler.Handler);
+	handlerMap.set("/logout", handlers.LogoutHandler);
+	handlerMap.set("/signup", handlers.RegisterHandler);
+	handlerMap.set("/users", handlers.UserHandler);
 
-function handleRequest(req, res) {
-	const handler = utils.getPath(req.url);
-	if (handlerMap.has(handler)) {
-		//console.log("Handling " + handler);
-		var handlerObj = handlerMap.get(handler);
+	handlerMap.set("/artists", handlers.ArtistHandler);
+	handlerMap.set("/artists/:id(\\d+)", handlers.ArtistHandler);
 
-		switch (req.method) {
-			case "GET":
-				handlerObj.getHandler(req, res);
-				break;
-			case "POST":
-				handlerObj.postHandler(req, res);
-				break;
-			case "PUT":
-				handlerObj.putHandler(req, res);
-				break;
-			case "DELETE":
-				handlerObj.deleteHandler(req, res);
-			default:
-				break;
+	handlerMap.set("/albums", handlers.AlbumHandler);
+	handlerMap.set("/albums/:id(\\d+)", handlers.AlbumHandler);
+
+	handlerMap.set("/tracks", handlers.TrackHandler);
+
+	handlerMap.set("/library", handlers.LibraryHandler);
+	handlerMap.set("/search", handlers.SearchHandler);
+
+	handlerMap.set("/management/:entity(users|albums)", handlers.ManagementHandler);
+	// handlerMap.set("/management/albums/:id(\\d+)", handlers.ManagementHandler);
+	handlerMap.set("/management/:entity(users|albums)/:id(\\d+)", handlers.ManagementHandler);
+
+	handlerMap.set("/albums/:id(\\d+)/cover", handlers.APIForwarderHandler);
+	handlerMap.set("/users/:id(\\d+)/avatar", handlers.APIForwarderHandler);
+	handlerMap.set("/tracks/:id(\\d+)/audio", handlers.APIForwarderHandler);
+
+	server.set("view engine", "ejs");
+	server.set("views", "src/wwwroot");
+	server.use("/assets", express.static("src/wwwroot/assets"));
+
+	for (const [key, value] of handlerMap.entries()) {
+		let route = server.route(key);
+		if (value.allHandler != undefined) {
+			console.log("[Log][Init]Forwarding " + key);
+			route.all(value.allHandler);
+			continue;
+		}
+		if (value.getHandler != undefined) {
+			console.log("[Log][Init]Mapped [GET] " + key);
+			route.get(value.getHandler);
+		}
+		if (value.postHandler != undefined) {
+			console.log("[Log][Init]Mapped [POST] " + key);
+			route.post(value.postHandler);
+		}
+		if (value.putHandler != undefined) {
+			console.log("[Log][Init]Mapped [PUT] " + key);
+			route.put(value.putHandler);
+		}
+		if (value.deleteHandler != undefined) {
+			console.log("[Log][Init]Mapped [DELETE] " + key);
+			route.delete(value.deleteHandler);
 		}
 	}
-}
-
-exports.init = () => {
-	handlerMap.set("", handlers.IndexHandler);
-	handlerMap.set("assets", handlers.AssetsHandler);
-	handlerMap.set("login", handlers.LoginHandler);
-	handlerMap.set("logout", handlers.LogoutHandler);
-	handlerMap.set("signup", handlers.RegisterHandler);
-	handlerMap.set("users", handlers.UserHandler);
-
-	handlerMap.set("artists", handlers.ArtistHandler);
-	handlerMap.set("albums", handlers.AlbumHandler);
-	handlerMap.set("tracks", handlers.TrackHandler);
-	
-	handlerMap.set("library", handlers.LibraryHandler);
-	handlerMap.set("search", handlers.SearchHandler);
-	// handlerMap.set('/playlist', playlistHandler);
-
-	handlerMap.set("management", handlers.ManagementHandler);
-
-    router = new mux.Router()
-    // router.map("/some", a)
 };
+
 exports.start = () => {
-	httpServer.listen("6969", "0.0.0.0", () => {
+	server.listen("6969", "0.0.0.0", () => {
 		console.log(`[Log][Server]Server is running.`);
 	});
 };

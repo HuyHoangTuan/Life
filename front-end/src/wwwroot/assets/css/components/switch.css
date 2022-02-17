@@ -1,0 +1,46 @@
+.wrapper {
+	position: relative;
+	height: 0.5rem;
+    width: 1em;
+	margin: 0.5rem;
+}
+
+.wrapper > * {
+	position: absolute;
+	display: block;
+	height: 0.5rem;
+}
+
+.bgr {
+	margin: 0 -0.25rem;
+	width: calc(100% + .5rem);
+
+	border-radius: 1000rem;
+	background: var(--background-light);
+	box-shadow: var(--inset-shadow);
+
+    transition: background .1s;
+}
+
+.checked > .bgr {
+	background: var(--accent);
+}
+
+.thumb {
+	top: 50%;
+    left: 0;
+
+	height: 0.8rem;
+	aspect-ratio: 1;
+
+	background: var(--main);
+	border-radius: 50%;
+	box-shadow: var(--shadow-small);
+
+	transform: translate(-50%, -50%);
+    transition: left .1s
+}
+
+.checked > .thumb {
+    left: 100%;
+}

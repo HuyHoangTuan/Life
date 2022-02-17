@@ -1,13 +1,18 @@
 <section>
     <h2>Album Metadata</h2>
-    <form id="dialog-detail" action="/albums/<%= album.id %>" method="PUT">
+    <form id="dialog-detail" action="/albums/<%= album.id %>" method="PUT" onreset="resetTForm(this)">
         <div class="dialog-content">
             <div class="dialog-image">
-                <img class="cover" field="album-cover" src="/albums/<%= album.id %>/cover"
+                <div>
+                    <img class="cover" field="album-cover" src="/albums/<%= album.id %>/cover"
                     origin-src="/albums/<%= album.id %>/cover">
-                <input type="file" accept="image/*" name="album-cover" value=""
-                    target-action="/albums/<%= album.id %>/cover" target-field="album-cover"
-                    onchange="previewImg(this)">
+                    <label for="cover-file">
+                        <input type="file" id="cover-file" accept="image/*" name="album-cover" value=""
+                        target-action="/albums/<%= album.id %>/cover" target-field="album-cover"
+                        onchange="previewImg(this)">
+                        <h3>Change cover</h3>
+                    </label>
+                </div>
             </div>
             <div class="grid-dialog">
                 <span class="none">ID</span>
@@ -57,8 +62,8 @@
             <h3>=</h3>
         </div>
         <% album.tracks.forEach(track=> { %>
-            <div track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
-                track-artist-name="<%= track.artist_name %>" onclick="" draggable="true">
+            <div onclick="showDetailDialog(this)" track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
+                track-artist-name="<%= track.artist_name %>" track-audio="<%= track.id %>" onclick="" draggable="true">
                 <span>
                     <%= track.track_num %>
                 </span>
@@ -73,8 +78,96 @@
         <% }) %>
     </div>
     <div class="flex-row-reverse">
-        <button>
-            Save
+        <button onclick="toggleDialog('dialog-add')">
+            Add Track
         </button>
     </div>
 </section>
+
+<form class="dialog" id="dialog-add" method="POST" action="/tracks" onsubmit="return false;">
+    <span style="display: none;">
+        <input value="<%= album.id %>" name="album-id" readonly>
+    </span>
+    <h1>Add track</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="title">
+            <span>Audio</span>
+            <div class="audio-preview">
+                <audio field="preview-audio" src=""></audio>
+                <div class="controller">
+                    <button class="icon-font bt-play">
+                        play_arrow
+                    </button>
+                    <range-slider class="sl-time"></range-slider>
+                    <!-- <button class="icon-font">
+                        volume_up
+                    </button>
+                    <range-slider></range-slider> -->
+                </div>
+                <div class="button">
+                    <label style="display: block; height: 100%;">
+                        <input
+                            type="file"
+                            accept="audio/mp3"
+                            style="display: none"
+                            target-field="preview-audio"
+                            onchange="loadLocalAudio(this)"
+                        />
+                        <span class="icon-font">file_upload</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-controls">
+        <input type="reset" value="Reset">
+        <button onclick="submitForm('dialog-add')">Add</button>
+        <button onclick="toggleDialog('dialog-add', resetForm('dialog-add'))">Cancel</button>
+    </div>
+</form>
+
+<form class="dialog" id="dialog-detail" method="PUT" action="/tracks" onsubmit="return false;">
+    <span style="display: none;">
+        <input value="<%= album.id %>" name="album-id" readonly>
+    </span>
+    <h1>Edit track</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="title" field="track-title">
+            <span>Audio</span>
+            <div class="audio-preview">
+                <audio field="preview-audio" src=""  field="track-title"></audio>
+                <div class="controller">
+                    <button class="icon-font bt-play">
+                        play_arrow
+                    </button>
+                    <range-slider class="sl-time"></range-slider>
+                    <!-- <button class="icon-font">
+                        volume_up
+                    </button>
+                    <range-slider></range-slider> -->
+                </div>
+                <div class="button">
+                    <label style="display: block; height: 100%;">
+                        <input
+                            type="file"
+                            accept="audio/mp3"
+                            style="display: none"
+                            target-field="preview-audio"
+                            onchange="loadLocalAudio(this)"
+                        />
+                        <span class="icon-font">file_upload</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-controls">
+        <input type="reset" value="Reset">
+        <button onclick="submitForm('dialog-add')">Add</button>
+        <button onclick="toggleDialog('dialog-add', resetForm('dialog-add'))">Cancel</button>
+    </div>
+</form>

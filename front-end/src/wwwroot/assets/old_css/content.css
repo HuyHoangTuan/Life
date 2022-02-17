@@ -2,12 +2,8 @@ section:first-child > h2 {
 	padding-top: 0.25rem;
 }
 
-section > h2 {
-	padding-bottom: 0.5rem;
-}
-
-section {
-	padding-bottom: 0.75rem;
+section > div {
+	/* margin: 1rem .5rem; */
 }
 
 [class|="info"] > img {
@@ -17,12 +13,11 @@ section {
 	border-radius: 5px;
 }
 
-.info-artist > img,
-.avatar {
+.info-artist > img , .avatar{
 	border-radius: 50%;
 }
 
-.cover {
+.cover{
 	border-radius: 5px;
 }
 
@@ -89,14 +84,20 @@ section {
 }
 
 .content {
-	padding: 7px 7px 15px;
-	border-radius: 10px;
+	padding: 5px;
+	border-radius: 5px;
 	cursor: pointer;
 }
 
 .content:hover {
 	/* background-color: hsl(0, 0%, 16%); */
-	background: var(--background-hl);
+	background: linear-gradient(
+			140deg,
+			hsl(0, 0%, 24%, 0.5) 0%,
+			hsl(0, 0%, 16%, 0.9) 100%
+		),
+		linear-gradient(180deg, hsl(0, 0%, 24%, 0.8) 85%, hsl(0, 0%, 12%) 100%);
+	box-shadow: var(--shadow);
 }
 
 .content > img:not(.avatar) {
@@ -140,6 +141,10 @@ section {
 
 #track-list > div > span:nth-child(3) {
 	text-align: right;
+	font-family: "Azeret Mono", "Barlow", "Arial", sans-serif;
+	font-size: 0.96rem;
+	letter-spacing: 0;
+	line-height: 2.25rem;
 }
 
 #man-user-list > div {
@@ -147,100 +152,42 @@ section {
 }
 
 #man-album-list > div {
-	grid-template-columns: 3ch 1fr 1fr 0.5fr 13ch;
+	grid-template-columns: 3ch 1fr 1fr .5fr 13ch;
 }
 
 .grid-searchbar {
 	grid-template-columns: 5ch auto 5ch;
-	padding: 0.16rem 0 2rem;
-	column-gap: 1rem;
-	align-items: center;
+	padding: .16rem 0 2rem;
+    column-gap: 1rem;
+    align-items: center;
 }
 
-.grid-searchbar > div:nth-child(2) {
-	text-align: right;
+.grid-searchbar > div:nth-child(2){
+    text-align: right;
 }
 
-.grid-dialog {
-	grid-template-columns: 1fr 5fr;
-	column-gap: 1rem;
-	row-gap: 0.5rem;
-	align-items: center;
-	width: 100%rs;
+.grid-dialog{
+    grid-template-columns: 1fr 5fr;
+    column-gap: 1rem;
+    row-gap: .5rem;
+    align-items: center;
 }
 
-.grid-dialog > * {
-	height: 1.75rem;
+.grid-dialog > *{
+    height: 1.75rem;
 }
 
-.grid-dialog > *:nth-child(2n + 1) {
-	text-align: right;
-	line-height: calc(1.75rem - 0.1em);
+.grid-dialog > *:nth-child(2n + 1){
+    text-align: right;
+    line-height: calc(1.75rem - 0.1em);
 }
 
-.dialog-image {
+.dialog-image{
 	height: 150px;
 	padding-right: 20px;
 }
 
-.dialog-image > div {
-	position: relative;
-	height: 100%;
-}
-
-.dialog-image img {
+.dialog-image > img{
 	height: 100%;
 	aspect-ratio: 1;
-}
-
-.dialog-image label {
-	position: absolute;
-	top: 0;
-
-	display: block;
-	height: 100%;
-	aspect-ratio: 1;
-	border-radius: 5px;
-
-	line-height: 150px;
-	text-align: center;
-
-	color: white;
-
-	cursor: pointer;
-	opacity: 0;
-}
-
-.dialog-image label:hover {
-	background: hsla(0, 0%, 18%, 0.7);
-	backdrop-filter: grayscale(80%);
-	opacity: 1;
-}
-
-.dialog-image label > input {
-	display: none;
-}
-
-img {
-	border: 1px solid var(--background-hl);
-}
-
-label {
-	cursor: pointer;
-}
-
-.audio-preview .button:hover {
-	color: var(--accent);
-}
-
-.audio-preview audio[src=""] ~ .controller {
-	display: none;
-}
-
-.audio-preview .button label::after {
-	content: "Change audio file";
-}
-
-.audio-preview audio[src=""] ~ .button label::after {
-	content: "Choose audio file";
 }

@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@200&family=Barlow+Condensed:wght@300&family=Barlow+Semi+Condensed:wght@400&family=Barlow:wght@400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons+Round");
-@import url("font.css");
 
 :root.darkmode {
 	--bar-height: 2.5rem;
@@ -43,13 +42,38 @@
 :root {
 	--bar-height: 2.5rem;
 
-	--background-hl: hsl(0, 0%, 88%);
-	--background: hsl(0, 0%, 96%);
-	--background-ll: hsl(0, 0%, 100%);
+	--background: hsl(0, 0%, 88%);
+	--background-light: hsl(0, 0%, 96%);
 
 	--main: hsl(0, 0%, 28%);
 
 	--accent: hsl(214, 90%, 46%);
+
+	--shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+	--shadow-small: 0px 0px 3px 0px rgba(0, 0, 0, 0.4);
+	--gradient: linear-gradient(
+			140deg,
+			hsl(0, 0%, 24%, 0.5) 0%,
+			hsl(0, 0%, 16%, 0.9) 100%
+		),
+		linear-gradient(180deg, hsl(0, 0%, 24%, 0.8) 85%, hsl(0, 0%, 12%) 100%);
+
+	--inset-shadow: inset 2px 2px 4px -2px rgba(0, 0, 0, 0.2);
+	--inset-gradient: linear-gradient(
+		140deg,
+		hsl(0, 0%, 98%, 0.9) 0%,
+		hsl(0, 0%, 96%, 0.9) 30%,
+		hsl(0, 0%, 94%, 0.9) 85%,
+		hsl(0, 0%, 98%, 0.8) 100%
+	);
+
+	--gradient: linear-gradient(
+			140deg,
+			hsl(0, 0%, 86%, 0.5) 0%,
+			hsl(0, 0%, 82%, 0.9) 100%
+		),
+		linear-gradient(180deg, hsl(0, 0%, 82%, 0.8) 85%, hsl(0, 0%, 72%) 100%);
+	--shadow: 3px 3px 5px -2px rgba(0, 0, 0, 0.2);
 }
 
 * {
@@ -60,9 +84,9 @@
 }
 
 html {
-	font-size: 15px;
-	font-weight: 300;
-	letter-spacing: 0.097rem;
+	font-size: 16px;
+	font-weight: 400;
+	letter-spacing: 0.077rem;
 	background-color: var(--background);
 }
 
@@ -76,13 +100,13 @@ html {
 	}
 }
 
-main {
-	position: relative;
+body {
+	font-family: "Barlow", "Arial", sans-serif;
+	color: var(--main);
 }
 
-body {
-	font-family: "_Noto Sans", sans-serif;
-	color: var(--main);
+main {
+	position: relative;
 }
 
 p {
@@ -90,28 +114,22 @@ p {
 }
 
 h1 {
-	/* font-family: "_Noto Sans EC", "Arial", sans-serif; */
-	font-stretch: 50%;
-	font-size: 1.5rem;
-	font-weight: 500;
-	letter-spacing: 0.001rem;
+	font-family: "Barlow Condensed", "Arial", sans-serif;
+	font-size: 1.57rem;
+	letter-spacing: 0.003rem;
 }
 
 h2 {
-	/* font-family: "_Noto Sans C", "Arial", sans-serif; */
-	font-stretch: 70%;
-	font-size: 1.35rem;
-	font-weight: 450;
-	letter-spacing: 0.037rem;
+	font-family: "Barlow Semi Condensed", "Arial", sans-serif;
+	font-size: 1.3rem;
+	letter-spacing: 0.018rem;
 }
 
 h3,
 th {
-	/* font-family: "_Noto Sans SC"; */
-	font-stretch: 90%;
-	font-size: 1.15rem;
-	font-weight: 400;
-	letter-spacing: 0.046rem;
+	font-size: 1.06rem;
+	font-weight: 600;
+	letter-spacing: 0.05rem;
 }
 
 h4,
@@ -143,18 +161,24 @@ input[type="reset"] {
 	line-height: 1.75rem;
 
 	/* background: hsl(0, 0%, 24%); */
-	background: var(--background-hl);
+	background: var(--gradient);
 	color: var(--main);
 	border: none;
 	border-radius: 5px;
+	box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 button:hover,
 input[type="button"]:hover,
 input[type="reset"]:hover {
 	/* background: hsl(223, 68%, 35%); */
-	background: var(--accent);
-	color: hsl(0, 0%, 96%);
+	background: linear-gradient(
+			180deg,
+			hsl(0, 0%, 24%, 0) 85%,
+			hsl(0, 0%, 12%, 0.3) 100%
+		),
+		linear-gradient(140deg, hsl(223, 80%, 60%) 0%, hsl(223, 80%, 32%) 100%);
+	color: hsl(0, 0%, 88%);
 }
 
 input[type="text"],
@@ -164,7 +188,8 @@ select {
 	padding: 0rem 0.75rem;
 
 	color: var(--main);
-	background: var(--background-ll);
+	background: var(--background);
+	background: var(--inset-gradient);
 	border-radius: 5px;
 	box-shadow: var(--inset-shadow);
 }
@@ -188,7 +213,11 @@ select {
 }
 
 .grid-table > div > *:first-child {
+	font-family: "Azeret Mono", "Barlow", "Arial", sans-serif;
 	text-align: right;
+	font-size: 0.96rem;
+	letter-spacing: 0;
+	line-height: 2.25rem;
 }
 
 .flex-form {
@@ -228,7 +257,9 @@ li {
 }
 
 .number {
-	font-size: 0.85rem;
+	font-family: "Azeret Mono", "Barlow", "Arial", sans-serif;
+	font-size: 0.96rem;
+	letter-spacing: 0;
 }
 
 .upper-text {
@@ -275,7 +306,7 @@ range-slider {
 	background: var(--background);
 	border-radius: 10px;
 
-	/* transition: opacity 0.1s linear, z-index 0s 0.1s; */
+	transition: opacity 0.1s linear, z-index 0s 0.1s;
 	opacity: 1;
 	z-index: initial;
 }
@@ -297,14 +328,14 @@ range-slider {
 	width: 1000vw;
 	height: 1000vh;
 
-	background: hsla(0, 0%, 18%, 0.7);
-	backdrop-filter: grayscale(80%);
+	background-color: hsl(0, 0%, 18%, 0.4);
+	backdrop-filter: blur(10px);
 }
 
 .dialog.hidden {
 	z-index: -10;
 	opacity: 0;
-	/* transition: opacity 0.1s linear, z-index 0s; */
+	transition: opacity 0.1s linear, z-index 0s;
 }
 
 /* .dialog > h1 {
@@ -340,22 +371,4 @@ range-slider {
 
 #button-play.paused::before {
 	content: "pause";
-}
-
-.audio-preview {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	height: 2rem !important;
-}
-
-.audio-preview > *:not(range-slider) {
-	margin: 0 5px;
-	padding: 0;
-	height: 2rem;
-	background: none;
-}
-
-.audio-preview label {
-	line-height: 2rem;
 }

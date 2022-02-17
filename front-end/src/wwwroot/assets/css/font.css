@@ -1,0 +1,37 @@
+@font-face {
+	font-family: "_Noto Sans";
+	src: url("../font/NotoSansDisplay.ttf") format('truetype');
+    font-weight: 1 999;
+    font-stretch: 1% 500%;;
+}
+
+/* @font-face {
+	font-family: "_Noto Sans SC";
+	src: url("../font/NotoSans/NotoSans-SemiCondensedLight.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+
+
+@font-face {
+	font-family: "_Noto Sans C";
+	src: url("../font/NotoSans/NotoSans-CondensedLight.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: "_Noto Sans EC";
+	src: url("../font/NotoSans/NotoSans-ExtraCondensedLight.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+	font-family: "_Noto Sans Mono";
+	src: url("../font/NotoSansMono/NotoSansMono-Light.ttf");
+    font-weight: 100;
+    font-style: normal;
+}
+ */
+

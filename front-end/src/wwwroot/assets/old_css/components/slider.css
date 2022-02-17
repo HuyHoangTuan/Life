@@ -17,9 +17,8 @@ input {
 	border-radius: 1000rem;
 }
 .track {
-	background: hsla(0, 0%, 100%, 0.75);
-	/* border: inset 1px solid var(--background-hl); */
-	box-shadow: inset 0 0 0 1px var(--background-hl);
+	background: var(--background-light);
+	box-shadow: var(--inset-shadow);
 }
 .filled {
 	margin: 0 -0.25rem;
@@ -40,11 +39,6 @@ input {
 	box-shadow: var(--shadow-small);
 
 	transform: translate(-50%, -50%);
-	opacity: 0;
-}
-
-.wrapper:hover .thumb{
-	opacity: 1;
 }
 
 input,

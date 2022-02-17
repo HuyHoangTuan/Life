@@ -385,6 +385,90 @@ public class accountcontroller
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
     }
+
+    @GetMapping("/api/users/{id}/artists/favorite")
+    public ResponseEntity<?> getAllFavArtist(@RequestParam("token") String token,
+                                             @PathVariable("id") long user_id)
+    {
+        System.out.println(LifeApplication.GET+" "+"/api/users/"+user_id + "/artists/favorite "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(accountService.getAllFavArtist(user_id));
+    }
+    @PostMapping("/api/users/{id}/artists/favorite")
+    public ResponseEntity<?> addNewFavArtist(@RequestParam("token") String token,
+                                             @PathVariable("id") long user_id,
+                                             @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+" "+"/api/users/"+user_id + "/artists/favorite "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long artist_id = -1;
+        if(body.get("artist_id") != null) artist_id = Long.parseLong(body.get("artist_id"));
+        if(artist_id == -1)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong artist_id\"}");
+        accountService.addNewFavArtist(user_id, artist_id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
+    @DeleteMapping("/api/users/{id}/artists/favorite")
+    public ResponseEntity<?> deleteFavArtist(@RequestParam("token") String token,
+                                             @PathVariable("id") long user_id,
+                                             @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.DELETE+" "+"/api/users/"+user_id + "/artists/favorite "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long artist_id = -1;
+        if(body.get("artist_id") != null) artist_id = Long.parseLong(body.get("artist_id"));
+        if(artist_id == -1)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong artist_id\"}");
+        accountService.deleteFavArtist(user_id, artist_id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
 }
 
 

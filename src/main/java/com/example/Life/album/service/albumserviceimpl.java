@@ -2,11 +2,14 @@ package com.example.Life.album.service;
 
 import com.example.Life.LifeApplication;
 import com.example.Life.album.entity.album;
+import com.example.Life.album.entity.favorite_album;
 import com.example.Life.album.model.albummodel;
 
+import com.example.Life.album.model.favalbummodel;
 import com.example.Life.album.model.songalbummodel;
 import com.example.Life.album.model.songmodel;
 import com.example.Life.album.repo.albumrepo;
+import com.example.Life.album.repo.favorite_albumrepo;
 import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class albumserviceimpl implements albumservice
     @Autowired
     private albumrepo albumRepo;
 
+    @Autowired
+    private favorite_albumrepo favoriteAlbumrepo;
+
     @Override
     public List<albummodel> getAllAlbums()
     {
@@ -37,12 +43,7 @@ public class albumserviceimpl implements albumservice
     @Override
     public albummodel getAlbum(long album_id)
     {
-        List<albummodel> listAlbums = getAllAlbums();
-        for(albummodel current: listAlbums)
-        {
-            if(current.getAlbum_id() == album_id) return current;
-        }
-        return null;
+        return albumRepo.findAlbum(album_id).get(0);
     }
     @Override
     public List<albummodel> getArtistAlbum(long artist_id)
@@ -96,5 +97,46 @@ public class albumserviceimpl implements albumservice
         return albumRepo.save(currentAlbum);
     }
 
+    @Override
+    public List<albummodel> getAllFavAlbum(long user_id)
+    {
+        List<favalbummodel> listFavAlbum = favoriteAlbumrepo.findALlFavAlbum(user_id);
+        List<albummodel> output = new ArrayList<>();
+        for(favalbummodel current : listFavAlbum)
+        {
+            if(current.getActive() ==false) continue;
+            output.add(getAlbum(current.getAlbum_id()));
+        }
+        return output;
+    }
 
+    @Override
+    public favorite_album addNewFavAlbum(long user_id, long album_id)
+    {
+        List<favalbummodel> listFavAlbum = favoriteAlbumrepo.findFavoriteAlbumByUserIdAndAlbumId(user_id, album_id);
+        for(favalbummodel current : listFavAlbum)
+        {
+            favorite_album fa = favoriteAlbumrepo.findById(current.getId());
+            fa.setActive(true);
+            return favoriteAlbumrepo.save(fa);
+        }
+        favorite_album fa = new favorite_album();
+        fa.setActive(true);
+        fa.setAlbum_id(album_id);
+        fa.setCreator_id(user_id);
+        return favoriteAlbumrepo.save(fa);
+    }
+
+    @Override
+    public favorite_album deleteFavAlbum(long user_id, long album_id)
+    {
+        List<favalbummodel> listFavAlbum = favoriteAlbumrepo.findFavoriteAlbumByUserIdAndAlbumId(user_id, album_id);
+        for(favalbummodel current : listFavAlbum)
+        {
+            favorite_album fa = favoriteAlbumrepo.findById(current.getId());
+            fa.setActive(false);
+            return favoriteAlbumrepo.save(fa);
+        }
+        return null;
+    }
 }

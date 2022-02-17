@@ -340,4 +340,86 @@ public class albumcontroller
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
     }
+
+    @GetMapping("/api/users/{id}/albums/favorite")
+    public ResponseEntity<?> getAllFavAlbum(@RequestParam("token") String token, @PathVariable("id") long user_id)
+    {
+        System.out.println(LifeApplication.GET+" /api/users/"+user_id+"/albums/favorite " + token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(albumService.getAllFavAlbum(user_id));
+    }
+    @PostMapping("/api/users/{id}/albums/favorite")
+    public ResponseEntity<?> addNewFavAlbum(@RequestParam("token") String token, @PathVariable("id") long user_id,
+                                            @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+" /api/users/"+user_id+"/albums/favorite "+ token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long album_id = -1;
+        if(body.get("album_id")!=null) album_id = Long.parseLong(body.get("album_id"));
+        if(album_id == -1)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong album_id\"}");
+        albumService.addNewFavAlbum(user_id, album_id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
+    @DeleteMapping("/api/users/{id}/albums/favorite")
+    public ResponseEntity<?> deleteNewFavAlbum(@RequestParam("token") String token, @PathVariable("id") long user_id,
+                                            @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+" /api/users/"+user_id+"/albums/favorite "+ token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long album_id = -1;
+        if(body.get("album_id")!=null) album_id = Long.parseLong(body.get("album_id"));
+        if(album_id == -1)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong album_id\"}");
+        albumService.deleteFavAlbum(user_id, album_id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
 }

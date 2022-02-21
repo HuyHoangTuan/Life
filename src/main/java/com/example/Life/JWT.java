@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import javax.xml.crypto.Data;
 import java.security.Key;
 import java.util.Date;
 
@@ -17,9 +18,8 @@ public class JWT
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-
-        byte[] secretkeyBytes = DatatypeConverter.parseBase64Binary(SECRET_KEY);
-        Key signingKey = new SecretKeySpec(secretkeyBytes, signatureAlgorithm.getJcaName());
+        
+        Key signingKey = new SecretKeySpec(DatatypeConverter.printBase64Binary(SECRET_KEY.getBytes()).getBytes(), signatureAlgorithm.getJcaName());
 
         JwtBuilder builder = Jwts.builder()
                 .setHeaderParam("typ","JWT")

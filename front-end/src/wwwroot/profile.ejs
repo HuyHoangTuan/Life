@@ -1,43 +1,54 @@
 <div>
     <div class="info-artist">
-        <img
-            src="https://img.discogs.com/T3McbvJdMo10tReKFTdglFNm9us=/600x600/smart/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/A-82730-1419714988-9675.jpeg.jpg">
-        <h1><%= artist.name %>
+        <!-- <img
+            src="https://img.discogs.com/T3McbvJdMo10tReKFTdglFNm9us=/600x600/smart/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/A-82730-1419714988-9675.jpeg.jpg"> -->
+        <h1>Profile
         </h1>
         <!-- <h2>The Beatles</h2>
         <h3>The Beatles</h3>
         <p>The Beatles</p> -->
     </div>
     <ul class="list-nav">
-        <li>Albums</li>
-        <li>Singles & EP</li>
-        <li>Compilations</li>
+        <li>Overview</li>
+        <li>Edit profile</li>
+        <li>Change password</li>
     </ul>
 </div>
 <div class="content-view">
-    <section>
-        <h2>Albums</h2>
-        <div class="content-list-large">
-            <% artist.albums.forEach(album=> {%>
-                <div album-id=<%= album.id %> class="content" onclick="changePage('/albums/<%= album.id %>')">
-                    <img src="/albums/<%= album.id %>/cover">
-                    <div>
-                        <h3>
-                            <%= album.name %>
-                        </h3>
-                    </div>
+    <h2>Profile</h2>
+    <form id="dialog-detail" action="/users/<%= user.id %>" method="PUT" onreset="resetTForm(this)">
+        <div class="dialog-content">
+            <div class="dialog-image">
+                <!-- <img class="avatar" field="avatar" src="/users/<%= user.id %>/avatar"
+                    origin-src="/users/<%= user.id %>/avatar">
+                <input type="file" accept="image/*" name="avatar" value="" target-action="/users/<%= user.id %>/avatar"
+                    target-field="avatar" onchange="previewImg(this)"> -->
+                <div>
+                    <img class="avatar" field="avatar" src="/users/<%= user.id %>/avatar"
+                        origin-src="/users/<%= user.id %>/avatar">
+                    <label for="cover-file" style="border-radius: 50%;">
+                        <input type="file" id="cover-file" accept="image/*" name="avatar" value=""
+                            target-action="/users/<%= user.id %>/avatar" target-field="avatar"
+                            onchange="previewImg(this)">
+                        <h3>Change avatar</h3>
+                    </label>
                 </div>
-                <% }) %>
+            </div>
+            <div class="grid-dialog">
+                <span class="none">ID</span>
+                <input class="none" type="text" name="id" readonly value="<%= user.id %>">
+                <span>Name</span>
+                <input type="text" name="display_name" value="<%= user.name %>">
+                <span>E-mail</span>
+                <input type="text" name="email" value="<%= user.email %>">
+                <span>Password</span>
+                <input type="password">
+                <div></div>
+            </div>
         </div>
-    </section>
-    <section>
-        <h2>Singles & EPs</h2>
-        <div class="content-list-large">
+        <div class="dialog-controls">
+            <input type="reset" value="Reset">
+            <button onclick="submitForm('dialog-detail')">Update</button>
         </div>
-    </section>
-    <section>
-        <h2>Compilations</h2>
-        <div class="content-list-large">
-        </div>
-    </section>
+    </form>
 </div>

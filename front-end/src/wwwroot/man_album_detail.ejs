@@ -63,7 +63,12 @@
         </div>
         <% album.tracks.forEach(track=> { %>
             <div onclick="showDetailDialog(this)" track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
-                track-artist-name="<%= track.artist_name %>" track-audio="<%= track.id %>" onclick="" draggable="true">
+                track-artist-name="<%= track.artist_name %>" track-audio="<%= track.id %>" onclick="" draggable="true" 
+                ondragstart="trackOnDragStart(this)"
+                ondragend="trackOnDragEnd(this)"
+                ondrop=""
+                ondragover="trackOnDragOver(this)"
+                ondragleave="trackOnDragLeave(this)">
                 <span>
                     <%= track.track_num %>
                 </span>
@@ -73,7 +78,7 @@
                 <span>
                     <%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
                 </span>
-                <!-- <span><%= `${Math.floor(track.duration/60)}:${track.duration%60}` %> </span> -->
+                <span class="handle icon-font"  >drag_handle</span>
             </div>
         <% }) %>
     </div>
@@ -128,7 +133,7 @@
     </div>
 </form>
 
-<form class="dialog" id="dialog-detail" method="PUT" action="/tracks" onsubmit="return false;">
+<!-- <form class="dialog" id="dialog-detail" method="PUT" action="/tracks" onsubmit="return false;">
     <span style="display: none;">
         <input value="<%= album.id %>" name="album-id" readonly>
     </span>
@@ -170,4 +175,4 @@
         <button onclick="submitForm('dialog-add')">Add</button>
         <button onclick="toggleDialog('dialog-add', resetForm('dialog-add'))">Cancel</button>
     </div>
-</form>
+</form> -->

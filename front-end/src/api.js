@@ -47,7 +47,7 @@ async function doPut(path, param, data) {
 	return await http.put(buildURL(path, param), data, {
 		headers: {
 			"Content-Type": "application/json",
-			"Content-Length": JSON.stringify(data).length,
+			// "Content-Length": JSON.stringify(data).length,
 		},
 	});
 }

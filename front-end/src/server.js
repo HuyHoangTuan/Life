@@ -3,11 +3,10 @@ const url = require("url");
 const path = require("path");
 
 const ws = require("./websocket");
-const utils = require("./utils");
 const express = require("express");
 
-const handlers = require("./handlers");
-const LoginHandler = require("./handlers/loginHandler")
+const handlers = require("./handlers/handlers");
+const managementHandlers = require("./handlers/managementHandler");
 
 const server = express();
 const port = 6969;
@@ -20,7 +19,7 @@ const handlerMap = new Map();
 exports.init = () => {
 	handlerMap.set("/", handlers.IndexHandler);
 	// handlerMap.set("/assets", handlers.AssetsHandler);
-	handlerMap.set("/login", LoginHandler.Handler);
+	handlerMap.set("/login", handlers.LoginHandler);
 	handlerMap.set("/logout", handlers.LogoutHandler);
 	handlerMap.set("/signup", handlers.RegisterHandler);
 	handlerMap.set("/users", handlers.UserHandler);
@@ -36,13 +35,18 @@ exports.init = () => {
 	handlerMap.set("/library", handlers.LibraryHandler);
 	handlerMap.set("/search", handlers.SearchHandler);
 
-	handlerMap.set("/management/:entity(users|albums)", handlers.ManagementHandler);
+	// handlerMap.set("/management/:entity(users|albums)", handlers.ManagementHandler);
+	handlerMap.set("/management/albums", managementHandlers.AlbumManHandler);
+	handlerMap.set("/management/albums/:id(\\d+)", managementHandlers.AlbumManHandler);
+	handlerMap.set("/management/albums/:id(\\d+)/:type(tracklist|comments)", managementHandlers.AlbumManHandler);
 	// handlerMap.set("/management/albums/:id(\\d+)", handlers.ManagementHandler);
 	handlerMap.set("/management/:entity(users|albums)/:id(\\d+)", handlers.ManagementHandler);
 
 	handlerMap.set("/albums/:id(\\d+)/cover", handlers.APIForwarderHandler);
 	handlerMap.set("/users/:id(\\d+)/avatar", handlers.APIForwarderHandler);
 	handlerMap.set("/tracks/:id(\\d+)/audio", handlers.APIForwarderHandler);
+
+	handlerMap.set("/profile", handlers.ProfileHandler)
 
 	server.set("view engine", "ejs");
 	server.set("views", "src/wwwroot");

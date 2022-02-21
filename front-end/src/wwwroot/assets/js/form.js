@@ -60,6 +60,7 @@ function submitForm(id, goBack = 1) {
 			let path = window.location.pathname;
 			if(goBack != 0){
 				path = path.substring(0, path.lastIndexOf("/"));
+				// window.history.state.
 			}
 			changePage(path);
 			toggleDialog("dialog-status-ok");

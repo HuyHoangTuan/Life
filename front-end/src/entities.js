@@ -39,6 +39,42 @@ class User {
 		});
 		return userList;
 	}
+
+	static async getFavoriteArtist(token) {
+		let rawArtistList = JSON.parse( await api.doGet(`/users/${id}/artists/favorite`) );
+		let artistList = [];
+		rawArtistList.forEach((rawArtist) => {
+			artistList.push(new Artist(rawArtist));
+		});
+		return artistList;
+	}
+
+	static async getSavedAlbum(token) {
+		let rawAlbumList = JSON.parse( await api.doGet(`/users/${id}/albums/favorite`) );
+		let albumList = [];
+		rawAlbumList.forEach((rawAlbum) => {
+			albumList.push(new Album(rawAlbum));
+		});
+		return albumList;
+	}
+
+	static async getPersonalPlaylist(token) {
+		let rawPlaylist = JSON.parse( await api.doGet(`/users/${id}/playlists`) );
+		let playlist = [];
+		rawPlaylist.forEach((rawPlaylist) => {
+			playlist.push(new Playlist(rawPlaylist));
+		});
+		return playlist;
+	}
+
+	static async getLikedTrack(token) {
+		let rawTrackList = JSON.parse( await api.doGet(`/users/${id}/tracks/favorite`) );
+		let trackList = [];
+		rawTrackList.forEach((rawTrack) => {
+			trackList.push(new Track(rawTrack));
+		});
+		return trackList;
+	}
 }
 
 class Artist {
@@ -215,6 +251,20 @@ class Track {
 		return trackList;
 	}
 
+	static async getPlaylistTrackList(token, playlistId = -1) {
+		var path = "/tracks";
+		if (albumId != -1) {
+			path = `/playlists/${playlistId}/tracks`;
+		}
+		let rawTrackList = JSON.parse(await api.doGet(path, { token: token }));
+		// console.log("RAWWWW" + rawAlbumList)
+		let trackList = [];
+		rawTrackList.forEach((rawTrack) => {
+			trackList.push(new Track(rawTrack));
+		});
+		return trackList;
+	}
+
 	static async searchTrack(keyword, token) {
 		let rawTrackList = JSON.parse(
 			await api.doGet("/search/tracks", {
@@ -232,7 +282,106 @@ class Track {
 	}
 }
 
+class Playlist{
+	playlist_id;
+	title;
+	creator_id;
+	creator_name;
+	active;
+	constructor(obj) {
+		Object.assign(this, obj);
+	}
+	get id() {
+		return this.playlist_id;
+	}
+	get name() {
+		return this.title;
+	}
+	static async getPlaylistById(id, token) {
+		return new Album(
+			JSON.parse(await api.doGet(`/playlist/${id}`, { token: token }))
+		);
+	}
+
+	static async getPlaylistList(token, artistId = -1) {
+		var path = "/playlist";
+		if (artistId != -1) {
+			path = `/playlist/${artistId}/albums`;
+		}
+		let rawAlbumList = JSON.parse(await api.doGet(path, { token: token }));
+		let albumList = [];
+		rawAlbumList.forEach((rawAlbum) => {
+			albumList.push(new Album(rawAlbum));
+		});
+		return albumList;
+	}
+
+	static async searchAlbum(keyword, token) {
+		let rawAlbumList = JSON.parse(
+			await api.doGet("/search/playlist", {
+				content: keyword,
+				token: token,
+			})
+		);
+		let albumList = [];
+		rawAlbumList.forEach((rawAlbum) => {
+			albumList.push(new Album(rawAlbum));
+		});
+		return albumList;
+	}
+
+	static async getTrackList(token) {
+		this.tracks = await Track.getPlaylistTrackList(token, this.id);
+	}
+}
+
+class Comment{
+	id;
+	content_id;
+	creator_id;
+	creator_name;
+	created_timestamp;
+	content;
+	active;
+	constructor(obj) {
+		Object.assign(this, obj);
+	}
+	get id() {
+		// return this.playlist_id;
+	}
+	static async getCommentsByAlbumId(id, token) {
+		let rawCommentList = JSON.parse( await api.doGet(`/albums/${id}/comments`) );
+		let commentList = [];
+		rawCommentList.forEach((raw) => {
+			commentList.push(new Artist(raw));
+		});
+		return commentList;
+	}
+	static async getCommentsByArtistId(id, token) {
+		let rawCommentList = JSON.parse( await api.doGet(`/artists/${id}/comments`) );
+		let commentList = [];
+		rawCommentList.forEach((raw) => {
+			commentList.push(new Artist(raw));
+		});
+		return commentList;
+	}
+	static async getCommentsByPlaylistId(id, token) {
+		let rawCommentList = JSON.parse( await api.doGet(`/playlist/${id}/comments`) );
+		let commentList = [];
+		rawCommentList.forEach((raw) => {
+			commentList.push(new Artist(raw));
+		});
+		return commentList;
+	}
+	
+
+}
+
 exports.Artist = Artist;
 exports.Album = Album;
 exports.Track = Track;
 exports.User = User;
+exports.Comment = Comment;
+exports.Playlist = Playlist;
+
+

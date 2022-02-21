@@ -7,9 +7,8 @@ function showDetailDialog(elm) {
 				field.setAttribute("src", attrs[i].value);
 			}
 			if (field.tagName == "audio") {
-				field.setAttribute("src", `/tracks/${attrs[i].value}/audio`)
-			}
-			else {
+				field.setAttribute("src", `/tracks/${attrs[i].value}/audio`);
+			} else {
 				field.setAttribute("value", attrs[i].value);
 				field.value = attrs[i].value;
 			}
@@ -126,4 +125,25 @@ function XHR(method, url, callback, data = null, contentType = null) {
 		xhr.setRequestHeader("content-type", contentType);
 	}
 	xhr.send(data);
+}
+
+var onDrag;
+
+function trackOnDragStart(elm) {
+	elm.style.opacity = 0.4;
+	onDrag = elm;
+}
+
+function trackOnDragEnd(elm) {
+	elm.style.opacity = 1;
+}
+
+function trackOnDragOver(elm) {
+	if (elm != onDrag) {
+		elm.style.background = "red";
+	}
+}
+
+function trackOnDragLeave(elm) {
+	
 }

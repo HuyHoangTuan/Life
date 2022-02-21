@@ -1,5 +1,5 @@
 section:first-child > h2 {
-	padding-top: 0.25rem;
+	padding-top: 0.15rem;
 }
 
 section > h2 {
@@ -243,4 +243,8 @@ label {
 
 .audio-preview audio[src=""] ~ .button label::after {
 	content: "Choose audio file";
+}
+
+section .avatar{
+	width: 200px;
 }

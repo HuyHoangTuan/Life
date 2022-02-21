@@ -1,6 +1,7 @@
 var qs = require("querystring")
 var utils = require("./utils")
 var api = require("../api")
+const cookie = require("cookie");
 
 class LoginHandler {
 	static async getHandler(req, res, status = 0) {

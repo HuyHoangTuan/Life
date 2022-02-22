@@ -10,6 +10,13 @@
 			<%= album.release_date.substr(0, 4) %>
 		</span>
 	</div>
+	<div class="bt-group">
+		<button id="bt-fav" class="bt-i icon-font <% if (isFav) { %>fav<% } %>" style="font-size: 1.2rem;" onclick="toggleFavAlbum(<%= uid %>, <%= album.id %>, this)">
+			
+		</button>
+		<button class="bt-i icon-font">play_arrow</button>
+		<button class="bt-i icon-font">more_horiz</button>
+	</div>
 	<ul class="list-nav">
 		<li>Track list</li>
 		<li>Comments</li>
@@ -27,7 +34,8 @@
 			</div>
 			<% album.tracks.forEach(track=> { %>
 				<div track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
-					track-artist-name="<%= track.artist_name %>" length="<%= track.duration %>" onclick="playTrack(this)">
+					track-artist-name="<%= track.artist_name %>" length="<%= track.duration %>"
+					onclick="playTrack(this)">
 					<span>
 						<%= track.track_num %>
 					</span>
@@ -38,10 +46,65 @@
 						<%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
 					</span>
 				</div>
-			<% }) %>
+				<% }) %>
 		</div>
 	</section>
 	<section>
 		<h2>Comments</h2>
+		<div class="comment" style="align-items: center">
+			<img class="avatar" src="/users/4/avatar">
+			<div class="relative">
+				<input type="text" style="width: 100%" placeholder="Write your comment...">
+				<button style="position: absolute; right: 0" class="bt-i icon-font style=" font-size">send</button>
+			</div>
+		</div>
+		<div class="comment-list">
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<div> This album is fricking awesome! This album is fricking awesome! This album is fricking
+						awesome! This album is fricking awesome! This album is fricking awesome! This album is fricking
+						awesome! This album is fricking awesome! This album is fricking awesome! This album is fricking
+						awesome! </div>
+					<h4><span class="icon-font">access_time_filled</span> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<b>Taylor Alison</b>
+					<div> This album is fricking awesome! </div>
+					<h4> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<div> This album is fricking awesome! </div>
+					<h4> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<div> This album is fricking awesome! </div>
+					<h4> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<div> This album is fricking awesome! </div>
+					<h4> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+			<div class="comment">
+				<img class="avatar" src="/users/4/avatar">
+				<div>
+					<div> This album is fricking awesome! </div>
+					<h4> 08:26 12 Jul '16 </h4>
+				</div>
+			</div>
+		</div>
 	</section>
 </div>

@@ -33,8 +33,10 @@
 // }
 
 function submitForm(id, goBack = 1) {
+	//stop form from submitting by default
 	event.preventDefault();
 	event.stopPropagation();
+
 	const form = document.getElementById(id);
 	let formData = new FormData(form);
 	let jsonData = new Object();
@@ -49,6 +51,7 @@ function submitForm(id, goBack = 1) {
 				jsonData[`${entry[0]}`] = entry[1].trim();
 				hasFieldUpdated = 1;
 			} else {
+				// files are submitted separately from this form
 				files.push(elm);
 			}
 		}

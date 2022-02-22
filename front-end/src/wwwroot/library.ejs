@@ -15,15 +15,17 @@
 	<section>
 		<h2>Favorite Artists</h2>
 		<div class="content-list-small">
-			<div class="content artist">
-				<img class="avatar"
-					src="https://hips.hearstapps.com/esquireuk.cdnds.net/15/37/2048x2730/2048x2730-arctic-monkeys-8-43-jpg-bb51dbec.jpg?resize=480:*"
-				/>
-				<div>
-					<h3>Arctic Monkeys</h3>
+			<% favArtistList.forEach((artist)=> {%>
+				<div class="content artist">
+					<img class="avatar" src="/users/<%= artist.id %>/avatar" />
+					<div>
+						<h3>
+							<%= artist.name %>
+						</h3>
+					</div>
 				</div>
-			</div>
-            <div class="content artist">
+				<% }) %>
+					<!-- <div class="content artist">
 				<img class="avatar"
 					src="https://i.scdn.co/image/ab6761610000e5eb89aff1367f1c02cfe17dd0b3"
 				/>
@@ -54,28 +56,26 @@
 				<div>
 					<h3>Arctic Monkeys</h3>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</section>
 	<section>
 		<h2>Your Playlists</h2>
 		<div class="content-list-duo">
+
+
 			<div class="content playlist">
-				<img
-					src="https://upload.wikimedia.org/wikipedia/vi/2/2f/AbbeyRoadcover.jpg"
-				/>
+				<img src="https://upload.wikimedia.org/wikipedia/vi/2/2f/AbbeyRoadcover.jpg" />
 				<div>
 					<h3>Liked Songs</h3>
-                    <span>40 tracks</span>
+					<span>40 tracks</span>
 				</div>
 			</div>
-            <div class="content playlist">
-				<img
-					src="https://www.collinsdictionary.com/images/thumb/road_124163875_250.jpg"
-				/>
+			<div class="content playlist">
+				<img src="https://www.collinsdictionary.com/images/thumb/road_124163875_250.jpg" />
 				<div>
 					<h3>Road Mix</h3>
-                    <span>26 tracks</span>
+					<span>26 tracks</span>
 				</div>
 			</div>
 		</div>
@@ -83,14 +83,16 @@
 	<section>
 		<h2>Saved Albums</h2>
 		<div class="content-list-large">
-			<div class="content album">
-				<img
-					src="https://upload.wikimedia.org/wikipedia/vi/2/2f/AbbeyRoadcover.jpg"
-				/>
-				<div>
-					<h3>Abbey Road</h3>
+			<% favAlbumList.forEach((album)=> {%>
+				<div class="content album" onclick="changePage('/albums/<%= album.id %>')">
+					<img src="/albums/<%= album.id %>/cover">
+					<div>
+						<h3>
+							<%= album.name %>
+						</h3>
+					</div>
 				</div>
-			</div>
+			<% }) %>
 		</div>
 	</section>
 </div>

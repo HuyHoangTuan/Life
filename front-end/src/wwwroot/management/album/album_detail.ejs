@@ -1,0 +1,71 @@
+<div>
+    <div class="info">
+        <h1>Album Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/albums/<%= album.id %>')">Metadata</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/comments')">Comments</li>
+    </ul>
+</div>
+<div class="content-view">
+    <section>
+        <h2>Album Metadata</h2>
+        <form id="dialog-detail" action="/albums/<%= album.id %>" method="PUT" onreset="resetTForm(this)">
+            <div class="dialog-content">
+                <div class="dialog-image">
+                    <div>
+                        <img class="cover" field="album-cover" src="/albums/<%= album.id %>/cover"
+                            origin-src="/albums/<%= album.id %>/cover">
+                        <label for="cover-file">
+                            <input type="file" id="cover-file" accept="image/*" name="album-cover" value=""
+                                target-action="/albums/<%= album.id %>/cover" target-field="album-cover"
+                                onchange="previewImg(this)">
+                            <h3>Change cover</h3>
+                        </label>
+                    </div>
+                </div>
+                <div class="grid-dialog">
+                    <span class="none">ID</span>
+                    <input class="none" type="text" name="id" readonly value="<%= album.id %>">
+                    <span>Name</span>
+                    <input type="text" name="title" value="<%= album.name %>">
+                    <span>Artist</span>
+                    <select name="artist_id" value="<%= album.artist_id %>">
+                        <%artistList.forEach((artist)=> {%>
+                            <option value="<%= artist.id %>" <% if (artist.id==album.artist_id) { %>selected<% } %>>
+                                    <%= artist.name %>
+                            </option>
+                            <%})%>
+                    </select>
+                    <span>Release</span>
+                    <input type="date" value="<%= album.release_date %>" name="release_date">
+                    <span>Type</span>
+                    <select name="type" value="<%= album.type %>">
+                        <option value="1" <% if (album.type==1) { %>selected<% } %>>Album</option>
+                        <option value="2" <% if (album.type==2) { %>selected<% } %>>Single/EP</option>
+                        <option value="3" <% if (album.type==3) { %>selected<% } %>>Compilation</option>
+                    </select>
+                    <!-- <div field="type" name="type">
+                    <button>Album</button>
+                    <button>Single/EP</button>
+                    <button>Compilation</button>
+                </div> -->
+                    <!-- <span>Status</span>
+                <div></div> -->
+                </div>
+            </div>
+            <div class="dialog-controls">
+                <input type="reset" value="Reset">
+                <button onclick="submitForm('dialog-detail')">Update</button>
+                <!-- <button onclick="toggleDialog('dialog-detail')">Cancel</button> -->
+            </div>
+        </form>
+    </section>
+</div>
+<script>document.title = "<%- title %>"</script>
+
+ 

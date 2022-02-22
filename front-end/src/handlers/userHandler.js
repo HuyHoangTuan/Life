@@ -76,12 +76,11 @@ exports.UserHandler = class {
 };
 exports.ArtistHandler = class {
 	static async getHandler(req, res) {
-		let mode = getMode(req, 1);
-		let id = req.params["id"];
-		let artist = await entities.Artist.getArtistById(id, utils.getToken(req));
-		await artist.getAlbumList(utils.getToken(req));
-
-		utils.renderPage(res, "artist.ejs", { artist: artist }, mode ? 3 : 1);
+		let id = req.params.id;
+		let artist = await entities.Artist.getArtistById(id, req.token);
+		await artist.getAlbumList(req.token);
+		let isFav = await artist.checkFavArtist(res.uid, req.token);
+		utils.renderPage(res, "artist.ejs", { artist: artist, isFav: isFav }, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
 	}
 	static async postHandler(req, res) {}
 	static async putHandler(req, res) {}

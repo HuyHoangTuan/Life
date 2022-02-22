@@ -1,0 +1,59 @@
+<div>
+    <div class="info">
+        <h1>User Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/users/<%= user.id %>')">Information</li>
+        <li onclick="changePage('/management/users/<%= user.id %>/tracks')">Playlists</li>
+        <!-- <li onclick="changePage('/management/users/<%= user.id %>/comments')">Comments</li> -->
+    </ul>
+</div>
+<div class="content-view">
+    <h2>Information</h2>
+    <form id="dialog-detail" action="/users/<%= user.id %>" method="PUT" onreset="resetTForm(this)">
+        <div class="dialog-content">
+            <div class="dialog-image">
+                <!-- <img class="avatar" field="avatar" src="/users/<%= user.id %>/avatar"
+                    origin-src="/users/<%= user.id %>/avatar">
+                <input type="file" accept="image/*" name="avatar" value="" target-action="/users/<%= user.id %>/avatar"
+                    target-field="avatar" onchange="previewImg(this)"> -->
+                <div>
+                    <img class="avatar" field="avatar" src="/users/<%= user.id %>/avatar"
+                        origin-src="/users/<%= user.id %>/avatar">
+                    <label for="cover-file" style="border-radius: 50%;">
+                        <input type="file" id="cover-file" accept="image/*" name="avatar" value=""
+                            target-action="/users/<%= user.id %>/avatar" target-field="avatar"
+                            onchange="previewImg(this)">
+                        <h3>Change avatar</h3>
+                    </label>
+                </div>
+            </div>
+                <div class="grid-dialog">
+                    <span class="none">ID</span>
+                    <input class="none" type="text" name="id" readonly value="<%= user.id %>">
+                    <span>Name</span>
+                    <input type="text" name="display_name" value="<%= user.name %>">
+                    <span>E-mail</span>
+                    <input type="text" name="email" value="<%= user.email %>">
+                    <span>Password</span>
+                    <div></div>
+                    <span>Role</span>
+                    <select name="role" value="<%= user.role %>">
+                        <option value="0" <% if (user.role==0) { %>selected<% } %>>Admin</option>
+                        <option value="1" <% if (user.role==1) { %>selected<% } %>>Artist</option>
+                        <option value="2" <% if (user.role==2) { %>selected<% } %>>User</option>
+                    </select>
+                    <span>Status</span>
+                    <div></div>
+                </div>
+            </div>
+            <div class="dialog-controls">
+                <input type="reset" value="Reset">
+                <button onclick="submitForm('dialog-detail')">Update</button>
+            </div>
+        </form>
+    </section>
+</div>

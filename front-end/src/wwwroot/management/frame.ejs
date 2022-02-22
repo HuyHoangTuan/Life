@@ -25,57 +25,42 @@
         <div><a href="/logout">Logout</a></div>
     </nav>
     <main>
-        <div>
-            <div>
-                <div class="info">
-                    <h1>Management</h1>
-                    <!-- <h2>The Beatles</h2>
-                        <h3>The Beatles</h3>
-                        <p>The Beatles</p> -->
-                </div>
-                <ul class="list-nav">
-                    <li onclick="changePage('/management/users')">Users</li>
-                    <li onclick="changePage('/management/albums')">Albums</li>
-                    <!-- <li onclick="changePage('/management/tracks')">Tracks</li> -->
-                    <li onclick="changePage('/management/playlists')">Playlists</li>
-                    <li onclick="changePage('/management/comments')">Comments</li>
-                </ul>
-            </div>
-            <div class="content-view" id="page-view">
-                <%- content %>
-            </div>
+        <div id="page-view">
+            <%- content %>
         </div>
-        <div class="dialog hidden" id="dialog-del-confirm">
-            <h1>Dialog Header</h1>
-            <div class="dialog-content">
-                <p>Are you sure you want to delete this item?</p>
-            </div>
-            <div class="dialog-controls">
-                <button class="dialog-button-ok">OK</button>
-                <button class="dialog-button-cancel" onclick="toggleDialog('dialog-del-confirm')">Cancel</button>
-            </div>
-        </div>
-        <div class="dialog hidden" id="dialog-status-ok">
-            <h1>Dialog Header</h1>
-            <div class="dialog-content">
-                <p>Ok</p>
-            </div>
-            <div class="dialog-controls">
-                <button class="dialog-button-ok" onclick="toggleDialog('dialog-status-ok')">OK</button>
-                <!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
-            </div>
-        </div>
-        <div class="dialog hidden" id="dialog-status-err">
-            <h1>Error</h1>
-            <div class="dialog-content">
-                <p>Something went wrong! Please try again.</p>
-            </div>
-            <div class="dialog-controls">
-                <button class="dialog-button-ok" onclick="toggleDialog('dialog-status-err')">OK</button>
-                <!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
-            </div>
-        </div>
+        <div></div>
+
     </main>
+    <div class="dialog hidden" id="dialog-del-confirm">
+        <h1>Dialog Header</h1>
+        <div class="dialog-content">
+            <p>Are you sure you want to delete this item?</p>
+        </div>
+        <div class="dialog-controls">
+            <button class="dialog-button-ok">OK</button>
+            <button class="dialog-button-cancel" onclick="toggleDialog('dialog-del-confirm')">Cancel</button>
+        </div>
+    </div>
+    <div class="dialog hidden" id="dialog-status-ok">
+        <h1>Dialog Header</h1>
+        <div class="dialog-content">
+            <p>Ok</p>
+        </div>
+        <div class="dialog-controls">
+            <button class="dialog-button-ok" onclick="toggleDialog('dialog-status-ok')">OK</button>
+            <!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
+        </div>
+    </div>
+    <div class="dialog hidden" id="dialog-status-err">
+        <h1>Error</h1>
+        <div class="dialog-content">
+            <p>Something went wrong! Please try again.</p>
+        </div>
+        <div class="dialog-controls">
+            <button class="dialog-button-ok" onclick="toggleDialog('dialog-status-err')">OK</button>
+            <!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
+        </div>
+    </div>
     <!-- <div class="bar-horizontal">
 			<div class="control-area">
 				<button class="icon-font">skip_previous</button>

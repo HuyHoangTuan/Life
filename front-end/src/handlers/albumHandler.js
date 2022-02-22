@@ -6,9 +6,12 @@ exports.Handler = class {
 	static async getHandler(req, res) {
 		let raw = utils.formatIsRaw(req);
 		let id = req.params.id;
-		let album = await entities.Album.getAlbumById(id, utils.getToken(req));
-		await album.getTrackList(utils.getToken(req));
-		utils.renderPage(res, "album.ejs", { album: album }, raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
+		const token = utils.getToken(req);
+		let album = await entities.Album.getAlbumById(id, token);
+		await album.getTrackList(token);
+		let isFav = await album.checkFavAlbum(res.uid, token);
+		console.log(isFav)
+		utils.renderPage(res, "album.ejs", { album: album, isFav: isFav }, raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
 	}
 	static async postHandler(req, res) {
 		let id = req.params.id;

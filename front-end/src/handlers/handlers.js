@@ -9,10 +9,12 @@ const UserHandler = require("./userHandler")
 const ProfileHandler = require("./profileHandler")
 const PlaylistHandler = require("./playlistHandler")
 const ManagementHandler = require("./managementHandler")
+var jwt = require("jsonwebtoken");
+
 
 class APIForwarderHandler {
 	static allHandler(req, res) {
-		api.forward(req, res, req.path, { token: getToken() });
+		api.forward(req, res, req.path, { token: utils.getToken(req) });
 	}
 }
 
@@ -51,12 +53,12 @@ class IndexHandler {
 
 class LibraryHandler {
 	static async getHandler(req, res) {
-		var data = {};
-		utils.renderPage(res, "library.ejs", data, 1);
+		let favAlbumList = await entities.User.getFavAlbums(res.uid, req.token);
+		let favArtistList = await entities.User.getFavArtists(res.uid, req.token);
+		let playlist = await entities.User.getPlaylists(res.uid, req.token);
+		var data = {favAlbumList: favAlbumList, favArtistList: favArtistList, playlist: playlist};
+		utils.renderPage(res, "library.ejs", data, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
 	}
-	static async postHandler(req, res) {}
-	static async putHandler(req, res) {}
-	static async deleteHandler(req, res) {}
 }
 
 exports.LoginHandler = class {
@@ -66,31 +68,18 @@ exports.LoginHandler = class {
 		res.render("login", data);
 	}
 	static async postHandler(req, res) {
-		var post = qs.parse(await getBody(req));
+		var post = qs.parse(await utils.getBody(req));
 
-		let result = JSON.parse(
-			await api.doPost(
-				"/authenticate",
-				null,
-				JSON.stringify({
-					email: post.email,
-					password: post.password,
-				})
-			)
-		);
-		console.log(
-			`[Log][Login]Login attempt with email=${post.username}, password=${post.password}`
-		);
+		let result = JSON.parse(await api.doPost("/authenticate", null, JSON.stringify({ email: post.email, password: post.password })));
+
+		console.log(`[Log][Login]Login attempt with email=${post.username}, password=${post.password}`);
+
 		if (result.status != undefined) {
-			this.getHandler(req, res, 1);
+			LoginHandler.getHandler(req, res, 1);
 		} else {
-			res.setHeader(
-				"Set-Cookie",
-				cookie.serialize("token", result.token, {
-					httpOnly: true,
-					maxAge: 60 * 60 * 24 * 30,
-				})
-			);
+			res.setHeader("Set-Cookie", cookie.serialize("token", result.token, { httpOnly: true, maxAge: 60 * 60 * 24 * 30 }));
+			let decoded = jwt.verify(result.token, "L0Zhbmt5Y2hvcDEyMz9sb2dpbj1GYW5reWNob3AmcGFzc3dvcmQ9S3ViaW4xMjM/");
+			console.log(`[DECODED] ${decoded.sub}`)
 			if (result.role == 0) {
 				res.redirect(301, "/management/users");
 			} else if (result.role == 2) {

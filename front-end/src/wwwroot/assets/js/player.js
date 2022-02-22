@@ -129,20 +129,18 @@ function playTrack(track) {
 		albumId: track.getAttribute("album-id"),
 		artistId: track.getAttribute("artist-id"),
 		artistName: track.getAttribute("artist-name"),
-		artistName: track.getAttribute("artist-name")
+		artistName: track.getAttribute("artist-name"),
 	});
 }
 
 function toTime(second) {
-	return new Date(null, null, null, null, null, second)
-		.toTimeString()
-		.substr(3, 5);
+	return new Date(null, null, null, null, null, second).toTimeString().substr(3, 5);
 }
 
 function updateFields(track) {
-	currentArtist.innerHTML = track.artistName
-	currentSong.innerHTML = track.title
-	timeLength.innerHTML = track.length
+	currentArtist.innerHTML = track.artistName;
+	currentSong.innerHTML = track.title;
+	timeLength.innerHTML = track.length;
 }
 
 function toggleMusic() {
@@ -163,3 +161,34 @@ function seek(value) {
 	player.currentTime = (value * player.duration) / 100;
 	//updateSongSlider();
 }
+
+function toggleFavArtist(uid, id, elm) {
+	let jsonData = { artist_id: id };
+	XHR(
+		elm.classList.contains("fav") ? "DELETE" : "POST",
+		`/users/${uid}/artists/favorite`,
+		(status) => {
+			if(status == 200){
+				elm.classList.toggle("fav");
+			}
+		},
+		JSON.stringify(jsonData),
+		"application/json"
+	);
+}
+
+function toggleFavAlbum(uid, id, elm) {
+	let jsonData = { album_id: id };
+	XHR(
+		elm.classList.contains("fav") ? "DELETE" : "POST",
+		`/users/${uid}/albums/favorite`,
+		(status) => {
+			if(status == 200){
+				elm.classList.toggle("fav");
+			}
+		},
+		JSON.stringify(jsonData),
+		"application/json"
+	);
+}
+function toggleFavSong() {}

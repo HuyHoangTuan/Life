@@ -10,13 +10,44 @@ section {
 	padding-bottom: 0.75rem;
 }
 
+#page-view > div:first-child {
+	align-self: start;
+	position: sticky;
+	top: 4rem;
+}
+
 [class|="info"] > img {
 	width: 40%;
 	aspect-ratio: 1;
-	margin-bottom: 0.5rem;
 	border-radius: 5px;
 }
 
+.bt-group {
+	padding-top: 1rem;
+}
+.bt-group > button {
+	padding: 0 0;
+	display: inline-block;
+	width: 1.5rem;
+	vertical-align: top;
+}
+
+.bt-i {
+	background: none;
+	cursor: pointer;
+	line-height: 1.5rem;
+}
+.bt-i:hover {
+	background: none;
+	color: var(--accent);
+}
+#bt-fav::after{
+	content: "favorite_border";
+}
+#bt-fav.fav::after{
+	content: "favorite";
+	color: var(--red);
+}
 .info-artist > img,
 .avatar {
 	border-radius: 50%;
@@ -80,8 +111,8 @@ section {
 }
 
 .content-list-small > .content > img {
-	width: 100%;
-	padding: 10%;
+	width: 80%;
+	margin-bottom: 1rem;
 }
 
 .content-list-small > .content > div {
@@ -245,6 +276,24 @@ label {
 	content: "Choose audio file";
 }
 
-section .avatar{
+section .avatar {
 	width: 200px;
+}
+
+.comment img {
+	height: 50px;
+	width: 50px;
+}
+
+.comment {
+	display: grid;
+	grid-template-columns: 50px auto;
+	gap: 1rem;
+	margin: 1rem 0;
+}
+
+.comment h4 {
+	opacity: 0.7;
+	font-stretch: 150%;
+	margin-top: 0.25rem;
 }

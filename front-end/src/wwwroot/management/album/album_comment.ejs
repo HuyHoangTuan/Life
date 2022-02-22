@@ -1,0 +1,127 @@
+<div>
+    <div class="info">
+        <h1>Album Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/albums/<%= album.id %>')">Metadata</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/comments')">Comments</li>
+    </ul>
+</div>
+<div>
+    <section>
+        <h2>Track list</h2>
+        <div class="grid-table" id="track-list">
+            <div>
+                <h3>#</h3>
+                <h3>Title</h3>
+                <h3>Duration</h3>
+                <h3>=</h3>
+            </div>
+            <% album.tracks.forEach(track=> { %>
+                <div onclick="showDetailDialog(this)" track-id="<%= track.id %>" track-title="<%= track.title%>"
+                    track-artist-id="<%= track.artist_id %>" track-artist-name="<%= track.artist_name %>"
+                    track-audio="<%= track.id %>" onclick="" draggable="true" ondragstart="trackOnDragStart(this)"
+                    ondragend="trackOnDragEnd(this)" ondrop="" ondragover="trackOnDragOver(this)"
+                    ondragleave="trackOnDragLeave(this)">
+                    <span>
+                        <%= track.track_num %>
+                    </span>
+                    <span>
+                        <%- track.title %>
+                    </span>
+                    <span>
+                        <%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
+                    </span>
+                    <span class="handle icon-font">drag_handle</span>
+                </div>
+                <% }) %>
+        </div>
+        <div class="flex-row-reverse">
+            <button onclick="toggleDialog('dialog-add')">
+                Add Track
+            </button>
+        </div>
+    </section>
+</div>
+
+<form class="dialog" id="dialog-add" method="POST" action="/tracks" onsubmit="return false;">
+    <span style="display: none;">
+        <input value="<%= album.id %>" name="album-id" readonly>
+    </span>
+    <h1>Add track</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="title">
+            <span>Audio</span>
+            <div class="audio-preview">
+                <audio field="preview-audio" src=""></audio>
+                <div class="controller">
+                    <button class="icon-font bt-play">
+                        play_arrow
+                    </button>
+                    <range-slider class="sl-time"></range-slider>
+                    <!-- <button class="icon-font">
+                        volume_up
+                    </button>
+                    <range-slider></range-slider> -->
+                </div>
+                <div class="button">
+                    <label style="display: block; height: 100%;">
+                        <input type="file" accept="audio/mp3" style="display: none" target-field="preview-audio"
+                            onchange="loadLocalAudio(this)" />
+                        <span class="icon-font">file_upload</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dialog-controls">
+        <input type="reset" value="Reset">
+        <button onclick="submitForm('dialog-add')">Add</button>
+        <button onclick="toggleDialog('dialog-add', resetForm('dialog-add'))">Cancel</button>
+    </div>
+</form>
+
+<!-- <form class="dialog" id="dialog-detail" method="PUT" action="/tracks" onsubmit="return false;">
+    <span style="display: none;">
+        <input value="<%= album.id %>" name="album-id" readonly>
+    </span>
+    <h1>Edit track</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="title" field="track-title">
+            <span>Audio</span>
+            <div class="audio-preview">
+                <audio field="preview-audio" src=""  field="track-title"></audio>
+                <div class="controller">
+                    <button class="icon-font bt-play">
+                        play_arrow
+                    </button>
+                    <range-slider class="sl-time"></range-slider>
+                    <!-- <button class="icon-font">
+                        volume_up
+                    </button>
+                    <range-slider></range-slider> -->
+</div>
+<div class="button">
+    <label style="display: block; height: 100%;">
+        <input type="file" accept="audio/mp3" style="display: none" target-field="preview-audio"
+            onchange="loadLocalAudio(this)" />
+        <span class="icon-font">file_upload</span>
+    </label>
+</div>
+</div>
+</div>
+</div>
+<div class="dialog-controls">
+    <input type="reset" value="Reset">
+    <button onclick="submitForm('dialog-add')">Add</button>
+    <button onclick="toggleDialog('dialog-add', resetForm('dialog-add'))">Cancel</button>
+</div>
+</form> -->

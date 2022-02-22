@@ -50,6 +50,8 @@
 	--main: hsl(0, 0%, 28%);
 
 	--accent: hsl(214, 90%, 46%);
+
+	--red: hsl(0, 65%, 52%);
 }
 
 * {
@@ -85,7 +87,7 @@ body {
 	color: var(--main);
 }
 
-p {
+p, div, span {
 	line-height: 1.5rem;
 }
 
@@ -117,12 +119,17 @@ th {
 h4,
 h5,
 h6 {
-	font-size: 0.72rem !important;
-	font-weight: 500;
+	font-size: 0.75rem !important;
+	font-weight: 300;
+}
+
+h4 .icon-font{
+	font-size: .75rem;
+	vertical-align: -1px;
 }
 
 b {
-	font-weight: 600;
+	font-weight: 450;
 }
 
 input,
@@ -234,6 +241,14 @@ li {
 .upper-text {
 	font-size: 0.8rem;
 	vertical-align: 0.23rem;
+}
+
+.relative {
+	position: relative;
+}
+
+.absolute {
+	position: absolute;
 }
 
 .none {
@@ -359,3 +374,4 @@ range-slider {
 .audio-preview label {
 	line-height: 2rem;
 }
+

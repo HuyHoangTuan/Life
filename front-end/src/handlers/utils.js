@@ -1,6 +1,7 @@
 const cookie = require("cookie");
 const ejs = require("ejs");
 const fs = require("fs");
+const jwt = require("jsonwebtoken")
 
 const compiledUserFrame = ejs.compile(
 	fs.readFileSync("src/wwwroot/frame.ejs", "UTF-8")
@@ -26,8 +27,13 @@ function getCookie(key) {
 
 // return token value from cookies
 exports.getToken = function (req) {
-	return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQyMzYwODU3fQ.MEfen90dvOGM4zuzNm-BLJTdQgC-ZCo_1dMqcTzboYw";
+	return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQ1NDY5MzczfQ.72vCpCiSyluyP89HgS06yNStsz53UXzyqyxB-qDDse4";
 };
+
+exports.getUID = (token) => {
+	let decoded = jwt.verify(token, "L0Zhbmt5Y2hvcDEyMz9sb2dpbj1GYW5reWNob3AmcGFzc3dvcmQ9S3ViaW4xMjM/");
+	return decoded.sub;
+}  
 
 // read body from request stream until finished
 exports.getBody = async function (req) {
@@ -45,6 +51,8 @@ exports.getBody = async function (req) {
 };
 
 exports.renderPage = (res, filePath, data, frameType = 0, options = null) => {
+	data.uid = res.uid;
+	data.uname = res.uname;
 	ejs.renderFile("src/wwwroot/" + filePath, data, options, (err, html) => {
 		if (err) console.log(`[Error][Render]${err}`);
 		switch (frameType) {

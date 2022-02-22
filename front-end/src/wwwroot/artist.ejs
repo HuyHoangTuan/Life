@@ -8,6 +8,13 @@
         <h3>The Beatles</h3>
         <p>The Beatles</p> -->
     </div>
+    <div class="bt-group">
+		<button id="bt-fav" class="bt-i icon-font <% if (isFav) { %>fav<% } %>" style="font-size: 1.2rem;" onclick="toggleFavArtist(<%= uid %>, <%= artist.id %>, this)">
+			
+		</button>
+		<button class="bt-i icon-font">play_arrow</button>
+		<button class="bt-i icon-font">more_horiz</button>
+	</div>
     <ul class="list-nav">
         <% if(artist.albums.length > 0){ %> <li>Albums</li> <% } %>
         <% if(artist.singles.length > 0){ %> <li>Singles & EP</li> <% } %>

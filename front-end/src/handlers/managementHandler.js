@@ -39,42 +39,43 @@ exports.AlbumManHandler = class {
 
 		if (id) {
 			let type = req.params.type;
+			let album = await entities.Album.getAlbumById(id, token);
+			let fname = `${album.name} by ${album.artist_name}`;
 			switch (type) {
 				case undefined:
-					let album = await entities.Album.getAlbumById(id, token);
 					let artistList = await entities.Artist.getArtistList(token);
 
 					page = `${DIR}/album/album_detail.ejs`;
-					data = { album: album, artistList: artistList };
+					data = { album: album, artistList: artistList, title: `${fname} - Detail` };
 					break;
 
-				case "tracklist":
-					let trackList = await entities.Track.getTrackList(token, id);
+				case "tracks":
+					await album.getTrackList(token)
 
 					page = `${DIR}/album/album_tracklist.ejs`;
-					data = { trackList: trackList };
+					data = { album: album, title: `${fname} - Tracklist`  };
 					break;
 
 				case "comments":
-					let commentList = await entities.Comment.getCommentsByAlbumId(id);
+					let commentList = await entities.Comment.getCommentsByAlbumId(id, token);
 
 					page = `${DIR}/album/album_comments.ejs`;
-					data = { commentList: commentList };
+					data = { commentList: commentList, title: `${fname} - Comments`  };
 					break;
 			}
 		} else {
 			let albumList = await entities.Album.getAlbumList(token);
 			let artistList = await entities.Artist.getArtistList(token);
 
-			page = "man_album.ejs";
-			data = { albumList: albumList, artistList: artistList };
+			page = `${DIR}/man_album.ejs`;
+			data = { albumList: albumList, artistList: artistList, title: "Album Management" };
 		}
 
 		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
 	}
 };
 
-exports.UserHandler = class {
+exports.UserManHandler = class {
 	static async getHandler(req, res) {
 		let id = req.params.id;
 		const raw = utils.formatIsRaw(req);
@@ -84,7 +85,7 @@ exports.UserHandler = class {
 			switch (type) {
 				case undefined:
 					let user = await entities.User.getUserById(id, utils.getToken(req));
-					page = `${DIR}}/user_detail.ejs`;
+					page = `${DIR}/user/user_detail.ejs`;
 					data = { user: user };
 					break;
 				case "playlists":
@@ -94,8 +95,8 @@ exports.UserHandler = class {
 			}
 		} else {
 			let userList = await entities.User.getUserList(utils.getToken(req));
-			page = "man_user.ejs";
-			data = { userList: userList };
+			page = `${DIR}/man_user.ejs`;
+			data = { userList: userList, title: user.name };
 		}
 		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
 	}

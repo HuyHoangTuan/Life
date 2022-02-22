@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,47 +49,62 @@ public class commentcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Missing params\"}");
         }
+        List<?> response = new ArrayList<>();
         if(user_id ==-1)
         {
             if(album_id != -1)
             {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type","application/json")
-                        .body(commentService.getAllCommentOfAlbum(album_id));
+                List<?> listComments = commentService.getAllCommentOfAlbum(album_id);
+                int perPage = 20;
+                int fromIndex = (index-1)*perPage;
+                int toIndex = Math.min(listComments.size()-1,index*perPage-1)+1;
+                if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+                response= listComments.subList(fromIndex, toIndex);
             }
             else
             {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type","application/json")
-                        .body(commentService.getAllCommentOfPlaylist(playlist_id));
+                List<?> listComments = commentService.getAllCommentOfPlaylist(playlist_id);
+                int perPage = 20;
+                int fromIndex = (index-1)*perPage;
+                int toIndex = Math.min(listComments.size()-1,index*perPage-1)+1;
+                if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+                response= listComments.subList(fromIndex, toIndex);
             }
         }
         else
         {
             if(album_id == -1 && playlist_id == -1)
             {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type","application/json")
-                        .body(commentService.getAllCommentOfUser(user_id));
+                List<?> listComments = commentService.getAllCommentOfUser(user_id);
+                int perPage = 20;
+                int fromIndex = (index-1)*perPage;
+                int toIndex = Math.min(listComments.size()-1,index*perPage-1)+1;
+                if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+                response= listComments.subList(fromIndex, toIndex);
             }
             if(album_id != -1)
             {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type","application/json")
-                        .body(commentService.getAllCommentOfUserInAlbum(user_id, album_id));
+                List<?> listComments = commentService.getAllCommentOfUserInAlbum(user_id, album_id);
+                int perPage = 20;
+                int fromIndex = (index-1)*perPage;
+                int toIndex = Math.min(listComments.size()-1,index*perPage-1)+1;
+                if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+                response= listComments.subList(fromIndex, toIndex);
             }
             else
             {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type","application/json")
-                        .body(commentService.getALlCommentOfUserInPlaylist(user_id, album_id));
+                List<?> listComments = commentService.getALlCommentOfUserInPlaylist(user_id, album_id);
+                int perPage = 20;
+                int fromIndex = (index-1)*perPage;
+                int toIndex = Math.min(listComments.size()-1,index*perPage-1)+1;
+                if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+                response= listComments.subList(fromIndex, toIndex);
             }
         }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(((response.size() !=0) ? response : "[]"));
     }
     @PostMapping("/api/comments")
     public ResponseEntity<?> addAComment(@RequestParam(name = "token") String token,

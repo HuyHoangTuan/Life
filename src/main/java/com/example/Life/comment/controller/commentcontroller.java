@@ -110,13 +110,14 @@ public class commentcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        if(user_id == -1)
+        if(user_id == -1 || (album_id== -1 && playlist_id == -1))
         {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Missing params\"}");
         }
+
         String content = body.get("content");
         Date current = new Date(System.currentTimeMillis());
         if(album_id != -1)

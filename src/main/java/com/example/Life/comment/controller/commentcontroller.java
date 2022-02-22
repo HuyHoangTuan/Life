@@ -121,11 +121,10 @@ public class commentcontroller
         Date current = new Date(System.currentTimeMillis());
         if(album_id != -1)
         {
-            commentService.addCommentToAlbum(user_id, album_id, content, current);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
-                    .body("{\"status\":\"success\"}");
+                    .body(commentService.addCommentToAlbum(user_id, album_id, content, current));
         }
         else
         {
@@ -133,7 +132,7 @@ public class commentcontroller
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
-                    .body("{\"status\":\"success\"}");
+                    .body(commentService.addCommentToPlaylist(user_id, playlist_id, content, current));
         }
     }
     @GetMapping("/api/albums/{id}/comments")

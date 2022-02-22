@@ -90,6 +90,52 @@ public class commentcontroller
             }
         }
     }
+    @PostMapping("/api/comments")
+    public ResponseEntity<?> addAComment(@RequestParam(name = "token") String token,
+                                            @RequestParam(name = "uid", required = false, defaultValue = "-1") int user_id,
+                                            @RequestParam(name = "album", required = false, defaultValue = "-1") int album_id,
+                                            @RequestParam(name = "playlist", required = false, defaultValue = "-1") int playlist_id,
+                                            @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+" /api/comments "+user_id+", "+album_id+", "+playlist_id+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        if(user_id == -1)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Missing params\"}");
+        }
+        String content = body.get("content");
+        Date current = new Date(System.currentTimeMillis());
+        if(album_id != -1)
+        {
+            commentService.addCommentToAlbum(user_id, album_id, content, current);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"success\"}");
+        }
+        else
+        {
+            commentService.addCommentToPlaylist(user_id, playlist_id, content, current);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"success\"}");
+        }
+    }
     @GetMapping("/api/albums/{id}/comments")
     public ResponseEntity<?> getAllCommentOfAlbum(@RequestParam(name = "token") String token, @PathVariable("id") int album_id,
                                                   @RequestParam(name = "index", defaultValue = "1", required = false) int index)

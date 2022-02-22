@@ -9,6 +9,7 @@ public interface commentmodel
     long getPlaylist_id();
     long getAlbum_id();
     long getCreator_id();
+    String getDisplay_name();
     Date getCreated_timestamp();
     String getContent();
     boolean getActive();

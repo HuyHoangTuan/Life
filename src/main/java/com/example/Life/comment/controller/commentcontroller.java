@@ -21,6 +21,75 @@ public class commentcontroller
     @Autowired
     private commentservice commentService;
 
+    @GetMapping("/api/comments")
+    public ResponseEntity<?> getCommentFrom(@RequestParam(name = "token") String token,
+                                            @RequestParam(name = "uid", required = false, defaultValue = "-1") int user_id,
+                                            @RequestParam(name = "album", required = false, defaultValue = "-1") int album_id,
+                                            @RequestParam(name = "playlist", required = false, defaultValue = "-1") int playlist_id,
+                                            @RequestParam(name = "index", required = false, defaultValue = "1") int index)
+    {
+        System.out.println(LifeApplication.GET+" /api/comments "+user_id+", "+album_id+", "+playlist_id+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        if(user_id == -1 && album_id == -1 && playlist_id == -1)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Missing params\"}");
+        }
+        if(user_id ==-1)
+        {
+            if(album_id != -1)
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body(commentService.getAllCommentOfAlbum(album_id));
+            }
+            else
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body(commentService.getAllCommentOfPlaylist(playlist_id));
+            }
+        }
+        else
+        {
+            if(album_id == -1 && playlist_id == -1)
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body(commentService.getAllCommentOfUser(user_id));
+            }
+            if(album_id != -1)
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body(commentService.getAllCommentOfUserInAlbum(user_id, album_id));
+            }
+            else
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body(commentService.getALlCommentOfUserInPlaylist(user_id, album_id));
+            }
+        }
+    }
     @GetMapping("/api/albums/{id}/comments")
     public ResponseEntity<?> getAllCommentOfAlbum(@RequestParam(name = "token") String token, @PathVariable("id") int album_id,
                                                   @RequestParam(name = "index", defaultValue = "1", required = false) int index)

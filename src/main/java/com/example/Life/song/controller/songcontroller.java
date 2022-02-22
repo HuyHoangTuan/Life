@@ -184,7 +184,8 @@ public class songcontroller
     }
 
     @GetMapping("/api/tracks")
-    public  ResponseEntity<?> getAllSongs(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
+    public  ResponseEntity<?> getAllSongs(@RequestParam(name = "token") String token,
+                                          @RequestParam(name = "index", defaultValue = "1", required = false) int index)
     {
         System.out.println(LifeApplication.GET+" /api/tracks "+ token);
         Claims claims = JWT.decodeJWT(token);

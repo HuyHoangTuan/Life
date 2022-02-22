@@ -37,7 +37,8 @@ public class albumcontroller
     private albumservice albumService;
 
     @GetMapping("/api/albums")
-    public ResponseEntity<?> getALlAlbums(@RequestParam(name ="token") String token, @RequestParam(name ="index", defaultValue = "1") int index)
+    public ResponseEntity<?> getALlAlbums(@RequestParam(name ="token") String token,
+                                          @RequestParam(name ="index", defaultValue = "1", required = false) int index)
     {
         System.out.println(LifeApplication.GET+ " /api/albums "+token);
         Claims claims = JWT.decodeJWT(token);

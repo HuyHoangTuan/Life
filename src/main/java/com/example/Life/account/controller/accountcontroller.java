@@ -132,7 +132,7 @@ public class accountcontroller
 
     }
     @GetMapping("/api/artists")
-    public ResponseEntity<?> getAllArtists(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
+    public ResponseEntity<?> getAllArtists(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1" , required = false) int index)
     {
         System.out.println(LifeApplication.GET + " /api/artist " + token);
         Claims claims = JWT.decodeJWT(token);
@@ -181,7 +181,7 @@ public class accountcontroller
     }
 
     @GetMapping("/api/users")
-    public ResponseEntity<?> getAllUsers(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1") int index)
+    public ResponseEntity<?> getAllUsers(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1", required = false) int index)
     {
         System.out.println(LifeApplication.GET+" /api/users "+token);
         Claims claims = JWT.decodeJWT(token);

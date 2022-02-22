@@ -103,7 +103,7 @@ public class playlistcontroller
 
     @GetMapping("/api/users/{id}/playlists/{playlist_id}/tracks")
     public ResponseEntity<?> getSongsOfPlaylist(@RequestParam(name = "token") String token,
-                                                @RequestParam(name = "index", defaultValue = "1") int index,
+                                                @RequestParam(name = "index", defaultValue = "1", required = false) int index,
                                                 @PathVariable("id") long user_id,
                                                 @PathVariable("playlist_id") long playlist_id)
     {

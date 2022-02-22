@@ -4,7 +4,6 @@ import io.jsonwebtoken.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.crypto.Data;
 import java.security.Key;
 import java.util.Date;
 

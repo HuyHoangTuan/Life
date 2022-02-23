@@ -139,13 +139,22 @@ public class commentcontroller
         }
 
         String content = "";
+        boolean ok = true;
         if(body.get("content")!=null)
         {
             content = body.get("content");
             for(String string: regex)
             {
                 content = content.replaceAll(string,"******");
+                ok = false;
             }
+        }
+        if(ok == false)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Bad comment\"}");
         }
         Date current = new Date(System.currentTimeMillis());
         if(album_id != -1)

@@ -59,9 +59,8 @@ public class songserviceimpl implements songservice
         songOutput.setTrack_num(song.getTrack_num());
         songOutput.setTrack_id(song.getTrack_id());
         songOutput.setActive(song.getActive());
-        String path = LifeApplication.defaultDataDir + "\\" + Long.toString(songOutput.getArtist_id()) + "\\"
-                + Long.toString(songOutput.getAlbum_id())+"\\"
-                + Long.toString(songOutput.getTrack_num())+".mp3";
+        String path = LifeApplication.defaultDataDir + "\\" + "tracks" + "\\"
+                + Long.toString(songOutput.getTrack_id())+".mp3";
         File file = new File(path);
         try {
             AudioFileFormat audioFileFormat = new MpegAudioFileReader().getAudioFileFormat(file);

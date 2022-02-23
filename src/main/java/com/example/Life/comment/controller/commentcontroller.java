@@ -145,8 +145,8 @@ public class commentcontroller
             content = body.get("content");
             for(String string: regex)
             {
-                content = content.replaceAll(string,"******");
-                ok = false;
+                int index = content.indexOf(string);
+                if(index!=-1) {ok = false;break;}
             }
         }
         if(ok == false)
@@ -403,7 +403,24 @@ public class commentcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong comment_id\"}");
-        if(body.get("content")!=null) c.setContent(body.get("content"));
+        if(body.get("content")!=null)
+        {
+            String content = body.get("content");
+            boolean ok = true;
+            for(String string: regex)
+            {
+                int index = content.indexOf(string);
+                if(index!=-1) {ok=false;break;}
+            }
+            if(ok==false)
+            {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .header("Content-Type","application/json")
+                        .body("{\"status\":\"Bad comment\"}");
+            }
+            c.setContent(body.get("content"));
+        }
         commentService.save(c);
         return ResponseEntity
                 .status(HttpStatus.OK)

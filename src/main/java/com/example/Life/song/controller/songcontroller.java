@@ -168,6 +168,11 @@ public class songcontroller
 
         InputStream inputStream = file.getInputStream();
         String path = LifeApplication.defaultDataDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
+        File curFolder = new File(path);
+        if( curFolder.exists() == false)
+        {
+            curFolder.mkdirs();
+        }
         OutputStream outputStream = new FileOutputStream(new File(path+"\\"+Long.toString(newSong.getId())+".mp3"));
         byte[] buffer = new byte[1024];
         int len;

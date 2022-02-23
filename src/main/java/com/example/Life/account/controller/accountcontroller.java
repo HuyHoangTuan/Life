@@ -113,8 +113,13 @@ public class accountcontroller
         {
             InputStream inputStream = file.getInputStream();
             BufferedImage bufferedImage = ImageIO.read(inputStream);
+            String _path = LifeApplication.defaultDataDir+"\\"+"avatars";
+            File curFolder = new File(_path);
+            if(curFolder.exists() == false)
+            {
+                curFolder.mkdirs();
+            }
             String path = LifeApplication.defaultDataDir+"\\"+"avatars"+"\\"+user_id+".jpeg";
-            System.out.println(path);
             File outputFile = new File(path);
             ImageIO.write(bufferedImage, "jpeg",outputFile);
             return ResponseEntity

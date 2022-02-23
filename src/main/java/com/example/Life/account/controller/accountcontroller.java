@@ -163,7 +163,9 @@ public class accountcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(listArtists.size()-1,index*perPage-1)+1;
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
-        return new ResponseEntity<>(listArtists.subList(fromIndex, toIndex), HttpStatus.OK);
+
+        List<?> output = listArtists.subList(fromIndex, toIndex);
+        return new ResponseEntity<>( output.size() == 0 ? "[]" : output, HttpStatus.OK);
     }
     @GetMapping("/api/artists/{id}")
     public ResponseEntity<?> getArtist(@RequestParam(name = "token") String token, @PathVariable("id") long artist_id)
@@ -182,7 +184,7 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        return new ResponseEntity<>(accountService.getArtist(artist_id), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getArtist(artist_id) == null ? "[]" : accountService.getArtist(artist_id), HttpStatus.OK);
     }
 
     @GetMapping("/api/users")
@@ -212,7 +214,8 @@ public class accountcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(listUsers.size()-1,index*perPage-1)+1;
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
-        return new ResponseEntity<>(listUsers.subList(fromIndex, toIndex), HttpStatus.OK);
+        List<?> output = listUsers.subList(fromIndex, toIndex);
+        return new ResponseEntity<>(output.size() ==0 ? "[]" : output, HttpStatus.OK);
     }
 
     @GetMapping("/api/users/{id}")
@@ -232,7 +235,7 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
 
-        return new ResponseEntity<>(accountService.getUser(user_id), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getUser(user_id) == null ? "[]" : accountService.getUser(user_id), HttpStatus.OK);
     }
 
     @GetMapping("/api/users/{id}/avatar")

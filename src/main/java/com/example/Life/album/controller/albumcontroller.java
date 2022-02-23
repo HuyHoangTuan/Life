@@ -59,9 +59,12 @@ public class albumcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allAlbum.size()-1,index*perPage-1)+1;
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+
+        List<?> output = allAlbum.subList(fromIndex, toIndex);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .body(allAlbum.subList(fromIndex, toIndex));
+                .body(output.size() ==  0 ? "[]" : output);
     }
 
     @GetMapping("/api/albums/{id}/tracks")
@@ -82,7 +85,9 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong token\"}");
         try
         {
-            return new ResponseEntity<>(albumService.getSongIn(albumId), HttpStatus.OK);
+            List<?> output = albumService.getSongIn(albumId);
+
+            return new ResponseEntity<>(output.size() ==  0 ? "[]" : output, HttpStatus.OK);
         } catch(Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.OK);
@@ -108,7 +113,7 @@ public class albumcontroller
                     .body("{\"status\":\"Wrong token\"}");
 
         long artist_id = Long.parseLong(subject);
-        return new ResponseEntity<>(albumService.getAlbum(album_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getAlbum(album_id) == null ? "[]" : albumService.getAlbum(album_id), HttpStatus.OK);
     }
 
     @PostMapping("/api/albums")
@@ -203,7 +208,7 @@ public class albumcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(albumService.getArtistAlbum(artist_id), HttpStatus.OK);
+        return new ResponseEntity<>(albumService.getArtistAlbum(artist_id) == null ? "[]" : albumService.getArtistAlbum(artist_id), HttpStatus.OK);
     }
 
     @GetMapping("/api/albums/{id}/cover")
@@ -362,7 +367,7 @@ public class albumcontroller
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body(albumService.getAllFavAlbum(user_id));
+                .body(albumService.getAllFavAlbum(user_id) == null ? "[]" : albumService.getAllFavAlbum(user_id));
     }
     @PostMapping("/api/users/{id}/albums/favorite")
     public ResponseEntity<?> addNewFavAlbum(@RequestParam("token") String token, @PathVariable("id") long user_id,

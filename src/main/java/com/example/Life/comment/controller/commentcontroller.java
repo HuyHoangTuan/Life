@@ -378,7 +378,7 @@ public class commentcontroller
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
-                .body(commentService.getComment(comment_id));
+                .body(commentService.getComment(comment_id) == null ? "[]" : commentService.getComment(comment_id));
     }
     @PutMapping("/api/comments/{id}")
     public ResponseEntity<?> editComment(@RequestParam(name = "token") String token, @PathVariable("id") int comment_id,

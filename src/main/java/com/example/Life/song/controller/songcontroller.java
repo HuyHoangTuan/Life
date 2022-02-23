@@ -55,7 +55,7 @@ public class songcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(songService.getSong(song_id), HttpStatus.OK);
+        return new ResponseEntity<>(songService.getSong(song_id) == null ? "[]" :songService.getSong(song_id) , HttpStatus.OK);
 
     }
     @GetMapping("/api/tracks/{id}/audio")
@@ -213,9 +213,10 @@ public class songcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allSongs.size()-1,index*perPage-1)+1;
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        List<?> output = allSongs.subList(fromIndex, toIndex);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .body(allSongs.subList(fromIndex, toIndex));
+                .body(output.size() == 0 ? "[]" : output);
 
     }
 
@@ -265,7 +266,7 @@ public class songcontroller
                     .body("{\"status\":\"Wrong token\"}");
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type", "application/json")
-                .body(songService.getAllFavoriteSong(user_id));
+                .body(songService.getAllFavoriteSong(user_id)==null ? "[]" :songService.getAllFavoriteSong(user_id) );
     }
 
     @PostMapping("/api/users/{user_id}/tracks/favorite")

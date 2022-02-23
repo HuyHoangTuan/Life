@@ -48,8 +48,8 @@ public class playlistcontroller
         int toIndex = Math.min(allPlaylists.size()-1,index*perPage-1)+1;
 
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
-
-        return new ResponseEntity<>(allPlaylists.subList(fromIndex, toIndex), HttpStatus.OK);
+        List<?> output = allPlaylists.subList(fromIndex, toIndex);
+        return new ResponseEntity<>(output.size() == 0 ? "[]":output, HttpStatus.OK);
     }
     @GetMapping("/api/users/{id}/playlists")
     public ResponseEntity<?> getAllPlaylistOfAnUser(@RequestParam(name = "token") String token,
@@ -76,8 +76,8 @@ public class playlistcontroller
         int toIndex = Math.min(allPlaylists.size()-1,index*perPage-1)+1;
 
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
-
-        return new ResponseEntity<>(allPlaylists.subList(fromIndex, toIndex), HttpStatus.OK);
+        List<?> output = allPlaylists.subList(fromIndex, toIndex);
+        return new ResponseEntity<>(output.size() == 0 ? "[]":output, HttpStatus.OK);
     }
 
     @GetMapping("/api/users/{id}/playlists/{playlist_id}")
@@ -98,7 +98,7 @@ public class playlistcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(playlistService.getPlaylistOfUser(user_id,playlist_id), HttpStatus.OK);
+        return new ResponseEntity<>(playlistService.getPlaylistOfUser(user_id,playlist_id) == null ? "[]" :playlistService.getPlaylistOfUser(user_id,playlist_id) , HttpStatus.OK);
     }
 
     @GetMapping("/api/users/{id}/playlists/{playlist_id}/tracks")
@@ -125,8 +125,8 @@ public class playlistcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allSongs.size()-1,index*perPage-1);
         if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
-
-        return new ResponseEntity<>(allSongs.subList(fromIndex, toIndex), HttpStatus.OK);
+        List<?> output = allSongs.subList(fromIndex, toIndex);
+        return new ResponseEntity<>(output.size() == 0 ?"[]" : output, HttpStatus.OK);
     }
     @PostMapping("/api/users/{id}/playlists")
     public ResponseEntity<?> createPlaylist(@RequestParam(name = "token") String token,

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class searchcontroller
 {
@@ -33,7 +35,8 @@ public class searchcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(searchService.searchSongWith(content, index), HttpStatus.OK);
+        List<?> output = searchService.searchSongWith(content, index);
+        return new ResponseEntity<>(output.size() == 0 ? "[]": output, HttpStatus.OK);
 
     }
     @GetMapping("/api/search/albums")
@@ -52,7 +55,8 @@ public class searchcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(searchService.searchAlbumWith(content, index), HttpStatus.OK);
+        List<?> output = searchService.searchAlbumWith(content, index);
+        return new ResponseEntity<>(output.size() == 0 ? "[]" : output, HttpStatus.OK);
 
     }
     @GetMapping("/api/search/artists")
@@ -71,7 +75,8 @@ public class searchcontroller
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
-        return new ResponseEntity<>(searchService.searchArtistWith(content, index), HttpStatus.OK);
+        List<?> output = searchService.searchArtistWith(content, index);
+        return new ResponseEntity<>(output.size() ==0 ? "[]" : output, HttpStatus.OK);
 
     }
 }

@@ -307,6 +307,8 @@ public class accountcontroller
             currentAccount.setDisplay_name(body.get("display_name"));
         if(body.get("password")!=null)
             currentAccount.setPassword(body.get("password"));
+        if(body.get("role")!=null)
+            currentAccount.setRole(Integer.parseInt(body.get("role")));
         accountService.save(currentAccount);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
@@ -344,6 +346,8 @@ public class accountcontroller
             currentAccount.setDisplay_name(body.get("display_name"));
         if(body.get("password")!=null)
             currentAccount.setPassword(body.get("password"));
+        if(body.get("role")!=null)
+            currentAccount.setRole(Integer.parseInt(body.get("role")));
         accountService.save(currentAccount);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")
@@ -368,7 +372,7 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
         long id = Long.parseLong(subject);
-        if(id!=LifeApplication.ADMIN)
+        if(id!=1)
         {
             return ResponseEntity
                     .status(HttpStatus.OK)

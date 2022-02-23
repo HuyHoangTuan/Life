@@ -86,7 +86,7 @@ public class songcontroller
         String songPath = "\\"
                 +Long.toString(currentSong.getArtist_id())+"\\"
                 +Long.toString(currentSong.getAlbum_id())+"\\"
-                +Long.toString(currentSong.getTrack_num())+".mp3";
+                +Long.toString(currentSong.getTrack_id())+".mp3";
         long fileSize = 0;
         byte[] data;
         Path path = Paths.get(LifeApplication.defaultDataDir+songPath);
@@ -159,9 +159,16 @@ public class songcontroller
 
         long artist_id = Long.parseLong(subject);
         int numOfSong = songService.findSongInAlbum(album_id).size();
+        song newSong = new song();
+        newSong.setActive(true);
+        newSong.setTrack_name(track_name);
+        newSong.setTrack_num(numOfSong+1);
+        newSong.setAlbum_id(album_id);
+        newSong = songService.save(newSong);
+
         InputStream inputStream = file.getInputStream();
         String path = LifeApplication.defaultDataDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
-        OutputStream outputStream = new FileOutputStream(new File(path+"\\"+Integer.toString(numOfSong+1)+".mp3"));
+        OutputStream outputStream = new FileOutputStream(new File(path+"\\"+Long.toString(newSong.getId())+".mp3"));
         byte[] buffer = new byte[1024];
         int len;
         while((len = inputStream.read(buffer))>0)
@@ -169,12 +176,6 @@ public class songcontroller
             outputStream.write(buffer, 0, len);
         }
         outputStream.close();
-        song newSong = new song();
-        newSong.setActive(true);
-        newSong.setTrack_name(track_name);
-        newSong.setTrack_num(numOfSong+1);
-        newSong.setAlbum_id(album_id);
-        newSong = songService.save(newSong);
 
 
         return ResponseEntity
@@ -232,6 +233,8 @@ public class songcontroller
         song currentSong = songService.findSong(song_id);
         if(body.get("track_name")!=null)
             currentSong.setTrack_name(body.get("track_name"));
+        if(body.get("track_num")!=null)
+            currentSong.setTrack_num(Long.parseLong(body.get("track_num")));
         songService.save(currentSong);
         return ResponseEntity.status(HttpStatus.OK)
                 .header("Content-Type","application/json")

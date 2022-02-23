@@ -334,7 +334,7 @@ public class albumcontroller
             currentAlbum.setTitle(body.get("title"));
         if(body.get("type")!=null)
             currentAlbum.setType(Long.parseLong(body.get("type")));
-        if(body.get("arist_id")!=null)
+        if(body.get("artist_id")!=null)
             currentAlbum.setArtist_id(Long.parseLong(body.get("artist_id")));
         albumService.save(currentAlbum);
         return ResponseEntity.status(HttpStatus.OK)

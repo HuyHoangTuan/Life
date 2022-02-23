@@ -41,7 +41,7 @@ public class commentserviceimpl implements commentservice
     }
 
     @Override
-    public comment addCommentToAlbum(long user_id, long album_id, String content, Date time)
+    public commentmodel addCommentToAlbum(long user_id, long album_id, String content, Date time)
     {
         comment c = new comment();
         c.setCreator_id(user_id);
@@ -50,11 +50,16 @@ public class commentserviceimpl implements commentservice
         c.setCreated_timestamp(time);
         c.setActive(true);
         c = commentRepo.save(c);
-        return getComment(c.getId());
+        List<commentmodel> listComments = getAllCommentOfUserInAlbum(user_id, album_id);
+        for(commentmodel current: listComments)
+        {
+            if(current.getId() == c.getId()) return current;
+        }
+        return null;
     }
 
     @Override
-    public comment addCommentToPlaylist(long user_id, long playlist_id, String content, Date time)
+    public commentmodel addCommentToPlaylist(long user_id, long playlist_id, String content, Date time)
     {
         comment c = new comment();
         c.setCreator_id(user_id);
@@ -63,7 +68,12 @@ public class commentserviceimpl implements commentservice
         c.setCreated_timestamp(time);
         c.setActive(true);
         c = commentRepo.save(c);
-        return getComment(c.getId());
+        List<commentmodel> listComments = getALlCommentOfUserInPlaylist(user_id, playlist_id);
+        for(commentmodel current: listComments)
+        {
+            if(current.getId() == c.getId()) return current;
+        }
+        return null;
     }
 
     @Override

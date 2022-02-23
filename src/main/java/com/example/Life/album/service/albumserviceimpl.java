@@ -64,9 +64,8 @@ public class albumserviceimpl implements albumservice
             convertedSong.setTrack_name(song.getTrack_name());
             convertedSong.setTrack_num(song.getTrack_num());
             convertedSong.setRelease_date(song.getRelease_date());
-            String path = LifeApplication.defaultDataDir+ "\\" + Long.toString(convertedSong.getArtist_id())
-                    +"\\" + Long.toString(song.getAlbum_id()) +"\\"
-                    +Long.toString(convertedSong.getTrack_num())+".mp3";
+            String path = LifeApplication.defaultDataDir+ "\\" + "tracks"
+                    +Long.toString(convertedSong.getTrack_id())+".mp3";
             File file = new File(path);
             try {
                 AudioFileFormat audioFileFormat = new MpegAudioFileReader().getAudioFileFormat(file);

@@ -263,5 +263,91 @@ public class playlistcontroller
         current.setActive(false);
         return new ResponseEntity<>(playlistService.save(current), HttpStatus.OK);
     }
+    @PostMapping("/api/playlists")
+    public ResponseEntity<?> addNewPlaylistFromAdmin(@RequestParam(name = "token") String token,
+                                                     @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.POST+"/api/playlists/"+1+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        long id = Long.parseLong(subject);
+        if(id!=1)
+        {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        }
+        playlist newPlaylist = new playlist();
+        newPlaylist.setActive(true);
+        newPlaylist.setCreator_id(Long.parseLong(body.get("creator_id")));
+        newPlaylist.setTitle(body.get("title"));
+        newPlaylist = playlistService.save(newPlaylist);
 
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(newPlaylist);
+    }
+    @DeleteMapping("/api/playlists/{id}")
+    public ResponseEntity<?> deletePlaylist(@RequestParam(name = "token") String token,
+                                            @PathVariable("id") long playlist_id)
+    {
+        System.out.println(LifeApplication.DELETE+"/api/playlists/"+1+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        playlist current = playlistService.getPlaylist(playlist_id);
+        current.setActive(false);
+        playlistService.save(current);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
+    @PutMapping("/api/playlists/{id}")
+    public ResponseEntity<?> editPlaylist(@RequestParam(name = "token") String token,
+                                          @PathVariable("id") long playlist_id,
+                                          @RequestBody Map<String, String> body)
+    {
+        System.out.println(LifeApplication.PUT+"/api/playlists/"+1+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        playlist current = playlistService.getPlaylist(playlist_id);
+        if(body.get("title")!=null) current.setTitle(body.get("title"));
+        playlistService.save(current);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"status\":\"success\"}");
+    }
 }

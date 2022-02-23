@@ -33,7 +33,7 @@ public interface playlist_songrepo extends JpaRepository<playlist_song, UUID>
             "ON al.id = s.album_id " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE pls.playlist_id = :playlist_id " +
+            "WHERE pls.playlist_id = :playlist_id AND s.active = true " +
             "ORDER BY pls.id ",
             nativeQuery = true)
     List<songmodel> findAllSongsOfPlaylist(@Param("playlist_id") long playlist_id);

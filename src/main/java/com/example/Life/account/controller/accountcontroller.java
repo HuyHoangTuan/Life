@@ -165,7 +165,6 @@ public class accountcontroller
         if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
 
         List<?> output = listArtists.subList(fromIndex, toIndex);
-        System.out.print(output.size());
         return new ResponseEntity<>( output.size() == 0 ? "[]" : output, HttpStatus.OK);
     }
     @GetMapping("/api/artists/{id}")

@@ -64,7 +64,7 @@ public class albumserviceimpl implements albumservice
             convertedSong.setTrack_name(song.getTrack_name());
             convertedSong.setTrack_num(song.getTrack_num());
             convertedSong.setRelease_date(song.getRelease_date());
-            String path = LifeApplication.defaultDataDir+ "\\" + "tracks"
+            String path = LifeApplication.defaultDataDir+ "\\" + "tracks" +"\\"
                     +Long.toString(convertedSong.getTrack_id())+".mp3";
             File file = new File(path);
             try {

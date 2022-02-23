@@ -139,7 +139,7 @@ public class accountcontroller
     @GetMapping("/api/artists")
     public ResponseEntity<?> getAllArtists(@RequestParam(name = "token") String token, @RequestParam(name = "index", defaultValue = "1" , required = false) int index)
     {
-        System.out.println(LifeApplication.GET + " /api/artist " + token);
+        System.out.println(LifeApplication.GET + " /api/artists " + token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -162,9 +162,10 @@ public class accountcontroller
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(listArtists.size()-1,index*perPage-1)+1;
-        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
 
         List<?> output = listArtists.subList(fromIndex, toIndex);
+        System.out.print(output.size());
         return new ResponseEntity<>( output.size() == 0 ? "[]" : output, HttpStatus.OK);
     }
     @GetMapping("/api/artists/{id}")
@@ -213,7 +214,7 @@ public class accountcontroller
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(listUsers.size()-1,index*perPage-1)+1;
-        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
         List<?> output = listUsers.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() ==0 ? "[]" : output, HttpStatus.OK);
     }

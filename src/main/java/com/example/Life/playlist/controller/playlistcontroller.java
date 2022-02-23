@@ -47,7 +47,7 @@ public class playlistcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allPlaylists.size()-1,index*perPage-1)+1;
 
-        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
         List<?> output = allPlaylists.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() == 0 ? "[]":output, HttpStatus.OK);
     }
@@ -75,7 +75,7 @@ public class playlistcontroller
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allPlaylists.size()-1,index*perPage-1)+1;
 
-        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        if(fromIndex>=toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
         List<?> output = allPlaylists.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() == 0 ? "[]":output, HttpStatus.OK);
     }
@@ -124,7 +124,7 @@ public class playlistcontroller
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
         int toIndex = Math.min(allSongs.size()-1,index*perPage-1);
-        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body(null);
+        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
         List<?> output = allSongs.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() == 0 ?"[]" : output, HttpStatus.OK);
     }

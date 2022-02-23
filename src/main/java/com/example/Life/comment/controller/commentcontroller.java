@@ -19,6 +19,10 @@ import java.util.Map;
 @RestController
 public class commentcontroller
 {
+    private String[] regex = new String[]{
+            "lon", "buoi","cac",
+            "lồn","buồi","cặc"
+    };
     @Autowired
     private commentservice commentService;
 
@@ -134,7 +138,15 @@ public class commentcontroller
                     .body("{\"status\":\"Missing params\"}");
         }
 
-        String content = body.get("content");
+        String content = "";
+        if(body.get("content")!=null)
+        {
+            content = body.get("content");
+            for(String string: regex)
+            {
+                content = content.replaceAll(string,"******");
+            }
+        }
         Date current = new Date(System.currentTimeMillis());
         if(album_id != -1)
         {

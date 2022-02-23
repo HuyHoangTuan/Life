@@ -82,11 +82,11 @@ public class songcontroller
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body("\"status\":\"Wrong song id\"");
-
-        String songPath = "\\"
+        String songPath = "\\"+"tracks"+"\\"+currentSong.getTrack_id()+".mp3";
+        /*String songPath = "\\"
                 +Long.toString(currentSong.getArtist_id())+"\\"
                 +Long.toString(currentSong.getAlbum_id())+"\\"
-                +Long.toString(currentSong.getTrack_id())+".mp3";
+                +Long.toString(currentSong.getTrack_id())+".mp3";*/
         long fileSize = 0;
         byte[] data;
         Path path = Paths.get(LifeApplication.defaultDataDir+songPath);
@@ -167,7 +167,8 @@ public class songcontroller
         newSong = songService.save(newSong);
 
         InputStream inputStream = file.getInputStream();
-        String path = LifeApplication.defaultDataDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
+        String path = LifeApplication.defaultDataDir+"\\"+"tracks";
+        ///String path = LifeApplication.defaultDataDir + "\\"+Long.toString(artist_id)+"\\"+Long.toString(album_id);
         File curFolder = new File(path);
         if( curFolder.exists() == false)
         {

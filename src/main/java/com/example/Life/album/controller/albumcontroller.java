@@ -150,7 +150,8 @@ public class albumcontroller
 
         albumService.save(newAlbum);
 
-        String path = LifeApplication.defaultDataDir +"\\"+body.get("artist_id")+"\\"+Long.toString(newAlbum.getId());
+        String path = LifeApplication.defaultDataDir + "\\"+"tracks";
+        ///String path = LifeApplication.defaultDataDir +"\\"+body.get("artist_id")+"\\"+Long.toString(newAlbum.getId());
         File file = new File(path);
         if(!file.exists()) file.mkdirs();
 

@@ -350,12 +350,11 @@ public class accountcontroller
                 .body("{\"status\":\"success\"}");
     }
 
-    @PostMapping("/api/users/{id}")
+    @PostMapping("/api/users")
     public ResponseEntity<?> createAccount(@RequestParam(name = "token") String token,
-                                           @PathVariable("id") long account_id,
                                            @RequestBody Map<String, String> body)
     {
-        System.out.println(LifeApplication.POST+" "+"/api/users/"+account_id + " "+token);
+        System.out.println(LifeApplication.POST+" "+"/api/users/"+1 + " "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity

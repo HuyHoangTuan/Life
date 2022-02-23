@@ -49,8 +49,8 @@ public class commentserviceimpl implements commentservice
         c.setContent(content);
         c.setCreated_timestamp(time);
         c.setActive(true);
-        commentRepo.save(c);
-        return c;
+        c = commentRepo.save(c);
+        return getComment(c.getId());
     }
 
     @Override
@@ -62,12 +62,12 @@ public class commentserviceimpl implements commentservice
         c.setContent(content);
         c.setCreated_timestamp(time);
         c.setActive(true);
-        commentRepo.save(c);
-        return c;
+        c = commentRepo.save(c);
+        return getComment(c.getId());
     }
 
     @Override
-    public comment getComment(int comment_id)
+    public comment getComment(long comment_id)
     {
         return commentRepo.findById(comment_id);
     }

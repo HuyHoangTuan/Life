@@ -19,6 +19,6 @@ public interface commentservice
     comment addCommentToPlaylist(long user_id, long playlist_id, String content, Date time);
     comment save(comment c);
     comment delete(comment c);
-    comment getComment(int comment_id);
+    comment getComment(long comment_id);
 
 }

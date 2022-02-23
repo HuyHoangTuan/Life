@@ -17,4 +17,5 @@ public class songalbummodel
     long artist_id;
     long track_num;
     double duration;
+    boolean active;
 }

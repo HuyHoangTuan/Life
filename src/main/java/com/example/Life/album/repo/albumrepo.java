@@ -62,7 +62,7 @@ public interface albumrepo extends JpaRepository<album, UUID>
             "ON al.id = s.album_id " +
             "INNER JOIN account as a " +
             "ON a.id = al.artist_id " +
-            "WHERE al.id = :albumId"
+            "WHERE al.id = :albumId AND s.active = true "
             , nativeQuery = true)
     List<songmodel> findSongIn(@Param("albumId") long albumId);
 

@@ -11,16 +11,7 @@ Yêu cầu: Dbeaver phiên bản 21.3.0 và PostgreSQL 14. Trong quá trình cà
 -	Bước 8: Tại Database, chọn Create/Database… Đặt tên cho Database là Life, sau đó bấm Save.
 -	Bước 9: Tại DBeaver, chọn Database/New Database Connection, sau đó chọn hệ quản trị PostgreSQL. Khi đó Dbeaver sẽ mở ra hộp thoại nhập các thông tin về server cần kết nối. Điền đầy đủ các thông tin về Host (localhost), Port, Database (Life), Username và Password. Sau đó bấm Test Connection… để kiểm tra kết nối. Nếu kết nối không thành công, cần kiểm tra lại các trường thông tin xem đã đúng hay chưa.
 -	Bước 10: Chuột phải vào file  Life/Databases/Life, chọn Tools/Restore. Chọn Format là Tar, tích chọn 2 tùy chọn “Clean (drop) database objects before recreating  them” và “Discard objects owner”. Chọn file backup là file dump-test-202202242053.tar nằm trong file main đã clone về trước đó. Sau đó bấm Start để máy tự cấu hình database. Sau khi cấu hình xong máy có thể sẽ xuất hiện cảnh báo. Ta có thể bỏ qua cảnh báo đó.
-*Một số tài khoản đã được tạo trước trong database:
-| Tên tài khoản | Mật khẩu   | Vai trò |
-| ---           | ---        | ---     |
-| admin         | admin      | Admin   |
-| ---           | ---        | ---     |
-| taylorswift   | 123        | Artist  |
-| ---           | ---        | ---     |
-| brunomars     | 123        | Artist  |
-| ---           | ---        | ---     |
-| fankychop@gmail.com | 123 | Client |
+
 # 2. Khởi chạy BackEnd
 Yêu cầu: IntelliJ community version 213.6461.79, JDK version 17, môi trường Maven để cấu hình và khởi chạy BackEnd.
 -	Bước 1: Mở terminal tại folder Life ở phần trên.
@@ -46,3 +37,14 @@ Yêu cầu: NodeJS phiên bản 16.13.0
 ## Dương Trung Hiếu - 20183740 - Thiết kế hệ thống, thực hiện báo cáo, hỗ trợ biết FrontEnd.
 ## Trần Minh Công - 20180032 - Viết frontEnd.
 ## Nguyễn Phúc Tân - 20183824 - Hỗ trợ làm backEnd, frontEnd.
+
+# Một số tài khoản đã được tạo trước trong database:
+| Tên tài khoản | Mật khẩu   | Vai trò |
+| :---           | :---        | :---     |
+| admin         | admin      | Admin   |
+| :---           | :---        | :---     |
+| taylorswift   | 123        | Artist  |
+| :---           | :---        | :---     |
+| brunomars     | 123        | Artist  |
+| :---           | :---        | :---     |
+| fankychop@gmail.com | 123 | Client |

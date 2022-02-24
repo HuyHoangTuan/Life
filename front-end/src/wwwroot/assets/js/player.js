@@ -13,7 +13,7 @@ var playingTrackId;
 var queue = [];
 
 var preloaded = false;
-
+var isPlaying = 0;
 function initPlayer(type = 0) {
 	let p = document.createElement("AUDIO");
 	p.volume = 0.5;
@@ -35,11 +35,19 @@ function initPlayer(type = 0) {
 	};
 	p.onpause = () => {
 		// stopSlider(songSlider);
-		buttonPlay.classList.toggle("paused");
+		if(isPlaying == 1)
+		{
+			buttonPlay.classList.toggle("paused");
+			isPlaying = 0;
+		}
 		console.log("Player paused");
 	};
 	p.onplay = () => {
-		buttonPlay.classList.toggle("paused");
+		if(isPlaying == 0)
+		{
+			buttonPlay.classList.toggle("paused");
+			isPlaying = 1;
+		}
 		console.log("Player is trying to play");
 	};
 	p.ontimeupdate = () => {

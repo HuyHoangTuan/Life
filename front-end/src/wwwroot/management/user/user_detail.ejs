@@ -47,6 +47,10 @@
                         <option value="2" <% if (user.role==2) { %>selected<% } %>>User</option>
                     </select>
                     <span>Status</span>
+                    <select name="active" value="<%= user.active %>">
+                        <option value="false" <% if (user.active==false) { %>selected<% } %>>Unactive</option>
+                        <option value="true" <% if (user.active==true) { %>selected<% } %>>Active</option>
+                    </select>
                     <div></div>
                 </div>
             </div>

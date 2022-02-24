@@ -66,7 +66,8 @@ function submitForm(id, goBack = 1) {
 				// window.history.state.
 			}
 			changePage(path);
-			toggleDialog("dialog-status-ok");
+			///toggleDialog("dialog-status-ok");
+			setTimeout(window.location.reload(), 200);
 		} else {
 			toggleDialog("dialog-status-err");
 		}

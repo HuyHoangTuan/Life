@@ -122,10 +122,11 @@ class IndexHandler {
 
 class LibraryHandler {
 	static async getHandler(req, res) {
+		let user = await entities.User.getUserById(res.uid);
 		let favAlbumList = await entities.User.getFavAlbums(res.uid, req.token);
 		let favArtistList = await entities.User.getFavArtists(res.uid, req.token);
 		let playlist = await entities.User.getPlaylists(res.uid, req.token);
-		var data = {favAlbumList: favAlbumList, favArtistList: favArtistList, playlist: playlist};
+		var data = {favAlbumList: favAlbumList, favArtistList: favArtistList, playlist: playlist, user: user};
 		utils.renderPage(res, "library.ejs", data, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
 	}
 }
@@ -193,7 +194,7 @@ exports.RegisterHandler = class {
 					email: post.email,
 					display_name: post.name,
 					password: post.password,
-					role: 3,
+					role: post.role,
 				})
 			)
 		);

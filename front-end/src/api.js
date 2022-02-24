@@ -1,6 +1,6 @@
 const http = require("./http");
 
-const apiHost = "http://192.168.192.51:8080";
+const apiHost = "http://127.0.0.1:8080";
 const apiRoot = "/api";
 
 function buildURL(path, param) {

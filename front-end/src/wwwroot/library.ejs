@@ -14,7 +14,7 @@
 <div class="content-view">
 	<section>
 		<h2>Favorite Artists</h2>
-		<div class="content-list-small">
+		<div class="content-list-small" style="overflow-x: auto;">
 			<% favArtistList.forEach((artist)=> {%>
 				<div class="content artist" onclick="changePage('/artists/<%= artist.id %>')">
 					<img class="avatar" src="/users/<%= artist.id %>/avatar" />
@@ -28,8 +28,8 @@
 		</div>
 	</section>
 	<section>
-		<div class="relative"><h2>Your Playlists</h2> <button class="absolute" style="right: 0; top : 0;">New playlist</button></div>
-		<div class="content-list-duo">
+		<div class="relative"><h2>Your Playlists</h2> <button class="absolute" style="right: 0; top : 0;" onclick="toggleDialog('dialog-add')">New playlist</button></div>
+		<div class="content-list-duo" style="height:300px;overflow: auto;">
 			<% playlist.forEach((pl)=>{%>
 			<div class="content playlist" onclick="changePage('/playlists/<%= pl.id %>')">
 				<img src="https://www.collinsdictionary.com/images/thumb/road_124163875_250.jpg" />
@@ -43,7 +43,7 @@
 	</section>
 	<section>
 		<h2>Saved Albums</h2>
-		<div class="content-list-large">
+		<div class="content-list-large" style="overflow: auto;">
 			<% favAlbumList.forEach((album)=> {%>
 				<div class="content album" onclick="changePage('/albums/<%= album.id %>')">
 					<img src="/albums/<%= album.id %>/cover">
@@ -56,4 +56,18 @@
 			<% }) %>
 		</div>
 	</section>
+	<form class="dialog hidden" id="dialog-add" method="POST" action="/users/<%= uid %>/playlists" onsubmit="return false;">
+		<h1>Create new playlist</h1>
+		<div class="dialog-content">
+			<div class="grid-dialog">
+				<span>Title</span>
+				<input type="text" name="title" origin-val="">
+			</div>
+		</div>
+		<div class="dialog-controls">
+			<input type="reset" value="Reset">
+			<button onclick="addNewPlaylist()">Add</button>
+			<button onclick="toggleDialog('dialog-add', resetTForm)">Cancel</button>
+		</div>
+	</form>
 </div>

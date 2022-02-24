@@ -19,6 +19,7 @@ function updateContent(statusCode, content) {
 function changePage(url, back = false) {
 	console.log("[Change]" + url);
 	XHR("GET", buildRawURL(url), (statusCode, data) => {
+		console.log(data);
 		jsonData = JSON.parse(data);
 		document.title = jsonData.title;
 		if (!back) {

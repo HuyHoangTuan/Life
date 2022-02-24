@@ -33,7 +33,14 @@
 					oninput="search(this.value)"
 				/>
 			</div>
-			<div><a href="/logout">Logout</a></div>
+			<div class="flex-row">
+				<div class = "flex-row" style="margin-right: 10px ; cursor: pointer;" onclick="changePage('/profile')">
+					<img src="/users/<%= uid %>/avatar" class="avatar" style="height: 2rem; width: 2rem;">
+					<span style="margin-top: 3px;"><%= uname %></span>
+				</div>
+				
+				<a style = "margin-top: 3px" href="/logout">Logout</a>
+			</div>
 		</nav>
 		<main>
 			<div id="page-view"><%- content %></div>
@@ -55,7 +62,7 @@
 				<p>Ok</p>
 			</div>
 			<div class="dialog-controls">
-				<button class="dialog-button-ok" onclick="toggleDialog('dialog-status-ok')">OK</button>
+				<button class="dialog-button-ok" onclick="toggleOk()">OK</button>
 				<!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
 			</div>
 		</div>

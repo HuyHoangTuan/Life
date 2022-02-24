@@ -24,9 +24,18 @@ function toggleDialog(dialogID, callback = null) {
 	event.stopPropagation();
 	let dialog = document.getElementById(dialogID);
 	dialog.classList.toggle("hidden");
+	console.log(callback);
 	if (callback) callback(dialog);
+	else
+	{
+		///if(dialogID == "dialog-status-ok") window.location.reload();
+	}
 }
 
+function toggleOk()
+{
+	window.location.reload();
+}
 // function loadRemoteAudio(elm) {
 // 	let editForm = document.getElementById("dialog-edit");
 // 	let editForm.querySelector(".audio-preview")
@@ -275,7 +284,8 @@ function uploadTrack() {
 		(status) => {
 			if (status == 200) {
 				toggleDialog("dialog-add", resetTForm);
-				toggleDialog("dialog-status-ok");
+				///toggleDialog("dialog-status-ok");
+				setTimeout(()=>window.location.reload(),100);
 			} else {
 				toggleDialog("dialog-status-err");
 			}
@@ -302,6 +312,7 @@ function deleteTrack(ev, id) {
 	let f = function () {
 		console.log("callingback");
 		XHR("DELETE", `/tracks/${id}`, () => {});
+		setTimeout(()=>window.location.reload(), 100);
 	};
 	toggleDeleteDialog(f);
 	event.preventDefault();
@@ -315,7 +326,7 @@ function toggleDeleteDialog(fcallback = null) {
 	dialog.classList.toggle("hidden");
 	if (fcallback) {
 		let okBt = dialog.querySelector(".dialog-button-ok");
-		okBt.innerHTML = "ABC";
+		okBt.innerHTML = "Ok";
 		okBt.addEventListener("click", fcallback);
 	}
 }
@@ -366,22 +377,50 @@ function addPlaylist(fcallback) {
 	XHR("POST", dialog.getAttribute("action"), fcallback, JSON.stringify({ title: dialog.querySelector("input[name='title']").value }), "application/json");
 }
 
+function addNewPlaylist()
+{
+	let f = function(status, raw)
+	{
+		if(status==200)
+		{
+			toggleDialog("dialog-add");
+			setTimeout(()=> window.location.reload(), 200);
+		}
+	}
+	addPlaylist(f);
+}
 function insertPopupLibrary(pl) {
 	let popup = document.querySelector(".popup");
 	let newUl = document.createElement("li");
-	newUl.setAttribute("onclick", `addTrackToPL(event,${pl.id})`);
+	newUl.setAttribute("onclick", `addTrackToPL(${pl.id})`);
 	newUl.innerText = pl.title;
 	let uls = popup.querySelectorAll("li")
 	popup.insertBefore(newUl, uls[uls.length-1]);
 }
 
 function addTrackToPL(plId) {
+	console.log(plId);
 	let dialog = document.getElementById("dialog-add");
 	XHR("PUT", `${dialog.getAttribute("action")}/${plId}/tracks/${currentTrack}`, null, JSON.stringify({}), "application/json");
+	let popup = document.querySelector(".popup");
+	popup.classList.add("hidden");
 }
 
 function deletePlaylist() {
 	XHR("DELETE", `${window.location.pathname}`, ()=>{
 		changePage("/library");
 	}, JSON.stringify({}), "application/json");
+}
+
+function changePassword(uid)
+{
+	let f = function(status, data)
+	{
+		if(status == 200)
+		{
+			console.log(data);
+		}
+	}
+	XHR("GET",`/users/${uid}`, f, null, "application/json");
+
 }

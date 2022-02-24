@@ -40,11 +40,11 @@ Yêu cầu: NodeJS phiên bản 16.13.0
 
 # Một số tài khoản đã được tạo trước trong database:
 | Tên tài khoản | Mật khẩu   | Vai trò |
-| :---           | :---        | :---     |
+| ---           | ---        | ---     |
 | admin         | admin      | Admin   |
-| :---           | :---        | :---     |
+| ---           | ---        | ---     |
 | taylorswift   | 123        | Artist  |
-| :---           | :---        | :---     |
+| ---           | ---        | ---     |
 | brunomars     | 123        | Artist  |
-| :---           | :---        | :---     |
+| ---           | ---        | ---     |
 | fankychop@gmail.com | 123 | Client |

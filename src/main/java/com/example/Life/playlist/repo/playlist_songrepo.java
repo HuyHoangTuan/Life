@@ -16,7 +16,7 @@ public interface playlist_songrepo extends JpaRepository<playlist_song, UUID>
     playlist_song findById(long ps);
     @Query(value = "SELECT pls.id as id " +
             "FROM playlist_song as pls " +
-            "WHERE pls.playlist_id = :playlist_id AND pls.song_id = :song_id " +
+            "WHERE pls.playlist_id = :playlist_id AND pls.song_id = :song_id AND pls.active = true " +
             "ORDER BY pls.id ",
             nativeQuery = true)
     List<playlist_songmodel> findPlaylistSong(@Param("playlist_id") long playlist_id,@Param("song_id") long song_id);
@@ -33,7 +33,7 @@ public interface playlist_songrepo extends JpaRepository<playlist_song, UUID>
             "ON al.id = s.album_id " +
             "INNER JOIN account as a " +
             "ON al.artist_id = a.id " +
-            "WHERE pls.playlist_id = :playlist_id AND s.active = true " +
+            "WHERE pls.playlist_id = :playlist_id AND s.active = true AND pls.active =true " +
             "ORDER BY pls.id ",
             nativeQuery = true)
     List<songmodel> findAllSongsOfPlaylist(@Param("playlist_id") long playlist_id);

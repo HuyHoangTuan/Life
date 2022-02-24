@@ -123,7 +123,7 @@ public class playlistcontroller
         List<songoutputmodel> allSongs = playlistService.getAllSongsOfPlaylist(playlist_id);
         int perPage = 20;
         int fromIndex = (index-1)*perPage;
-        int toIndex = Math.min(allSongs.size()-1,index*perPage-1);
+        int toIndex = Math.min(allSongs.size()-1,index*perPage-1)+1;
         if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
         List<?> output = allSongs.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() == 0 ?"[]" : output, HttpStatus.OK);
@@ -204,13 +204,13 @@ public class playlistcontroller
         return new ResponseEntity<>(playlistService.save(current), HttpStatus.OK);
 
     }
-    @PostMapping("/api/users/{id}/playlists/{playlist_id}/tracks/{track_id}")
+    @PutMapping("/api/users/{id}/playlists/{playlist_id}/tracks/{track_id}")
     public ResponseEntity<?> addSong2Playlist(@RequestParam(name = "token") String token,
                                                 @PathVariable("id") long user_id,
                                                 @PathVariable("playlist_id") long playlist_id,
-                                                @PathVariable("track_id") long track_id,
-                                                @RequestBody Map<String, String> body)
+                                                @PathVariable("track_id") long track_id)
     {
+        System.out.println(LifeApplication.PUT+"/api/users/"+user_id+"/playlists/"+playlist_id+"/tracks/"+track_id+" "+token);
         Claims claims = JWT.decodeJWT(token);
         if(claims == null)
             return ResponseEntity
@@ -228,15 +228,16 @@ public class playlistcontroller
         newPlaylist_song.setPlaylist_id(playlist_id);
         newPlaylist_song.setSong_id(track_id);
         newPlaylist_song.setActive(true);
-        try
+        newPlaylist_song.setAdded_date(new Date(System.currentTimeMillis()));
+        /*try
         {
             if(body.get("added_date")!=null)
                 newPlaylist_song.setAdded_date(Date.valueOf(LocalDate.parse(body.get("added_date"))));
         } catch (Exception e)
         {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        System.out.println(1);
+        }*/
+        ///System.out.println(1);
         return new ResponseEntity<>(playlistService.save(newPlaylist_song), HttpStatus.OK);
     }
     @DeleteMapping("/api/users/{id}/playlists/{playlist_id}/tracks/{track_id}")
@@ -262,6 +263,28 @@ public class playlistcontroller
         playlist_song current = playlistService.getPlaylistSong(playlist_id, track_id);
         current.setActive(false);
         return new ResponseEntity<>(playlistService.save(current), HttpStatus.OK);
+    }
+    @GetMapping("/api/playlists/{id}")
+    public ResponseEntity<?> getPlaylist(@RequestParam(name = "token") String token, @PathVariable("id") long playlist_id)
+    {
+        System.out.println(LifeApplication.GET+"/api/playlists/"+1+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body(playlistService.getPlaylist(playlist_id) == null ? "[]" : playlistService.getPlaylist(playlist_id));
     }
     @PostMapping("/api/playlists")
     public ResponseEntity<?> addNewPlaylistFromAdmin(@RequestParam(name = "token") String token,
@@ -349,5 +372,33 @@ public class playlistcontroller
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
+    }
+    @GetMapping("/api/playlists/{id}/tracks")
+    public ResponseEntity<?> getTracks(@RequestParam(name = "token") String token,
+                                          @PathVariable("id") long playlist_id,
+                                       @RequestParam(name = "index", defaultValue = "1", required = false) int index)
+    {
+        System.out.println(LifeApplication.GET+"/api/playlists/"+playlist_id+"/tracks "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        List<songoutputmodel> allSongs = playlistService.getAllSongsOfPlaylist(playlist_id);
+
+        int perPage = 20;
+        int fromIndex = (index-1)*perPage;
+        int toIndex = Math.min(allSongs.size()-1,index*perPage-1)+1;
+
+        if(fromIndex>toIndex) return ResponseEntity.status(HttpStatus.OK).header("Content-Type","application/json").body("[]");
+        List<?> output = allSongs.subList(fromIndex, toIndex);
+        return new ResponseEntity<>(output.size() == 0 ?"[]" : output, HttpStatus.OK);
     }
 }

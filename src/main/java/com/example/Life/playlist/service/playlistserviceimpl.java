@@ -60,9 +60,8 @@ public class playlistserviceimpl implements playlistservice
             out.setTrack_name(current.getTrack_name());
             out.setTile(current.getTitle());
             out.setTrack_id(current.getTrack_id());
-            String path = LifeApplication.defaultDataDir + "\\" + Long.toString(out.getArtist_id()) + "\\"
-                    + Long.toString(out.getAlbum_id())+"\\"
-                    + Long.toString(current.getTrack_num())+".mp3";
+            String path = LifeApplication.defaultDataDir + "\\" + "tracks" + "\\"
+                    + Long.toString(current.getTrack_id())+".mp3";
             File file = new File(path);
 
             try {

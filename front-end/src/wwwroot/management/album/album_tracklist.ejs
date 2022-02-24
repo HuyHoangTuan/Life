@@ -62,8 +62,7 @@
 <script> initTrackDragNDrop(); </script>
 <form class="dialog hidden" id="dialog-add" method="POST" action="/tracks" onsubmit="return false;">
     <span style="display: none;">
-        <input value="-1" name="album_id">
-        <script>document.querySelector("[name='album_id']").value = <%= album.id %></script>
+        <input value="<%= album.id %>" name="album_id">
         <input name="track_num">
     </span>
     <h1>Add track</h1>

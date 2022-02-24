@@ -35,7 +35,7 @@ public class accountcontroller
     public ResponseEntity<?> authenticate(@RequestBody Map<String, String> body)
     {
         System.out.println(LifeApplication.POST+" /api/authenticate " + body.toString());
-        if(body.get("token")!=null)
+        /*if(body.get("token")!=null)
         {
             Claims claims =  JWT.decodeJWT(body.get("token"));
             if(claims == null)
@@ -58,9 +58,9 @@ public class accountcontroller
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type","application/json")
                     .body(response);
-        }
-        else
-        {
+        }*/
+        ///else
+        //{
             account authentication = accountService.Authenticate(body.get("email"), body.get("password"));
             if (authentication == null) {
                 return ResponseEntity.status(HttpStatus.OK)
@@ -68,13 +68,14 @@ public class accountcontroller
                         .body("{\"status\":\"Wrong email or password\"}");
             }
             Map<String, String> response = new HashMap<>();
+            ///System.out.println(authentication.getId()+" "+authentication.getDisplay_name()+" "+authentication.getRole());
             response.put("token", JWT.createJWT(Long.toString(authentication.getId())));
             response.put("display_name", authentication.getDisplay_name());
             response.put("role", Long.toString(authentication.getRole()));
             return ResponseEntity.status(HttpStatus.OK)
                     .header("Content-Type", "application/json")
                     .body(response);
-        }
+       /// }
     }
 
     @PostMapping(path = "/api/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -205,7 +206,9 @@ public class accountcontroller
                     .header("Content-Type","application/json")
                     .body("{\"status\":\"Wrong token\"}");
         long admin_id = Long.parseLong(subject);
-        if(admin_id != 1)
+        account current = accountService.findAccount(admin_id);
+        ///System.out.println(current.getId()+" "+current.getDisplay_name()+" "+current.getRole());
+        if(current.getRole() != 0)
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .header("Content-Type","application/json")

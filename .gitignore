@@ -21,7 +21,7 @@ target/
 pom.xml
 ### NetBeans ###
 /src/main/resources/
-/src/main/java/com/example/Life/data
+
 /nbproject/private/
 /nbbuild/
 /dist/

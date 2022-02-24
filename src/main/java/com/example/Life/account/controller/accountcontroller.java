@@ -347,8 +347,14 @@ public class accountcontroller
             currentAccount.setActive(Boolean.parseBoolean(body.get("active")));
         if(body.get("display_name")!=null)
             currentAccount.setDisplay_name(body.get("display_name"));
-        if(body.get("password")!=null)
-            currentAccount.setPassword(body.get("password"));
+        if(body.get("current_password")!=null)
+        {
+            if(body.get("current_password").equals(currentAccount.getPassword()))
+            {
+                currentAccount.setPassword(body.get("new_password"));
+            }
+
+        }
         if(body.get("role")!=null)
             currentAccount.setRole(Integer.parseInt(body.get("role")));
         accountService.save(currentAccount);

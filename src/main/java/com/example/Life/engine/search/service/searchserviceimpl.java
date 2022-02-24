@@ -163,9 +163,9 @@ public class searchserviceimpl implements searchservice
         List<String[]> listContents = new ArrayList<>();
         Map<String[], Long> map =  new HashMap<>();
         List<accountmodel> listAlbums = accountRepo.findAllAccounts();
-
         for(accountmodel currentAccount : listAlbums)
         {
+            ///System.out.println(currentAccount.getActive()+", "+currentAccount.getDisplay_name()+", "+currentAccount.getRole());
             if(currentAccount.getActive() == false || currentAccount.getRole()!=LifeApplication.ARTIST) continue;
             String s = currentAccount.getDisplay_name().toLowerCase();
             listContents.add(s.split(" "));

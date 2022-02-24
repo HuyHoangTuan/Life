@@ -36,6 +36,7 @@ public class accountserviceimpl implements accountservice
         List<account> validEmail = accountRepo.findByEmail(email);
         if(validEmail.size()!=0) return false;
         account newAccount = new account(email, password, name,role);
+        newAccount.setActive(true);
         accountRepo.save(newAccount);
         return true;
     }

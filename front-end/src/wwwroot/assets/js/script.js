@@ -351,6 +351,9 @@ function addPlaylistTrack() {
 			let pl = JSON.parse(raw);
 			insertPopupLibrary(pl);
 			addTrackToPL(pl.id);
+			document.querySelector(".popup").classList.add("hidden");
+			toggleDialog("dialog-add");
+			toggleDialog("dialog-status-ok");
 		}
 	}
 	console.log(f);

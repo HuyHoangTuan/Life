@@ -130,7 +130,7 @@ class LibraryHandler {
 	}
 }
 
-exports.LoginHandler = class {
+class LoginHandler {
 	static async getHandler(req, res, status = 0) {
 		var data = { status: status };
 		// utils.renderPage(res, "login.ejs", data);
@@ -161,6 +161,8 @@ exports.LoginHandler = class {
 		}
 	}
 };
+exports.LoginHandler = LoginHandler;
+
 
 exports.LogoutHandler = class {
 	static async getHandler(req, res) {

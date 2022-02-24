@@ -6,9 +6,9 @@
             <p>The Beatles</p> -->
     </div>
     <ul class="list-nav">
-        <li onclick="changePage('/management/albums/<%= album.id %>')">Metadata</li>
-        <li onclick="changePage('/management/albums/<%= album.id %>/tracks')">Tracklist</li>
-        <li onclick="changePage('/management/albums/<%= album.id %>/comments')">Comments</li>
+        <li onclick="changePage('/for_artist/albums/<%= album.id %>')">Metadata</li>
+        <li onclick="changePage('/for_artist/albums/<%= album.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/for_artist/albums/<%= album.id %>/comments')">Comments</li>
     </ul>
 </div>
 <div class="content-view">
@@ -32,3 +32,5 @@
         </div>
 	</section>
 </div>
+<script>document.querySelector('.linkk').setAttribute("onclick", "changePage('/for_artist/albums')")
+</script>

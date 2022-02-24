@@ -401,4 +401,27 @@ public class playlistcontroller
         List<?> output = allSongs.subList(fromIndex, toIndex);
         return new ResponseEntity<>(output.size() == 0 ?"[]" : output, HttpStatus.OK);
     }
+    @DeleteMapping("/api/playlists/{id}/tracks/{track_id}")
+    public ResponseEntity<?> deleteTrack(@RequestParam(name = "token") String token,
+                                         @PathVariable("id") long playlist_id,
+                                         @PathVariable("track_id") long track_id)
+    {
+        System.out.println(LifeApplication.DELETE+"/api"+"/playlists/"+playlist_id+"/tracks/"+track_id+" "+token);
+        Claims claims = JWT.decodeJWT(token);
+        if(claims == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+        String subject = claims.getSubject();
+        if(subject == null)
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .header("Content-Type","application/json")
+                    .body("{\"status\":\"Wrong token\"}");
+
+        playlist_song current = playlistService.getPlaylistSong(playlist_id, track_id);
+        current.setActive(false);
+        return new ResponseEntity<>(playlistService.save(current), HttpStatus.OK);
+    }
 }

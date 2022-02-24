@@ -1,0 +1,34 @@
+<div>
+    <div class="info">
+        <h1>Album Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/albums/<%= album.id %>')">Metadata</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/management/albums/<%= album.id %>/comments')">Comments</li>
+    </ul>
+</div>
+<div class="content-view">
+	<section>
+		<h2>Comments</h2>
+		<div class="grid-table" id="man-comment-list">
+            <div>
+                <h3>ID</h3>
+                <h3>Creator</h3>
+                <h3>Content</h3>
+                <h3>Created Date</h3>
+            </div>
+            <% commentList.forEach(comment => {%>
+				<div comment-id="">
+					<span><%= comment.id %></span>
+					<span><%= comment.display_name %></span>
+					<span><%= comment.content %></span>
+					<span><%= comment.created_timestamp %></span>
+				</div>
+			<%}) %>
+        </div>
+	</section>
+</div>

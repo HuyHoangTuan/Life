@@ -23,18 +23,20 @@ var channelMap = new Map();
 var socketMap = new Map();
 var userMap = new Map();
 
+exports.UserMap = userMap;
 
 exports.handler = (ws, req) => {
     console.log("[Log][Socket]New socket connection");
+    if(!userMap.has(req.uid)){
+        userMap.set(req.uid, true);
+    }
     ws.on("message", async function (mesgRaw) {
         console.log(mesgRaw);
         let mesg = JSON.parse(mesgRaw);
         switch (mesg.type) {
             case typ_clt_subs: {
                 let channel = mesg.data.channel;
-                if(!userMap.has(req.uid)){
-                    userMap.set(req.uid, true);
-                }
+                
 
                 //clear previous mapped sockets
                 if (socketMap.has(this)) {
@@ -117,13 +119,13 @@ exports.handler = (ws, req) => {
         }
     });
     ws.on("close", function() {
+        console.log("Closed socket");
         let channel = socketMap.get(this);
         if(channelMap.has(channel)){
             channelMap.get(channel).splice(this);
         }
         socketMap.delete(this);
-        userMap.delete(req);
-
+        userMap.delete(req.uid);
     })
 };
 exports.CommentHandler = class {

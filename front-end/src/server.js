@@ -63,6 +63,11 @@ exports.init = () => {
 	handlerMap.set("/management/albums/:id(\\d+)", managementHandlers.AlbumManHandler);
 	handlerMap.set("/management/albums/:id(\\d+)/:type(tracks|comments)", managementHandlers.AlbumManHandler);
 
+
+	handlerMap.set("/for_artist/albums", managementHandlers.ForArtistHandler);
+	handlerMap.set("/for_artist/albums/:id(\\d+)", managementHandlers.ForArtistHandler);
+	handlerMap.set("/for_artist/albums/:id(\\d+)/:type(tracks|comments)", managementHandlers.ForArtistHandler);
+
 	handlerMap.set("/management/playlists", managementHandlers.PlaylistManHandler);
 	handlerMap.set("/management/playlists/:id(\\d+)", managementHandlers.PlaylistManHandler);
 	handlerMap.set("/management/playlists/:id(\\d+)/:type(tracks|comments)", managementHandlers.PlaylistManHandler);

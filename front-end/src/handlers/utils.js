@@ -48,8 +48,8 @@ exports.getBody = async function (req) {
 };
 
 exports.renderPage = (res, filePath, data, frameType = 0, options = null) => {
-	data.uid = res.uid;
-	data.uname = res.uname;
+	data.uid = res.uid ? res.uid : "";
+	data.uname = res.uname ? res.uname : "";
 	ejs.renderFile("src/wwwroot/" + filePath, data, options, (err, html) => {
 		if (err) console.log(`[Error][Render]${err}`);
 		switch (frameType) {

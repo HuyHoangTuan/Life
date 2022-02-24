@@ -1,6 +1,7 @@
 const utils = require("./utils");
 const entities = require("../entities");
 const api = require("../api");
+const socket = require("./socketHandler");
 // const AlbumHandler = require("./albumHandler").Handler;
 // const UserHandler = require("./userHandler").UserHandler;
 // const PlaylistHandler = require("./albumHandler").Handler;
@@ -9,14 +10,20 @@ const DIR = "management";
 
 exports.Handler = class {
 	static async getHandler(req, res) {
-		let totalUser = JSON.parse(await api.doGet("/users/total"), {token: req.token});
-		let totalAlbum = JSON.parse(await api.doGet("/albums/total"), {token: req.token});
-		let totalSong = JSON.parse(await api.doGet("/tracks/total"), {token: req.token});
-		utils.renderPage(res,`${DIR}/management.ejs`, {
-			totalUser: totalUser.total,
-			totalAlbum: totalAlbum.total,
-			totalSong: totalSong.total
-		}, req.raw ? utils.FORMAT_RAW : utils.FORMAT_MAN)
+		let totalUser = JSON.parse(await api.doGet("/users/total"), { token: req.token });
+		let totalAlbum = JSON.parse(await api.doGet("/albums/total"), { token: req.token });
+		let totalSong = JSON.parse(await api.doGet("/tracks/total"), { token: req.token });
+		utils.renderPage(
+			res,
+			`${DIR}/management.ejs`,
+			{
+				online: socket.UserMap.size,
+				totalUser: totalUser.total,
+				totalAlbum: totalAlbum.total,
+				totalSong: totalSong.total,
+			},
+			req.raw ? utils.FORMAT_RAW : utils.FORMAT_MAN
+		);
 	}
 };
 
@@ -40,17 +47,17 @@ exports.AlbumManHandler = class {
 					break;
 
 				case "tracks":
-					await album.getTrackList(token)
+					await album.getTrackList(token);
 
 					page = `${DIR}/album/album_tracklist.ejs`;
-					data = { album: album, title: `${fname} - Tracklist`  };
+					data = { album: album, title: `${fname} - Tracklist` };
 					break;
 
 				case "comments":
 					let commentList = await entities.Comment.getCommentsByAlbumId(id, token);
 
 					page = `${DIR}/album/album_comments.ejs`;
-					data = { album: album, commentList: commentList, title: `${fname} - Comments`  };
+					data = { album: album, commentList: commentList, title: `${fname} - Comments` };
 					break;
 			}
 		} else {
@@ -59,6 +66,48 @@ exports.AlbumManHandler = class {
 
 			page = `${DIR}/man_album.ejs`;
 			data = { albumList: albumList, artistList: artistList, title: "Album Management" };
+		}
+
+		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
+	}
+};
+
+exports.ForArtistHandler = class {
+	static async getHandler(req, res) {
+		let id = req.params.id;
+		const raw = utils.formatIsRaw(req);
+		const token = utils.getToken(req);
+		let data, page;
+
+		if (id) {
+			let type = req.params.type;
+			let album = await entities.Album.getAlbumById(id, token);
+			let fname = `${album.name} by ${album.artist_name}`;
+			switch (type) {
+				case undefined:
+					page = `/for_artist/album_detail.ejs`;
+					data = { album: album, title: `${fname} - Detail` };
+					break;
+
+				case "tracks":
+					await album.getTrackList(token);
+
+					page = `/for_artist/album_tracklist.ejs`;
+					data = { album: album, title: `${fname} - Tracklist` };
+					break;
+
+				case "comments":
+					let commentList = await entities.Comment.getCommentsByAlbumId(id, token);
+
+					page = `/for_artist/album_comments.ejs`;
+					data = { album: album, commentList: commentList, title: `${fname} - Comments` };
+					break;
+			}
+		} else {
+			let albumList = await entities.Album.getAlbumList(req.token, req.uid);
+
+			page = `/for_artist/man_album.ejs`;
+			data = { albumList: albumList, title: "Album Management" };
 		}
 
 		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
@@ -83,17 +132,17 @@ exports.PlaylistManHandler = class {
 					break;
 
 				case "tracks":
-					await album.getTrackList(req.token)
+					await album.getTrackList(req.token);
 
 					page = `${DIR}/playlist/playlist_tracklist.ejs`;
-					data = { playlist: playlist, title: `${fname} - Tracklist`  };
+					data = { playlist: playlist, title: `${fname} - Tracklist` };
 					break;
 
 				case "comments":
 					let commentList = await entities.Comment.getCommentsByPlaylistId(id, req.token);
 
 					page = `${DIR}/playlist/playlist_comments.ejs`;
-					data = { playlist: playlist, commentList: commentList, title: `${fname} - Comments`  };
+					data = { playlist: playlist, commentList: commentList, title: `${fname} - Comments` };
 					break;
 			}
 		} else {

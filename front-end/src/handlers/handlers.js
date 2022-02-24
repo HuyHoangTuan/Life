@@ -115,7 +115,8 @@ class TrackHandler {
 
 class IndexHandler {
 	static async getHandler(req, res) {
-		utils.renderPage(res, "index.html", null);
+		//utils.renderPage(res, "index.html", null);
+		res.render("index");
 	}
 }
 
@@ -151,9 +152,11 @@ exports.LoginHandler = class {
 			let decoded = jwt.verify(result.token, "L0Zhbmt5Y2hvcDEyMz9sb2dpbj1GYW5reWNob3AmcGFzc3dvcmQ9S3ViaW4xMjM/");
 			console.log(`[DECODED] ${decoded.sub}`)
 			if (result.role == 0) {
-				res.redirect(301, "/management/users");
+				res.redirect(301, "/management");
 			} else if (result.role == 2) {
 				res.redirect(301, "/library");
+			} else {
+				res.redirect(301, "/for_artist/albums");
 			}
 		}
 	}

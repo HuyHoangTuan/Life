@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html>
 
 <head>
@@ -10,11 +10,12 @@
     <script src="/assets/js/form.js"></script>
     <script src="/assets/js/navigation.js"></script>
     <title></title>
+    <script>createSocket();</script>
 </head>
 
 <body>
     <nav class="bar-horizontal">
-        <div>
+        <div onclick="changePage('/management')" style="cursor: pointer">
             <span style="line-height: 1.8rem">LIFE </span>
             <span class="upper-text">management</span>
         </div>
@@ -22,7 +23,11 @@
             <!-- <div style="position: absolute; line-height: 1.75rem;" class="icon-font">search</div> -->
             <!-- <input type="text" id="input-search" placeholder="Search here" /> -->
         </div>
-        <div><a href="/logout">Logout</a></div>
+        <div class="flex-row">
+            <img src="/users/<%= uid %>/avatar" class="avatar" style="height: 2rem; width: 2rem;">
+            <span><%= uname %></span>
+            <a href="/logout">Logout</a>
+        </div>
     </nav>
     <main>
         <div id="page-view">
@@ -38,7 +43,7 @@
         </div>
         <div class="dialog-controls">
             <button class="dialog-button-ok">OK</button>
-            <button class="dialog-button-cancel" onclick="toggleDialog('dialog-del-confirm')">Cancel</button>
+            <button class="dialog-button-cancel" onclick="toggleDialog('dialog-del-confirm', resetDeleteDialog)">Cancel</button>
         </div>
     </div>
     <div class="dialog hidden" id="dialog-status-ok">
@@ -61,43 +66,6 @@
             <!-- <button class="dialog-button-cancel" onclick="toggleDialog('dialog-status-ok')">Cancel</button> -->
         </div>
     </div>
-    <!-- <div class="bar-horizontal">
-			<div class="control-area">
-				<button class="icon-font">skip_previous</button>
-				<button class="icon-font">play_arrow</button>
-				<button class="icon-font">skip_next</button>
-				<div></div>
-				<button class="icon-font">volume_up</button>
-				<range-slider></range-slider>
-			</div>
-			<div
-				style="
-					display: grid;
-					grid-template-columns: 5ch 1fr 5ch;
-					column-gap: 1rem;
-					align-items: center;
-				"
-			>
-				<h4 class="number">00:00</h4>
-				<range-slider></range-slider>
-				<h4 class="number">99:99</h4>
-			</div>
-			<div class="control-area" style="flex-direction: row-reverse">
-				<button class="icon-font">queue_music</button>
-				<button class="icon-font">shuffle</button>
-				<button class="icon-font">repeat</button>
-				<div
-					style="
-						width: 100%;
-						padding-bottom: 0.2rem;
-						overflow: hidden;
-					"
-				>
-					<b>Here Comes the Sun</b>
-					<h4>by The Beatles</h4>
-				</div>
-			</div>
-		</div> -->
 </body>
 
 </html>

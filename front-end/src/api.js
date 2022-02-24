@@ -29,6 +29,7 @@ exports.forward = (req, res, path, param) => {
 async function doGet(path, param) {
 	// console.log(`[Log][GET]${buildURL(path, param).toString()}`);
 	let res = await http.get(buildURL(path, param));
+	console.log("GET " + res);
 	return res;
 }
 

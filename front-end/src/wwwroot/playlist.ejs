@@ -1,0 +1,56 @@
+<div>
+	<div class="info-album">
+		<!-- <img src="/albums/<%= playlist.id%>/cover" /> -->
+		<h1>
+			<%= playlist.name%>
+		</h1>
+		<h3>by <%= playlist.creator_name%>
+		</h3>
+	</div>
+	<div class="bt-group">
+		<button class="bt-i icon-font">play_arrow</button>
+		<button class="bt-i icon-font" onclick="togglePopup(event)">more_horiz</button>
+	</div>
+	<ul class="list-nav">
+		<li>Track list</li>
+		<!-- <li>Comments</li> -->
+	</ul>
+</div>
+<div class="content-view">
+	<section>
+		<h2>Track list</h2>
+		<div class="grid-table" id="track-list">
+			<div>
+				<h3>#</h3>
+				<h3>Title</h3>
+                <h3>Artist</h3>
+				<h3>Duration</h3>
+				<h3>=</h3>
+			</div>
+			<% playlist.tracks.forEach(track=> { %>
+				<div track-id="<%= track.id %>" track-title="<%= track.title%>" track-artist-id="<%= track.artist_id %>"
+					track-artist-name="<%= track.artist_name %>" length="<%= track.duration %>"
+					onclick="playTrack(this)">
+					<span>
+						<%= track.track_num %>
+					</span>
+					<span>
+						<%- track.title %>
+					</span>
+                    <span>
+						<%- track.artist_name %>
+					</span>
+					<span>
+						<%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
+					</span>
+				</div>
+			<% }) %>
+		</div>
+	</section>
+</div>
+<script>
+	curChannel = window.location.pathname;
+</script>
+<ul class="popup hidden">
+	<li onclick="deletePlaylist()"> Delete this playlist </li>
+</ul>

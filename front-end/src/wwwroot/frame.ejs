@@ -8,11 +8,14 @@
 		<script src="/assets/js/player.js"></script>
 		<script src="/assets/js/script.js"></script>
 		<script src="/assets/js/navigation.js"></script>
+		<script src="/assets/js/socket.js"></script>
+		<script src="/assets/js/form.js"></script>
 		<title></title>
+		<script>createSocket();</script>
 	</head>
 	<body>
 		<nav class="bar-horizontal">
-			<div>
+			<div onclick="changePage('/library')" style="cursor: pointer">
 				<div class="button-onbar">LIFE</div>
 				<div class="button-onbar">Library</div>
 			</div>
@@ -76,8 +79,8 @@
 						overflow: hidden;
 					"
 				>
-					<b id="current-song"></b>
-					<h4 id="current-artist"></h4>
+					<b style="line-height: 0.8rem;" id="current-song"></b>
+					<h4 style="line-height: 0.8rem;" id="current-artist"></h4>
 				</div>
 			</div>
 		</div>

@@ -1,28 +1,38 @@
 const ws = require("./websocket");
 const utils = require("./handlers/utils");
 const express = require("express");
+const router = express.Router();
+
 const entities = require("./entities");
 const handlers = require("./handlers/handlers");
+const socketHandlers = require("./handlers/socketHandler");
 const managementHandlers = require("./handlers/managementHandler");
 
 const server = express();
+const socket = require("express-ws")(server)
 const port = 6969;
 
 // const httpServer = http.createServer(handleRequest);
-// const wsServer = ws.initWebSocket(httpServer);
-
+var wsServer;
 const handlerMap = new Map();
 
 exports.init = () => {
 	server.use(async (req, res, next) => {
 		req.raw = utils.formatIsRaw(req);
 		req.token = utils.getToken(req);
-		if (!req.token) return;
+		if (!req.token) {
+			next();
+			return;
+		}
 		let user = await entities.User.getUserById(utils.getUID(req.token), req.token);
 		res.uid = user.id;
+		req.uid = user.id;
 		res.uname = user.name;
 		next();
 	});
+
+
+	// wsServer = ws.initWebSocket(server);
 
 	handlerMap.set("/", handlers.IndexHandler);
 	// handlerMap.set("/assets", handlers.AssetsHandler);
@@ -30,7 +40,7 @@ exports.init = () => {
 	handlerMap.set("/logout", handlers.LogoutHandler);
 	handlerMap.set("/signup", handlers.RegisterHandler);
 	handlerMap.set("/users", handlers.UserHandler);
-	handlerMap.set("/users", handlers.UserHandler);
+	handlerMap.set("/users/:id(\\d+)", handlers.UserHandler);
 
 	handlerMap.set("/artists", handlers.ArtistHandler);
 	handlerMap.set("/artists/:id(\\d+)", handlers.ArtistHandler);
@@ -38,15 +48,24 @@ exports.init = () => {
 	handlerMap.set("/albums", handlers.AlbumHandler);
 	handlerMap.set("/albums/:id(\\d+)", handlers.AlbumHandler);
 
-	handlerMap.set("/tracks", handlers.TrackHandler);
+	handlerMap.set("/playlists", handlers.PlaylistHandler);
+	handlerMap.set("/playlists/:id(\\d+)", handlers.PlaylistHandler);
+	handlerMap.set("/playlists/liked_song", handlers.FavSongHandler);
+
+	handlerMap.set("/tracks", handlers.APIForwarderHandler);
+	handlerMap.set("/tracks/:id(\\d+)", handlers.APIForwarderHandler);
 
 	handlerMap.set("/library", handlers.LibraryHandler);
 	handlerMap.set("/search", handlers.SearchHandler);
 
-	// handlerMap.set("/management/:entity(users|albums)", handlers.ManagementHandler);
+	handlerMap.set("/management", handlers.ManagementHandler);
 	handlerMap.set("/management/albums", managementHandlers.AlbumManHandler);
 	handlerMap.set("/management/albums/:id(\\d+)", managementHandlers.AlbumManHandler);
 	handlerMap.set("/management/albums/:id(\\d+)/:type(tracks|comments)", managementHandlers.AlbumManHandler);
+
+	handlerMap.set("/management/playlists", managementHandlers.PlaylistManHandler);
+	handlerMap.set("/management/playlists/:id(\\d+)", managementHandlers.PlaylistManHandler);
+	handlerMap.set("/management/playlists/:id(\\d+)/:type(tracks|comments)", managementHandlers.PlaylistManHandler);
 
 	handlerMap.set("/management/users", managementHandlers.UserManHandler);
 	handlerMap.set("/management/users/:id(\\d+)", managementHandlers.UserManHandler);
@@ -56,9 +75,13 @@ exports.init = () => {
 
 	handlerMap.set("/albums/:id(\\d+)/cover", handlers.APIForwarderHandler);
 	handlerMap.set("/users/:id(\\d+)/avatar", handlers.APIForwarderHandler);
+	handlerMap.set("/users/:id(\\d+)/playlists", handlers.APIForwarderHandler);
+	handlerMap.set("/users/:id(\\d+)/playlists/:pid(\\d+)/tracks/:tid(\\d+)", handlers.APIForwarderHandler);
 	handlerMap.set("/tracks/:id(\\d+)/audio", handlers.APIForwarderHandler);
 
 	handlerMap.set("/profile", handlers.ProfileHandler);
+
+	handlerMap.set("/comment/:entity(albums|playlists)/:id", socketHandlers.CommentHandler);
 
 	// handlerMap.set("/users/:id(\\d+)/albums/favorite", handlers.APIForwarderHandler);
 	handlerMap.set("/users/:id(\\d+)/:entity(albums|artists|track)/favorite", handlers.APIForwarderHandler);
@@ -91,6 +114,10 @@ exports.init = () => {
 			route.delete(value.deleteHandler);
 		}
 	}
+
+	router.ws("/", socketHandlers.handler);
+
+	server.use("/ws", router)
 };
 
 exports.start = () => {

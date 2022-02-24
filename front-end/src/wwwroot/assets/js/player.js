@@ -24,6 +24,12 @@ function initPlayer(type = 0) {
 		console.log("ended");
 
 		player.play();
+		updateFields({
+			id: id,
+			title: player.title,
+			artistName: player.artist,
+			length: player.length,
+		});
 
 		preloaded = false;
 	};
@@ -41,6 +47,7 @@ function initPlayer(type = 0) {
 		timeElapsed.innerHTML = toTime(p.currentTime);
 
 		if (p.duration - p.currentTime < 30 && !preloaded) {
+			console.log("doPreload")
 			if ((type = 1)) {
 				preload(sPlayer);
 			} else {
@@ -69,7 +76,11 @@ function initPlayer(type = 0) {
 function preload(p) {
 	preloaded = true;
 	console.log("preloaded");
-	p.src = `/tracks/${queue.pop()}/audio`;
+	let track = queue.pop();
+	p.src = `/tracks/${track.id}/audio`;
+	p.artist = track.artistName;
+	p.title = track.title;
+	p.length = track.length;
 	p.load();
 }
 
@@ -92,9 +103,11 @@ function buildPlaylist() {
 		if (flag) {
 			queue.push({
 				id: id,
+				title: track.getAttribute("track-title"),
 				albumId: track.getAttribute("album-id"),
 				artistId: track.getAttribute("artist-id"),
-				artistName: track.getAttribute("artist-name"),
+				artistName: track.getAttribute("track-artist-name"),
+				length: toTime(track.getAttribute("length")) ,
 			});
 		}
 		if (id == playingTrackId) {
@@ -128,8 +141,8 @@ function playTrack(track) {
 		title: track.getAttribute("track-title"),
 		albumId: track.getAttribute("album-id"),
 		artistId: track.getAttribute("artist-id"),
-		artistName: track.getAttribute("artist-name"),
-		artistName: track.getAttribute("artist-name"),
+		artistName: track.getAttribute("track-artist-name"),
+		length: toTime(track.getAttribute("length")) ,
 	});
 }
 

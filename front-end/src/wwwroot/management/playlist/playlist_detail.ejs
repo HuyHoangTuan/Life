@@ -1,0 +1,46 @@
+<div>
+    <div class="info">
+        <h1>Playlist Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>')">Metadata</li>
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>/comments')">Comments</li>
+    </ul>
+</div>
+<div class="content-view">
+    <section>
+        <h2>Playlist Info</h2>
+        <form id="dialog-detail" action="/playlist/<%= playlist.id %>" method="PUT" onreset="resetTForm(this)">
+            <div class="dialog-content">
+                <div class="grid-dialog">
+                    <span class="none">ID</span>
+                    <input class="none" type="text" name="id" readonly value="<%= playlist.id %>">
+                    <span>Name</span>
+                    <input type="text" name="title" value="<%= playlist.name %>">
+                    <span>Creator</span>
+                    <select name="creator_id" value="<%= playlist.creator_id %>">
+                        <%userList.forEach((user)=> {%>
+                            <option value="<%= user.id %>" <% if (user.id==playlist.creator_id) { %>selected<% } %>>
+                                    <%= user.name %>
+                            </option>
+                            <%})%>
+                    </select>
+                    <!-- <span>Status</span>
+                <div></div> -->
+                </div>
+            </div>
+            <div class="dialog-controls">
+                <input type="reset" value="Reset">
+                <button onclick="submitForm('dialog-detail')">Update</button>
+                <!-- <button onclick="toggleDialog('dialog-detail')">Cancel</button> -->
+            </div>
+        </form>
+    </section>
+</div>
+<script>document.title = "<%- title %>"</script>
+
+ 

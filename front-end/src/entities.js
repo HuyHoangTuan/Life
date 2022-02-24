@@ -32,7 +32,7 @@ class User {
 		let rawUserList = JSON.parse(
 			await api.doGet("/users", { token: token })
 		);
-		// console.log("RAWWWW" + rawAlbumList)
+		console.log("RAWWWW" + token)
 		let userList = [];
 		rawUserList.forEach((rawUser) => {
 			userList.push(new User(rawUser));
@@ -230,7 +230,7 @@ class Artist {
 		let rawArtistList = JSON.parse( await api.doGet(`/users/${uid}/artists/favorite`, {token: token}) );
 		let result = false;
 		rawArtistList.forEach((rawArtist) => {
-			if(rawArtist.artist_id == this.id) {
+			if(rawArtist.id == this.id) {
 				result = true;
 				return;
 			}
@@ -324,6 +324,7 @@ class Track {
 	track_num;
 	track_name;
 	duration;
+	active;
 	constructor(obj) {
 		Object.assign(this, obj);
 		this.duration = Math.round(this.duration);
@@ -361,11 +362,10 @@ class Track {
 
 	static async getPlaylistTrackList(token, playlistId = -1) {
 		var path = "/tracks";
-		if (albumId != -1) {
+		if (playlistId != -1) {
 			path = `/playlists/${playlistId}/tracks`;
 		}
 		let rawTrackList = JSON.parse(await api.doGet(path, { token: token }));
-		// console.log("RAWWWW" + rawAlbumList)
 		let trackList = [];
 		rawTrackList.forEach((rawTrack) => {
 			trackList.push(new Track(rawTrack));
@@ -406,22 +406,22 @@ class Playlist{
 		return this.title;
 	}
 	static async getPlaylistById(id, token) {
-		return new Album(
-			JSON.parse(await api.doGet(`/playlist/${id}`, { token: token }))
+		return new Playlist(
+			JSON.parse(await api.doGet(`/playlists/${id}`, { token: token }))
 		);
 	}
 
-	static async getPlaylistList(token, artistId = -1) {
-		var path = "/playlist";
-		if (artistId != -1) {
-			path = `/playlist/${artistId}/albums`;
+	static async getPlaylistList(token, id = -1) {
+		var path = "/playlists";
+		if (id != -1) {
+			path = `/playlists/${id}`;
 		}
-		let rawAlbumList = JSON.parse(await api.doGet(path, { token: token }));
-		let albumList = [];
-		rawAlbumList.forEach((rawAlbum) => {
-			albumList.push(new Album(rawAlbum));
+		let rawPlaylists = JSON.parse(await api.doGet(path, { token: token }));
+		let playlists = [];
+		rawPlaylists.forEach((rawPlaylist) => {
+			playlists.push(new Playlist(rawPlaylist));
 		});
-		return albumList;
+		return playlists;
 	}
 
 	static async searchAlbum(keyword, token) {
@@ -438,7 +438,7 @@ class Playlist{
 		return albumList;
 	}
 
-	static async getTrackList(token) {
+	async getTrackList(token) {
 		this.tracks = await Track.getPlaylistTrackList(token, this.id);
 	}
 }
@@ -457,24 +457,23 @@ class Comment{
 	get id() {
 		// return this.playlist_id;
 	}
-	static async getCommentsByAlbumId(id, token) {
-		let rawCommentList = JSON.parse( await api.doGet(`/albums/${id}/comments`, { token: token }) );
-		let commentList = [];
-		rawCommentList.forEach((raw) => {
-			commentList.push(new Artist(raw));
-		});
-		return commentList;
+	get uid() {
+		return this.creator_id;
 	}
-	static async getCommentsByArtistId(id, token) {
-		let rawCommentList = JSON.parse( await api.doGet(`/artists/${id}/comments`, { token: token }) );
+	get uname() {
+		return this.creator_name;
+	}
+	static async getCommentsByAlbumId(id, token) {
+		let rawCommentList = JSON.parse( await api.doGet(`/comments?album=${id}`, { token: token }) );
 		let commentList = [];
+		if(rawCommentList)
 		rawCommentList.forEach((raw) => {
 			commentList.push(new Artist(raw));
 		});
 		return commentList;
 	}
 	static async getCommentsByPlaylistId(id, token) {
-		let rawCommentList = JSON.parse( await api.doGet(`/playlist/${id}/comments`, { token: token }) );
+		let rawCommentList = JSON.parse( await api.doGet(`/comments?playlist=${id}`, { token: token }) );
 		let commentList = [];
 		rawCommentList.forEach((raw) => {
 			commentList.push(new Artist(raw));

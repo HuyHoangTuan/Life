@@ -1,0 +1,66 @@
+<div>
+    <div class="info">
+        <h1>Playlist Details</h1>
+        <!-- <h2>The Beatles</h2>
+            <h3>The Beatles</h3>
+            <p>The Beatles</p> -->
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>')">Metadata</li>
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>/tracks')">Tracklist</li>
+        <li onclick="changePage('/management/playlist/<%= playlist.id %>/comments')">Comments</li>
+    </ul>
+</div>
+<div>
+    <section>
+        <h2>Track list</h2>
+        <div class="flex-row">
+            <button onclick="toggleDialog('dialog-add', addTrack)">
+                Add Track
+            </button>
+        </div>
+        <div class="grid-table" id="track-list">
+            <div>
+                <h3>#</h3>
+                <h3>Title</h3>
+                <h3>Duration</h3>
+                <h3>=</h3>
+            </div>
+            <% album.tracks.forEach(track=> { %>
+                <div onclick="showDetailDialog(this)" track-id="<%= track.id %>">
+                    <span>
+                        <%- track.title %>
+                    </span>
+                    <span>
+                        <%- track.artist_name %>
+                    </span>
+                    <span>
+                        <%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
+                    </span>
+                    <span class="handle icon-font">drag_handle</span>
+                </div>
+                <% }) %>
+        </div>
+
+    </section>
+</div>
+<form class="dialog hidden" id="dialog-add" method="POST" action="/tracks" onsubmit="return false;">
+    <span style="display: none;">
+        <input value="-1" name="album_id">
+        <script>document.querySelector("[name='album_id']").value = <%= album.id %></script>
+        <input name="track_num">
+    </span>
+    <h1>Add track</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="track_name" origin-val="">
+            <span>Audio</span>
+        </div>
+    </div>
+    <div class="dialog-controls">
+        <input type="reset" value="Reset">
+        <button onclick="uploadTrack()">Add</button>
+        <button onclick="toggleDialog('dialog-add', resetTForm)">Cancel</button>
+    </div>
+</form>

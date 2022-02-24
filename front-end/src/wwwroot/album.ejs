@@ -45,6 +45,7 @@
 					<span>
 						<%= new Date(null, null, null, null, null, track.duration).toTimeString().substr(3,5)%>
 					</span>
+					<span class="icon-font bt-i" onclick="currentTrack=<%= track.id %>;togglePopup(event)"> add </span>
 				</div>
 				<% }) %>
 		</div>
@@ -52,59 +53,47 @@
 	<section>
 		<h2>Comments</h2>
 		<div class="comment" style="align-items: center">
-			<img class="avatar" src="/users/4/avatar">
+			<img class="avatar" src="/users/<%= uid %>/avatar">
 			<div class="relative">
-				<input type="text" style="width: 100%" placeholder="Write your comment...">
-				<button style="position: absolute; right: 0" class="bt-i icon-font style=" font-size">send</button>
+				<input id="input-comment" type="text" style="width: 95%" placeholder="Write your comment..." oninput="this.classList.remove('error')">
+				<button style="position: absolute; right: 5%" class="bt-i icon-font style=" font-size" onclick="postComment()">send</button>
 			</div>
 		</div>
-		<div class="comment-list">
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<div> This album is fricking awesome! This album is fricking awesome! This album is fricking
-						awesome! This album is fricking awesome! This album is fricking awesome! This album is fricking
-						awesome! This album is fricking awesome! This album is fricking awesome! This album is fricking
-						awesome! </div>
-					<h4><span class="icon-font">access_time_filled</span> 08:26 12 Jul '16 </h4>
+		<div class="comment-list" id="comment-list" style="display: flex;flex-direction: column-reverse;">
+			<% commentList.forEach(comment => {%>
+				<div class="comment" comment-id="">
+					<img class="avatar" src="/users/<%= comment.creator_id %>/avatar">
+					<div>
+						<b><%= comment.display_name %></b>
+						<div class="comment-content"><%= comment.content %></div>
+						<h4><span class="icon-font">access_time_filled</span> <%= comment.created_timestamp %> </h4>
+					</div>
 				</div>
-			</div>
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<b>Taylor Alison</b>
-					<div> This album is fricking awesome! </div>
-					<h4> 08:26 12 Jul '16 </h4>
-				</div>
-			</div>
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<div> This album is fricking awesome! </div>
-					<h4> 08:26 12 Jul '16 </h4>
-				</div>
-			</div>
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<div> This album is fricking awesome! </div>
-					<h4> 08:26 12 Jul '16 </h4>
-				</div>
-			</div>
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<div> This album is fricking awesome! </div>
-					<h4> 08:26 12 Jul '16 </h4>
-				</div>
-			</div>
-			<div class="comment">
-				<img class="avatar" src="/users/4/avatar">
-				<div>
-					<div> This album is fricking awesome! </div>
-					<h4> 08:26 12 Jul '16 </h4>
-				</div>
-			</div>
+			<%}) %>
 		</div>
 	</section>
 </div>
+<ul class="popup hidden">
+	<li onclick=""> Liked Songs </li>
+	<% playlists.forEach((playlist)=>{%>
+	<li onclick="addTrackToPL( <%= playlist.id %>)"> <%= playlist.title %> </li>	
+	<%}) %>
+	<li onclick="toggleDialog('dialog-add')"> + Create new playlist </li>
+</ul>
+<form class="dialog hidden" id="dialog-add" method="POST" action="/users/<%= uid %>/playlists" onsubmit="return false;">
+    <h1>Create new playlist</h1>
+    <div class="dialog-content">
+        <div class="grid-dialog">
+            <span>Title</span>
+            <input type="text" name="title" origin-val="">
+        </div>
+    </div>
+    <div class="dialog-controls">
+        <input type="reset" value="Reset">
+        <button onclick="addPlaylistTrack()">Add</button>
+        <button onclick="toggleDialog('dialog-add', resetTForm)">Cancel</button>
+    </div>
+</form>
+<script>
+	curChannel = window.location.pathname;
+</script>

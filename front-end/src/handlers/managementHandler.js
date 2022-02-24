@@ -1,32 +1,22 @@
 const utils = require("./utils");
 const entities = require("../entities");
-const AlbumHandler = require("./albumHandler").Handler;
-const UserHandler = require("./userHandler").UserHandler;
-const PlaylistHandler = require("./albumHandler").Handler;
+const api = require("../api");
+// const AlbumHandler = require("./albumHandler").Handler;
+// const UserHandler = require("./userHandler").UserHandler;
+// const PlaylistHandler = require("./albumHandler").Handler;
 
 const DIR = "management";
 
 exports.Handler = class {
 	static async getHandler(req, res) {
-		// if (!res.params) {
-		// 	res.redirect(301, "/management/users");
-		// 	return;
-		// }
-		console.log(req.params);
-		switch (req.params["entity"]) {
-			case "albums":
-				AlbumHandler.getHandler(req, res, 1);
-				break;
-			case "users":
-				UserHandler.getHandler(req, res, 1);
-				break;
-			case "playlists":
-				PlaylistHandler.getHandler(req, res, 1);
-			case undefined:
-				break;
-			default:
-				console.log(utils.getPath(req.url, 2));
-		}
+		let totalUser = JSON.parse(await api.doGet("/users/total"), {token: req.token});
+		let totalAlbum = JSON.parse(await api.doGet("/albums/total"), {token: req.token});
+		let totalSong = JSON.parse(await api.doGet("/tracks/total"), {token: req.token});
+		utils.renderPage(res,`${DIR}/management.ejs`, {
+			totalUser: totalUser.total,
+			totalAlbum: totalAlbum.total,
+			totalSong: totalSong.total
+		}, req.raw ? utils.FORMAT_RAW : utils.FORMAT_MAN)
 	}
 };
 
@@ -60,7 +50,7 @@ exports.AlbumManHandler = class {
 					let commentList = await entities.Comment.getCommentsByAlbumId(id, token);
 
 					page = `${DIR}/album/album_comments.ejs`;
-					data = { commentList: commentList, title: `${fname} - Comments`  };
+					data = { album: album, commentList: commentList, title: `${fname} - Comments`  };
 					break;
 			}
 		} else {
@@ -72,6 +62,49 @@ exports.AlbumManHandler = class {
 		}
 
 		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
+	}
+};
+
+exports.PlaylistManHandler = class {
+	static async getHandler(req, res) {
+		let id = req.params.id;
+		let data, page;
+
+		if (id) {
+			let type = req.params.type;
+			let playlist = await entities.Playlist.getPlaylistById(id, req.token);
+			let fname = `${playlist.name} by ${playlist.display_name}`;
+			switch (type) {
+				case undefined:
+					let userList = await entities.User.getUserList(req.token);
+
+					page = `${DIR}/playlist/playlist_detail.ejs`;
+					data = { playlist: playlist, userList: userList, title: `${fname} - Detail` };
+					break;
+
+				case "tracks":
+					await album.getTrackList(req.token)
+
+					page = `${DIR}/playlist/playlist_tracklist.ejs`;
+					data = { playlist: playlist, title: `${fname} - Tracklist`  };
+					break;
+
+				case "comments":
+					let commentList = await entities.Comment.getCommentsByPlaylistId(id, req.token);
+
+					page = `${DIR}/playlist/playlist_comments.ejs`;
+					data = { playlist: playlist, commentList: commentList, title: `${fname} - Comments`  };
+					break;
+			}
+		} else {
+			let playlists = await entities.Playlist.getPlaylistList(req.token);
+			let userList = await entities.User.getUserList(req.token);
+
+			page = `${DIR}/man_playlist.ejs`;
+			data = { playlists: playlists, userList: userList, title: "Playlist Management" };
+		}
+
+		utils.renderPage(res, page, data, req.raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
 	}
 };
 
@@ -96,7 +129,7 @@ exports.UserManHandler = class {
 		} else {
 			let userList = await entities.User.getUserList(utils.getToken(req));
 			page = `${DIR}/man_user.ejs`;
-			data = { userList: userList, title: user.name };
+			data = { userList: userList, title: "User Managament" };
 		}
 		utils.renderPage(res, page, data, raw ? utils.FORMAT_RAW : utils.FORMAT_MAN);
 	}

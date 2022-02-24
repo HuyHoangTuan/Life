@@ -1,0 +1,33 @@
+<div>
+    <div class="info">
+        <h1>Management</h1>
+    </div>
+    <ul class="list-nav">
+        <li onclick="changePage('/management/users')">Users</li>
+        <li onclick="changePage('/management/albums')">Albums</li>
+        <li onclick="changePage('/management/playlists')">Playlists</li>
+    </ul>
+</div>
+<div class="content-view">
+    <section>
+            <h2>Users</h2>
+            <div>
+                <div class="card">
+                    <h3><span class="icon-font">hub</span> Online user: </h3>
+                    <span>1235</span>
+                </div>
+                <div class="card">
+                    <h3><span class="icon-font">account_circle</span> Total user: </h3>
+                    <span><%= totalUser %></span>
+                </div>
+                <div class="card">
+                    <h3><span class="icon-font">music_note</span> Total song: </h3>
+                    <span><%= totalSong %></span>
+                </div>
+                <div class="card">
+                    <h3><span class="icon-font">album</span> Total album: </h3>
+                    <span><%= totalAlbum %></span>
+                </div>
+            </div>  
+    </section>
+</div>

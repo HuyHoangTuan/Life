@@ -1,5 +1,6 @@
 const utils = require("./utils");
 const entities = require("../entities");
+const { APIForwarderHandler } = require("./handlers");
 
 exports.UserHandler = class {
 	static async getHandler(req, res, man = 0) {
@@ -34,45 +35,49 @@ exports.UserHandler = class {
 		}
 	}
 	static async postHandler(req, res) {
-		let id = utils.params.id;
-		if (!id) {
-			let newUser = JSON.parse(await getBody(req));
-			let result = JSON.parse(
-				await api.doPost(
-					"/users",
-					{ token: utils.getToken(req) },
-					JSON.stringify(newUser)
-				)
-			);
-			console.log(result);
-			if (result.status == "success") {
-				console.log("[Log][POST_user][status]done");
-				res.statusCode = 200;
-				res.write("sucess");
-				res.end();
-			} else {
-			}
-		}
+		// let id = utils.params.id;
+		// if (!id) {
+		// 	let newUser = JSON.parse(await getBody(req));
+		// 	let result = JSON.parse(
+		// 		await api.doPost(
+		// 			"/users",
+		// 			{ token: utils.getToken(req) },
+		// 			JSON.stringify(newUser)
+		// 		)
+		// 	);
+		// 	console.log(result);
+		// 	if (result.status == "success") {
+		// 		console.log("[Log][POST_user][status]done");
+		// 		res.statusCode = 200;
+		// 		res.write("sucess");
+		// 		res.end();
+		// 	} else {
+		// 	}
+		// }
+		APIForwarderHandler.allHandler(req, res);
 	}
 	static async putHandler(req, res) {
-		let body = await getBody(req);
+		// let body = await getBody(req);
 
-		console.log("[BODY]" + body);
+		// console.log("[BODY]" + body);
 
-		let id = utils.getPath(req.url, 2);
-		console.log("[Log][PUT_User][BODY]" + body);
-		let result = JSON.parse(
-			await api.doPut(`/users/${id}`, { token: utils.getToken(req) }, body)
-		);
-		console.log("[Log][PUT_User][RES]" + result);
-		if (result.status == "success") {
-			console.log("[Log][PUT_User][status]done");
-			res.statusCode = 200;
-			res.write("sucess");
-			res.end();
-		}
+		// let id = utils.getPath(req.url, 2);
+		// console.log("[Log][PUT_User][BODY]" + body);
+		// let result = JSON.parse(
+		// 	await api.doPut(`/users/${id}`, { token: utils.getToken(req) }, body)
+		// );
+		// console.log("[Log][PUT_User][RES]" + result);
+		// if (result.status == "success") {
+		// 	console.log("[Log][PUT_User][status]done");
+		// 	res.statusCode = 200;
+		// 	res.write("sucess");
+		// 	res.end();
+		// }
+		APIForwarderHandler.allHandler(req, res);
 	}
-	static async deleteHandler(req, res) {}
+	static async deleteHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
 };
 exports.ArtistHandler = class {
 	static async getHandler(req, res) {

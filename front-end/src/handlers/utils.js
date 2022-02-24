@@ -1,15 +1,11 @@
 const cookie = require("cookie");
 const ejs = require("ejs");
 const fs = require("fs");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
-const compiledUserFrame = ejs.compile(
-	fs.readFileSync("src/wwwroot/frame.ejs", "UTF-8")
-);
+const compiledUserFrame = ejs.compile(fs.readFileSync("src/wwwroot/frame.ejs", "UTF-8"));
 
-const compiledManFrame = ejs.compile(
-	fs.readFileSync("src/wwwroot/management/frame.ejs", "UTF-8")
-);
+const compiledManFrame = ejs.compile(fs.readFileSync("src/wwwroot/management/frame.ejs", "UTF-8"));
 
 exports.FORMAT_NONE = 0;
 exports.FORMAT_USER = 1;
@@ -20,20 +16,21 @@ exports.formatIsRaw = (req) => {
 	return req.query.raw != undefined;
 };
 
-function getCookie(key) {
+function getCookie(req ,key) {
 	var cookies = cookie.parse(req.headers.cookie || "");
 	return cookies[key];
 }
 
 // return token value from cookies
 exports.getToken = function (req) {
-	return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQ1NDY5MzczfQ.72vCpCiSyluyP89HgS06yNStsz53UXzyqyxB-qDDse4";
+	// return "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNjQ1NjUzMTQwfQ.XFOs4-X027xbj8Q3ugVEyKgiSuQkTTFPpMsTBmz0HsQ";
+	return getCookie(req, "token");
 };
 
 exports.getUID = (token) => {
 	let decoded = jwt.verify(token, "L0Zhbmt5Y2hvcDEyMz9sb2dpbj1GYW5reWNob3AmcGFzc3dvcmQ9S3ViaW4xMjM/");
 	return decoded.sub;
-}  
+};
 
 // read body from request stream until finished
 exports.getBody = async function (req) {
@@ -59,10 +56,10 @@ exports.renderPage = (res, filePath, data, frameType = 0, options = null) => {
 			case this.FORMAT_NONE:
 				break;
 			case this.FORMAT_USER:
-				html = compiledUserFrame({ content: html });
+				html = compiledUserFrame({ content: html, uid: res.uid, uname: res.uname });
 				break;
 			case this.FORMAT_MAN:
-				html = compiledManFrame({ content: html });
+				html = compiledManFrame({ content: html, uid: res.uid, uname: res.uname });
 				break;
 			case this.FORMAT_RAW:
 				html = JSON.stringify({ title: data.title, content: html });

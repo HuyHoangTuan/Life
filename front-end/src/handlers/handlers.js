@@ -4,10 +4,8 @@ const qs = require("querystring");
 const entities = require("../entities");
 const api = require("../api");
 
-const AlbumHandler = require("./albumHandler")
 const UserHandler = require("./userHandler")
 const ProfileHandler = require("./profileHandler")
-const PlaylistHandler = require("./playlistHandler")
 const ManagementHandler = require("./managementHandler")
 var jwt = require("jsonwebtoken");
 
@@ -17,6 +15,74 @@ class APIForwarderHandler {
 		api.forward(req, res, req.path, { token: utils.getToken(req) });
 	}
 }
+
+class AlbumHandler{
+	static async getHandler(req, res) {
+		let id = req.params.id;
+
+		let album = await entities.Album.getAlbumById(id, req.token);
+		await album.getTrackList(req.token);
+
+		let commentList = await entities.Comment.getCommentsByAlbumId(id, req.token);
+
+		let isFav = await album.checkFavAlbum(res.uid, req.token);
+
+		let playlists = await entities.User.getPlaylists(req.uid, req.token)
+
+		utils.renderPage(res, "album.ejs", { album: album, isFav: isFav, playlists: playlists, commentList: commentList }, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
+	}
+	static async postHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async putHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async deleteHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+};
+
+class PlaylistHandler{
+	static async getHandler(req, res) {
+		let id = req.params.id;
+
+		let playlist = await entities.Playlist.getPlaylistById(id, req.token);
+		console.log(playlist);
+		await playlist.getTrackList(req.token);
+
+		// let commentList = await entities.Comment.getCommentsByPlaylistId(id, req.token);
+
+		utils.renderPage(res, "playlist.ejs", { playlist: playlist }, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
+	}
+	static async postHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async putHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async deleteHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+};
+
+
+exports.FavSongHandler = class {
+	static async getHandler(req, res) {
+		let favTrackList = await entities.User.getFavTracks(req.uid, req.token)
+		console.log("tracklist" + favTrackList.length);
+
+		utils.renderPage(res, "fav_song.ejs", { favTrackList: favTrackList }, req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER);
+	}
+	static async postHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async putHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async deleteHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+};
 
 class TrackHandler {
 	static async getHandler(req, res, man = 0) {
@@ -41,7 +107,9 @@ class TrackHandler {
 		}
 	}
 	static async postHandler(req, res) {}
-	static async putHandler(req, res) {}
+	static async putHandler(req, res) {
+		
+	}
 	static async deleteHandler(req, res) {}
 }
 
@@ -78,6 +146,8 @@ exports.LoginHandler = class {
 			LoginHandler.getHandler(req, res, 1);
 		} else {
 			res.setHeader("Set-Cookie", cookie.serialize("token", result.token, { httpOnly: true, maxAge: 60 * 60 * 24 * 30 }));
+			//res.setHeader("Set-Cookie", cookie.serialize("roles", result.role, { httpOnly: true, maxAge: 60 * 60 * 24 * 30 }));
+			console.log(result);
 			let decoded = jwt.verify(result.token, "L0Zhbmt5Y2hvcDEyMz9sb2dpbj1GYW5reWNob3AmcGFzc3dvcmQ9S3ViaW4xMjM/");
 			console.log(`[DECODED] ${decoded.sub}`)
 			if (result.role == 0) {
@@ -108,7 +178,7 @@ exports.RegisterHandler = class {
 		utils.renderPage(res, "register.ejs", data);
 	}
 	static async postHandler(req, res) {
-		var post = qs.parse(await getBody(req));
+		var post = qs.parse(await utils.getBody(req));
 		console.log(post);
 		let result = JSON.parse(
 			await api.doPost(
@@ -135,16 +205,15 @@ exports.RegisterHandler = class {
 */
 exports.SearchHandler = class {
 	static async getHandler(req, res) {
-		let mode = getMode(req);
-		let keyword = utils.getURLQuery(req.url, "keyword");
+		let keyword = req.query.keyword;
 		switch (req.params["entity"]) {
 			case "albums": {
-				let albumList = entities.Album.searchAlbum(keyword, getToken());
+				let albumList = entities.Album.searchAlbum(keyword, req.token);
 				utils.renderPage(
 					res,
 					"search.ejs",
 					{ result: { albums: albumList } },
-					mode ? 3 : 1
+					req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER
 				);
 				break;
 			}
@@ -157,32 +226,32 @@ exports.SearchHandler = class {
 					res,
 					"search.ejs",
 					{ result: { artists: artistList } },
-					mode ? 3 : 1
+					req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER
 				);
 				break;
 			}
 			case "tracks": {
-				let trackList = entities.Track.searchTrack(keyword, getToken());
+				let trackList = entities.Track.searchTrack(keyword, req.token);
 				utils.renderPage(
 					res,
 					"search.ejs",
 					{ result: { tracks: trackList } },
-					mode ? 3 : 1
+					req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER
 				);
 				break;
 			}
 			case undefined:
 				let albumList = await entities.Album.searchAlbum(
 					keyword,
-					getToken()
+					req.token
 				);
 				let artistList = await entities.Artist.searchArtist(
 					keyword,
-					getToken()
+					req.token
 				);
 				let trackList = await entities.Track.searchTrack(
 					keyword,
-					getToken()
+					req.token
 				);
 				utils.renderPage(
 					res,
@@ -194,22 +263,37 @@ exports.SearchHandler = class {
 							albums: albumList,
 						},
 					},
-					mode ? 3 : 1
+					req.raw ? utils.FORMAT_RAW : utils.FORMAT_USER
 				);
 				break;
 			default:
-				console.log(utils.getPath(req.url, 2));
+				
 		}
 	}
 };
 
-exports.AlbumHandler = AlbumHandler.Handler;
+exports.AlbumHandler = AlbumHandler;
 
-exports.UserHandler = UserHandler.UserHandler;
+exports.UserHandler = class {
+	static async getHandler(req, res, man = 0) {
+		//APIForwarderHandler.allHandler(req, res);
+		
+	}
+	static async postHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async putHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+	static async deleteHandler(req, res) {
+		APIForwarderHandler.allHandler(req, res);
+	}
+};;
 exports.ArtistHandler = UserHandler.ArtistHandler;
 exports.ProfileHandler = ProfileHandler.Handler;
 
 exports.TrackHandler = TrackHandler;
+exports.PlaylistHandler = PlaylistHandler;
 
 exports.IndexHandler = IndexHandler;
 exports.LibraryHandler = LibraryHandler;

@@ -12,42 +12,32 @@
     <section>
         <div class="grid-searchbar">
             <div>
-                <h2>Albums</h2>
+                <h2>Playlists</h2>
             </div>
             <div><input type="text" placeholder="Search here"></div>
             <div>Filter</div>
         </div>
         <div class="flex-row">
             <button onclick="toggleDialog('dialog-add')">
-                + Add new album
+                + Add new playlist
             </button>
         </div>
         <div class="grid-table" id="man-album-list">
             <div>
                 <h3>ID</h3>
                 <h3>Name</h3>
-                <h3>Artist</h3>
-                <h3>Release Date</h3>
-                <h3>Type</h3>
+                <h3>Creator</h3>
             </div>
-            <%albumList.forEach((album)=> {%>
-                <div album-id="<%= album.id %>" album-name="<%= album.name %>" album-artist="<%= album.artist_id %>"
-                    album-cover="/albums/<%= album.id %>/cover" album-release-date="<%= album.release_date %>"
-                    album-type="<%= album.type %>" onclick="changePage(`/management/albums/<%= album.id %>`)">
+            <%playlists.forEach((playlist)=> {%>
+                <div playlist-id="<%= playlist.id %>" onclick="changePage(`/management/playlists/<%= playlist.id %>`)">
                     <span>
-                        <%= album.id%>
+                        <%= playlist.id%>
                     </span>
                     <span>
-                        <%= album.name%>
+                        <%= playlist.name%>
                     </span>
                     <span>
-                        <%= album.artist_name%>
-                    </span>
-                    <span>
-                        <%= album.release_date%>
-                    </span>
-                    <span>
-                        <%= album.typeName%>
+                        <%= playlist.creator_name%>
                     </span>
                 </div>
                 <%})%>
@@ -56,21 +46,21 @@
 </div>
 <script>document.title = "<%- title %>"</script>
 <form class="dialog hidden" id="dialog-add" method="POST" action="/albums">
-    <h1>New album</h1>
+    <h1>New playlist</h1>
     <div class="dialog-content">
-        <div class="dialog-image">
+        <!-- <div class="dialog-image">
             <img class="cover" field="album-cover">
             <input type="file" accept="image/*" target-field="album-cover" onchange="previewImg(this)"
                 oninput="resetField(this)">
-        </div>
+        </div> -->
         <div class="grid-dialog">
             <span>Name</span>
             <input type="text" name="title">
-            <span>Artist</span>
-            <select name="artist_id">
-                <%artistList.forEach((artist)=> {%>
-                    <option value="<%= artist.id %>">
-                        <%= artist.name %>
+            <span>Creator</span>
+            <select name="creator_id">
+                <%userList.forEach((user)=> {%>
+                    <option value="<%= user.id %>">
+                        <%= user.name %>
                     </option>
                     <%})%>
             </select>

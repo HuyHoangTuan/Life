@@ -68,13 +68,13 @@ html {
 	background-color: var(--background);
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 800px) {
 	:root {
 		--bar-height: 3.25rem;
 	}
 
 	html {
-		font-size: 14px;
+		font-size: 16px;
 	}
 }
 
@@ -182,7 +182,7 @@ select {
 .grid-table > div {
 	display: grid;
 	column-gap: 1.5ch;
-	height: 2.25rem;
+	min-height: 2.25rem;
 	border-radius: 5px;
 }
 
@@ -269,6 +269,14 @@ li {
 	flex-direction: row-reverse;
 }
 
+input.error {
+	border: 2px solid var(--red);
+}
+
+.handle{
+	cursor: grab;
+}
+
 range-slider {
 	display: inline-block;
 	width: 100%;
@@ -316,7 +324,7 @@ range-slider {
 	backdrop-filter: grayscale(80%);
 }
 
-.dialog.hidden {
+.hidden {
 	z-index: -10;
 	opacity: 0;
 	/* transition: opacity 0.1s linear, z-index 0s; */

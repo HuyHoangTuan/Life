@@ -49,6 +49,11 @@
                         <option value="2" <% if (album.type==2) { %>selected<% } %>>Single/EP</option>
                         <option value="3" <% if (album.type==3) { %>selected<% } %>>Compilation</option>
                     </select>
+                    <span>Status</span>
+                    <select name="active">
+                        <option value="false" <% if (album.active==false) { %>selected<% } %>>Unactive</option>
+                        <option value="true" <% if (album.active==true) { %>selected<% } %>>Active</option>
+                    </select>
                     <!-- <div field="type" name="type">
                     <button>Album</button>
                     <button>Single/EP</button>

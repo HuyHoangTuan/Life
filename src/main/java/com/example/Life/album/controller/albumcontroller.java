@@ -6,6 +6,7 @@ import com.example.Life.album.entity.album;
 import com.example.Life.album.model.albummodel;
 import com.example.Life.album.model.newalbummodel;
 import com.example.Life.album.service.albumservice;
+import com.example.Life.song.model.songoutputmodel;
 import io.jsonwebtoken.Claims;
 import javassist.bytecode.ByteArray;
 import org.json.JSONObject;
@@ -428,5 +429,20 @@ public class albumcontroller
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
+    }
+    @GetMapping("/api/albums/total")
+    public ResponseEntity<?> getNumberOfAlbums(@RequestParam(name = "token", required = false) String token)
+    {
+        System.out.println(LifeApplication.GET+"/api/albums/total "+token);
+        long total = 0;
+        List<albummodel> listAlbums = albumService.getAllAlbums();
+        for(albummodel current: listAlbums)
+        {
+            if(current.getActive() == true) total++;
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"total\""+":"+total+"}");
     }
 }

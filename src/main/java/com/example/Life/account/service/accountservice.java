@@ -17,7 +17,7 @@ public interface accountservice
     boolean Register(String email, String password, String name,int role);
 
     List<?> getAllArtists();
-    List<?> getAllUsers();
+    List<accountmodel> getAllUsers();
 
     accountmodel getArtist(long artist_id);
     accountmodel getUser(long user_id);

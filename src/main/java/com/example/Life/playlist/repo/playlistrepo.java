@@ -19,7 +19,7 @@ public interface playlistrepo extends JpaRepository<playlist, UUID>
             "FROM playlist as pl " +
             "INNER JOIN account as a " +
             "ON a.id = pl.creator_id " +
-            "WHERE pl.creator_id = :user_id " +
+            "WHERE pl.creator_id = :user_id AND pl.active = true " +
             "ORDER BY pl.id ",
             nativeQuery = true)
     List<playlistmodel> findAllPlaylistsOfUser(@Param("user_id") long user_id);
@@ -29,7 +29,7 @@ public interface playlistrepo extends JpaRepository<playlist, UUID>
             "FROM playlist as pl " +
             "INNER JOIN account as a " +
             "ON a.id = pl.creator_id " +
-            "WHERE true = true " +
+            "WHERE pl.active = true " +
             "ORDER BY pl.id ",
             nativeQuery = true)
     List<playlistmodel> findAllPlaylists();

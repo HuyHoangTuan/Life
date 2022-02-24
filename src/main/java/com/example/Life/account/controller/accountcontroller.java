@@ -5,6 +5,7 @@ import com.example.Life.LifeApplication;
 import com.example.Life.account.entity.account;
 import com.example.Life.account.model.*;
 import com.example.Life.account.service.accountservice;
+import com.example.Life.album.model.albummodel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -479,6 +480,22 @@ public class accountcontroller
                 .status(HttpStatus.OK)
                 .header("Content-Type","application/json")
                 .body("{\"status\":\"success\"}");
+    }
+
+    @GetMapping("/api/users/total")
+    public ResponseEntity<?> getNumberOfAlbums(@RequestParam(name = "token", required = false) String token)
+    {
+        System.out.println(LifeApplication.GET+"/api/users/total "+token);
+        long total = 0;
+        List<accountmodel> listUsers = accountService.getAllUsers();
+        for(accountmodel current: listUsers)
+        {
+            if(current.getActive() == true) total++;
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"total\""+":"+total+"}");
     }
 }
 

@@ -328,4 +328,19 @@ public class songcontroller
                 .body("{\"status\":\"success\"}");
 
     }
+    @GetMapping("/api/tracks/total")
+    public ResponseEntity<?> getNumberOfTracks(@RequestParam(name = "token", required = false) String token)
+    {
+        System.out.println(LifeApplication.GET+"/api/tracks/total "+token);
+        long total = 0;
+        List<songoutputmodel> listSongs = songService.getAllSongs();
+        for(songoutputmodel current: listSongs)
+        {
+            if(current.isActive() == true) total++;
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("Content-Type","application/json")
+                .body("{\"total\""+":"+total+"}");
+    }
 }

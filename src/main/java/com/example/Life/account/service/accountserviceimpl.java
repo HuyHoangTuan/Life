@@ -27,6 +27,7 @@ public class accountserviceimpl implements accountservice
         List<account> validAccount = accountRepo.findByEmail(email);
         if(validAccount.size() == 0) return null;
         if(!password.equals(validAccount.get(0).getPassword())) return null;
+        if(validAccount.get(0).isActive() == false) return null;
         return validAccount.get(0);
     }
 
